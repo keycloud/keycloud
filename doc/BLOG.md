@@ -1,1 +1,1 @@
-(KeyCloud offical blog)[http://mardybum.de/SE/]
+[KeyCloud offical blog](https://mardybum.de/SE/)
