@@ -1,0 +1,10 @@
+{
+    "name": "KeyCloud Desktop",
+    "version": "1.0",
+    "description": "KeyCloud Extension for Chrome Desktop version",
+	"browser_action": {
+      "default_popup": "popup.html",
+	  "default_icon": "icon.png"
+    },
+    "manifest_version": 2
+}
