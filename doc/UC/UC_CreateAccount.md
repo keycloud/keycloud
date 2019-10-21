@@ -18,6 +18,7 @@ Date | Version | Description | Author
 ### 1.1 Brief Description
 This use case allows the user to create an account. For the creation following credentials must be provided:
 - username
+
 ## 2. Flow of Events
 ### 2.1 Basic Flow
 - User enters username
@@ -26,14 +27,21 @@ This use case allows the user to create an account. For the creation following c
 #### 2.1.1 Activity Diagram
 ![UC_CreateAccount](images/UC/UC_CreateAccount.png)
 #### 2.2.2 Mock up
-
+##### 2.2.2.1 Register
+![Mockup_Register](images/mockups/Mockup_register.PNG)
+##### 2.2.2.2 Create Password
+![Mockup_CreatePassword](images/mockups/Mockup_createPassword.PNG)
 ### 2.2 Alternative Flows
 n/a
+
 ## 3. Special Requirements
 n/a
+
 ## 4. Preconditions
 n/a
+
 ## 5. Postconditions
 If a user completes this workflow, the users profile must have been created on the server. 
+
 ## 6. Extension Points
 n/a

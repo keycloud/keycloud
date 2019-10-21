@@ -1,7 +1,7 @@
+# ! TBD !
 ## Revision History
 Date | Version | Description | Author
 --- | --- | --- | ---
-21.10.19 | 1.0 | First release of the UC | Lukas Priester
 
 ## Table of Contents
 - [1. Use Case Create Account](#1-use-case-create-account)
