@@ -85,7 +85,11 @@ Each of the following subsections represents a subsystem of our application.
 #### 3.1.1 Dashboard
 By using the dashboard several activities can be managed.  
 Accounts are created and managed as well as password data. Further personal configuration can be set.  
-Additional features might include the generation of passwords.
+Additional features might include the generation of passwords.  
+
+Following use cases for the dashboard have been finalized:
+- [UC create account](UC/UC_CreateAccount.md)
+- [UC add password](UC/UC_AddPassword.md)
 #### 3.1.2 Chrome-Plugin
 The chrome-plugin will enable the user to get his passwords in the Google Chrome browser.
 Additional features might include the function to add and remove individual passwords.
