@@ -26,10 +26,10 @@ This use case allows the user to create an account. For the creation following c
 - User is prompted with a password
 #### 2.1.1 Activity Diagram
 ![UC_CreateAccount](images/UC/UC_CreateAccount.png)
-#### 2.2.2 Mock up
-##### 2.2.2.1 Register
+#### 2.1.2 Mock up
+##### Register
 ![Mockup_Register](images/mockups/Mockup_register.PNG)
-##### 2.2.2.2 Create Password
+##### Create Password
 ![Mockup_CreatePassword](images/mockups/Mockup_createPassword.PNG)
 ### 2.2 Alternative Flows
 n/a
