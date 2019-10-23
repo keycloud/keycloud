@@ -2,6 +2,7 @@
 Date | Version | Description | Author
 --- | --- | --- | ---
 23.10.2019 | 1.0 | First release of the UC | Philipp Heil
+23.10.2019 | 1.1 | Add mock ups and activity diagram | Lukas Priester
 
 ## Table of Contents
 - [1. Use Case Create Account](#1-use-case-create-account)
