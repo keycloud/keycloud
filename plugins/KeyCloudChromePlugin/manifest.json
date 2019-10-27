@@ -1,10 +1,29 @@
 {
-    "name": "KeyCloud Desktop",
-    "version": "1.0",
-    "description": "KeyCloud Extension for Chrome Desktop version",
-	"browser_action": {
-      "default_popup": "popup.html",
-	  "default_icon": "icon.png"
+  "manifest_version": 2,
+  "name": "KeyCloud Chrome Plugin",
+  "version": "0.0.1",
+  "description": "Chrome Plugin for accessing your passwords saved in your KeyCloud Depot",
+  "minimum_chrome_version": "50",
+  "icons": {
+    "16": "icon.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "icon.png"
     },
-    "manifest_version": 2
+    "default_title": "KeyCloud",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["jquery-min.js", "bootstrap-min.js","content.js"],
+	  "css": ["css/bootstrap.min.css"],
+      "run_at": "document_end",
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "activeTabs","http://*/*", "https://*/*"
+  ]
 }

@@ -4,8 +4,10 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"webauthn/webauthn"
 )
 
@@ -40,11 +42,11 @@ func main() {
 	}
 
 	webauthnRouter := mux.NewRouter()
-	/*
-	File serving from the ./../dashboard folder
-	*/
-	fs := http.FileServer(http.Dir("./../dashboard"))
-	webauthnRouter.PathPrefix("/dashboard/").Handler(http.StripPrefix("/dashboard/", fs))
+
+	webauthnRouter.HandleFunc("/dashboard/index.html", serveFileWithoutCheck)
+	webauthnRouter.HandleFunc("/dashboard/signin.css", serveFileWithoutCheck)
+	webauthnRouter.HandleFunc("/dashboard/icon.png", serveFileWithoutCheck)
+
 	/*
 	Web Authn API implementation for 2FA
 	*/
@@ -53,4 +55,35 @@ func main() {
 	webauthnRouter.HandleFunc("/webauthn/login/start", startLogin)
 	webauthnRouter.HandleFunc("/webauthn/login/finish", finishLogin)
 	log.Fatal(http.ListenAndServe(":8080", webauthnRouter))
+}
+
+func serveFileWithoutCheck(writer http.ResponseWriter, request *http.Request) {
+	path := request.URL.Path[1:]
+	log.Println(path)
+	path = "./../" + path
+	data, err := ioutil.ReadFile(string(path))
+
+	if err == nil {
+		var contentType string
+
+		if strings.HasSuffix(path, ".css") {
+			contentType = "text/css"
+		} else if strings.HasSuffix(path, ".html") {
+			contentType = "text/html"
+		} else if strings.HasSuffix(path, ".js") {
+			contentType = "application/javascript"
+		} else if strings.HasSuffix(path, ".png") {
+			contentType = "image/png"
+		} else if strings.HasSuffix(path, ".svg") {
+			contentType = "image/svg+xml"
+		} else {
+			contentType = "text/plain"
+		}
+
+		writer.Header().Add("Content-Type", contentType)
+		_, _ = writer.Write(data)
+	} else {
+		writer.WriteHeader(404)
+		_, _ = writer.Write([]byte("404 What are you doing - " + http.StatusText(404)))
+	}
 }
