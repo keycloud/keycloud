@@ -28,18 +28,18 @@ public class DashboardTests {
 
     @Given("I am on the landing page")
     public void openLandingPage(){
-        driver.get("http://localhost:8080/index.html");
+        driver.get("http://localhost:8080/dashboard/index.html");
     }
     @When("I type in \"([^\"]*)\" as my username and click register")
     public void insertUsernameAndRegister(String username){
-        WebElement usernameIn = driver.findElementById("username_login");
+        WebElement usernameIn = driver.findElementById("inputUser");
         usernameIn.sendKeys(username);
-        driver.findElementById("register").click();
+        driver.findElementById("registerBtn").click();
     }
     @Then("I will be on the settings page of a new created Account")
     public void checkSettingsPage() throws Throwable{
         Thread.sleep(1000);
-        assertEquals(driver.getCurrentUrl(), "localhost:8080/main.html#settings");
+        assertEquals(driver.getCurrentUrl(), "localhost:8080/dashboard/main.html#settings");
     }
 
     @Given("^I am on my home page in the keycloud dashboard$")
