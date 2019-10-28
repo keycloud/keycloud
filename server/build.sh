@@ -1,3 +1,5 @@
-export GOPATH=C:\Users\d073556\Desktop\github-projects\keycloud\server;%GOPATH%;
-go build . -o server.exe
-server.exe
+path=`pwd`
+echo ${path}
+sudo -i -- sh -c "cd ${path} && export GOPATH=${path} && go get . && go build ."
+sudo -i -- sh -c "cd ${path} && export GOPATH=${path} && go build -o server ."
+echo "END"

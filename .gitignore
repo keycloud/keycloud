@@ -4,3 +4,4 @@
 cucumber-tests/target
 *.iml
 cucumber-tests/.idea/
+server/server
