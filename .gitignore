@@ -1,1 +1,6 @@
 *.idea
+# jetbrains
+.idea/*
+cucumber-tests/target
+*.iml
+cucumber-tests/.idea/
