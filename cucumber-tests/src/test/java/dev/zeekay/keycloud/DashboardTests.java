@@ -23,17 +23,17 @@ public class DashboardTests {
         driver = new ChromeDriver();
     }
 
-    @Given("I am on the landing page")
+    @Given("^I am on the landing page$")
     public void openLandingPage(){
         driver.get("http://localhost:8080/dashboard/index.html");
     }
-    @When("I type in \"([^\"]*)\" as my username and click register")
+    @When("^I type in \"([^\"]*)\" as my username and click register$")
     public void insertUsernameAndRegister(String username){
         WebElement usernameIn = driver.findElementById("inputUser");
         usernameIn.sendKeys(username);
         driver.findElementById("registerBtn").click();
     }
-    @Then("I will be on the settings page of a new created Account")
+    @Then("^I will be on the settings page of a new created Account$")
     public void checkSettingsPage() throws Throwable{
         Thread.sleep(1000);
         assertEquals(driver.getCurrentUrl(), "localhost:8080/dashboard/main.html#settings");

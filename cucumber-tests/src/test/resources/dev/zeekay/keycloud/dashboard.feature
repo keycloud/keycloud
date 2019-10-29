@@ -1,10 +1,14 @@
 @WithoutPlugin
 Feature: Dashboard
 
-  Scenario: Register a new Account in KeyCloud
+  Scenario Outline: Register a new Account in KeyCloud
     Given I am on the landing page
-    When I type in "User 1" as my username and click register
+    When I type in <user> as my username and click register
     Then I will be on the settings page of a new created Account
+    Examples:
+      | user |
+      | "ich" |
+      | "du" |
 
   Scenario: Add a new password to my list
     Given I am on my home page in the keycloud dashboard
