@@ -39,7 +39,7 @@ function addCustomField(){
 }
 
 function addTableRow(value) {
-    $("#pwTable").prepend(`<tr>
+    $("#pwTable").prepend(`<tr class="entry">
     <th scope="row">${value.i}</th>
     <td>${value.Username}</td>
     <td><a target="_blank" rel="noopener noreferrer" href="${value.Url}">${value.Url}</a></td>
@@ -57,6 +57,7 @@ function removeEntry(event) {
 }
 
 function saveNewEntry() {
+    // example
     let newEntry = {};
     let formElements = document.forms["newEntryForm"].getElementsByTagName("input");
     newEntry.Url = formElements[0].value;
@@ -65,7 +66,8 @@ function saveNewEntry() {
 }
 
 function renderTable() {
-    exampleEntries.reverse();  // bc of callback
+    $(".entry").remove(); // clear table
+    exampleEntries.reverse();  // bc of callback TODO: find better solution this causes problems
     exampleEntries.forEach(addTableRow);
 }
 

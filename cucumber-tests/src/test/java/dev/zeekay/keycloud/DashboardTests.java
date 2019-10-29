@@ -12,11 +12,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
+
 import static org.junit.Assert.*;
 
 public class DashboardTests {
     private ChromeDriver driver;
     private String baseUrl;
+    private int numberOfEntries;
 
     @Before("@WithoutPlugin")
     public void setupChrome(){
@@ -25,23 +27,27 @@ public class DashboardTests {
         baseUrl = "http://localhost:8000/";
     }
 
+
+    // UC_register
     @Given("^I am on the landing page$")
     public void openLandingPage(){
         driver.get(baseUrl +"index.html");
     }
+
     @When("^I type in \"([^\"]*)\" as my username and click register$")
-    public void insertUsernameAndRegister(String username) throws InterruptedException {
-        Thread.sleep(1000);
+    public void insertUsernameAndRegister(String username) {
         WebElement usernameIn = driver.findElementById("inputUser");
         usernameIn.sendKeys(username);
         driver.findElementById("registerBtn").click();
     }
     @Then("^I will be on the settings page of a new created Account$")
     public void checkSettingsPage() throws Throwable{
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         assertEquals(baseUrl + "main.html?#settings", driver.getCurrentUrl());
     }
 
+
+    // UC_AddPassword
     @Given("^I am on my home page in the keycloud dashboard$")
     public void openHomePage() throws Exception{
         driver.get(baseUrl + "main.html#home");
@@ -49,18 +55,23 @@ public class DashboardTests {
 
     @When("^I press the add button$")
     public void pressAddPassword() throws Exception{
+        numberOfEntries = driver.findElementsByClassName("entry").size();
         driver.findElementById("addEntryBtn").click();
     }
 
     @And("^I fill out the popup$")
     public void fillOutPopup() throws Exception{
+        Thread.sleep(1000);
         driver.findElementById("saveEntryBtn").click();
     }
 
     @Then("^I will see a new password added to the list$")
     public void checkPasswordAddedToList() throws Exception{
-        
+        Thread.sleep(3000);
+        assertEquals(numberOfEntries+1, driver.findElementsByClassName("entry").size());
     }
+
+
 
     @When("^I press the remove button for the \"([^\"]*)\" password$")
     public void removePasswordEntry(String password) throws Exception{
@@ -70,6 +81,8 @@ public class DashboardTests {
     public void checkPasswordRemoved(String password) throws Exception{
 
     }
+
+
 
     @After()
     public void closeBrowser() {
