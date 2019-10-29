@@ -16,19 +16,22 @@ import static org.junit.Assert.*;
 
 public class DashboardTests {
     private ChromeDriver driver;
+    private String baseUrl;
 
     @Before("@WithoutPlugin")
     public void setupChrome(){
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
+        baseUrl = "http://localhost:8000/";
     }
 
     @Given("^I am on the landing page$")
     public void openLandingPage(){
-        driver.get("http://localhost:8080/dashboard/index.html");
+        driver.get(baseUrl +"index.html");
     }
     @When("^I type in \"([^\"]*)\" as my username and click register$")
-    public void insertUsernameAndRegister(String username){
+    public void insertUsernameAndRegister(String username) throws InterruptedException {
+        Thread.sleep(1000);
         WebElement usernameIn = driver.findElementById("inputUser");
         usernameIn.sendKeys(username);
         driver.findElementById("registerBtn").click();
@@ -36,24 +39,27 @@ public class DashboardTests {
     @Then("^I will be on the settings page of a new created Account$")
     public void checkSettingsPage() throws Throwable{
         Thread.sleep(1000);
-        assertEquals(driver.getCurrentUrl(), "localhost:8080/dashboard/main.html#settings");
+        assertEquals(baseUrl + "main.html?#settings", driver.getCurrentUrl());
     }
 
     @Given("^I am on my home page in the keycloud dashboard$")
     public void openHomePage() throws Exception{
+        driver.get(baseUrl + "main.html#home");
     }
 
     @When("^I press the add button$")
     public void pressAddPassword() throws Exception{
-
+        driver.findElementById("addEntryBtn").click();
     }
 
     @And("^I fill out the popup$")
     public void fillOutPopup() throws Exception{
+        driver.findElementById("saveEntryBtn").click();
     }
 
     @Then("^I will see a new password added to the list$")
     public void checkPasswordAddedToList() throws Exception{
+        
     }
 
     @When("^I press the remove button for the \"([^\"]*)\" password$")

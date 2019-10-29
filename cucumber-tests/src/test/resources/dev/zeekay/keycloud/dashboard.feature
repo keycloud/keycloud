@@ -8,7 +8,6 @@ Feature: Dashboard
     Examples:
       | user |
       | "ich" |
-      | "du" |
 
   Scenario: Add a new password to my list
     Given I am on my home page in the keycloud dashboard
@@ -23,7 +22,6 @@ Feature: Dashboard
     Examples:
       | password |
       | "https://google.com"   |
-      | "https://keycloud.com" |
 
   Scenario Outline: Get password
     Given I am on my home page in the keycloud dashboard
@@ -32,4 +30,3 @@ Feature: Dashboard
     Examples:
       | url |
       | "https://google.com"   |
-      | "https://keycloud.com" |
