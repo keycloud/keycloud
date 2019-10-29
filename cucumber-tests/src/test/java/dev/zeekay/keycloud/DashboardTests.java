@@ -1,13 +1,12 @@
-package stepdefs;
-import cucumber.api.CucumberOptions;
-import cucumber.api.PendingException;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import cucumber.api.junit.Cucumber;
+package dev.zeekay.keycloud;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.cucumber.junit.Cucumber;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,8 +14,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import static org.junit.Assert.*;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(features = "classpath:Feature")
 public class DashboardTests {
     private ChromeDriver driver;
 
