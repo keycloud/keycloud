@@ -25,7 +25,8 @@ This use case allows the user to create an account. For the creation following c
 - User clicks on register
 - User is prompted with a password
 #### 2.1.1 Activity Diagram
-![UC_CreateAccount](images/UC/UC_CreateAccount.png)
+![UC_CreateAccount](images/UC/UC_CreateAccount.png) 
+ 
 .feature  
 ![FeatureFile](images/featureFileScreenshots/Featurefile_UC_RegisterAccount.PNG)
 #### 2.1.2 Mock up
