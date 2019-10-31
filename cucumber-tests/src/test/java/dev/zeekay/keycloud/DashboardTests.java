@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +25,9 @@ public class DashboardTests {
     @Before("@WithoutPlugin")
     public void setupChrome(){
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        ChromeOptions chrome_options = new ChromeOptions();
+		chrome_options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+		driver = new ChromeDriver(chrome_options);
         baseUrl = "http://localhost:8000/";
     }
 
