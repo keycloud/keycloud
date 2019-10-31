@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.chrome.ChromeOptions;
+
 import static org.junit.Assert.*;
 
 public class DashboardTests {
@@ -20,7 +22,9 @@ public class DashboardTests {
     @Before("@WithoutPlugin")
     public void setupChrome(){
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
+        driver = new ChromeDriver(chromeOptions);
     }
 
     @Given("^I am on the landing page$")
@@ -28,7 +32,8 @@ public class DashboardTests {
         driver.get("http://localhost:8080/dashboard/index.html");
     }
     @When("^I type in \"([^\"]*)\" as my username and click register$")
-    public void insertUsernameAndRegister(String username){
+    public void insertUsernameAndRegister(String username) throws Exception{
+        Thread.sleep(1000);
         WebElement usernameIn = driver.findElementById("inputUser");
         usernameIn.sendKeys(username);
         driver.findElementById("registerBtn").click();
