@@ -1,3 +1,5 @@
+import genPW from "./util/pwgen.mjs";
+
 var exampleEntries = [
     {
         "i" : 1,
@@ -14,14 +16,14 @@ var exampleEntries = [
     }
 ]
 
-function clickTab(elem){
+export function clickTab(elem){
     for(let i = 0; i < $("a.nav-link").length; i++){
         $("a.nav-link")[i].classList.remove("active");
     }
     elem.classList.add("active");
 }
 
-function addCustomField(){
+export function addCustomField(){
     $(`<div class="form-row custom-field-row-added" style="margin-bottom: 15px">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="Custom Field Name">
@@ -48,20 +50,21 @@ function addTableRow(value) {
     </tr>`);
 }
 
-function updateModal(){
+window.updateModal =  function updateModal(){
     $(".custom-field-row-added").remove();
 }
 
-function removeEntry(event) {
+export function removeEntry(event) {
     console.log(event);
 }
 
-function saveNewEntry() {
+window.saveNewEntry = function saveNewEntry() {
     // example
     let newEntry = {};
     let formElements = document.forms["newEntryForm"].getElementsByTagName("input");
     newEntry.Url = formElements[0].value;
     exampleEntries.push(newEntry);
+    console.log(genPW());
     renderTable();
 }
 
