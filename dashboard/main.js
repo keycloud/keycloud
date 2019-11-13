@@ -69,6 +69,7 @@ function renderTable() {
     $(".entry").remove(); // clear table
     exampleEntries.reverse();  // bc of callback TODO: find better solution this causes problems
     exampleEntries.forEach(addTableRow);
+    exampleEntries.reverse();
 }
 
 $("document").ready(function() {
