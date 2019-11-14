@@ -1,4 +1,4 @@
-export default function genPW() {
+export default function genPW(event) {
     let key;
     let isValid = false;
     while (!isValid) {
@@ -6,7 +6,7 @@ export default function genPW() {
         const firstFive = key["hashkey"].slice(0, 5);
         const getUrl = "https://api.pwnedpasswords.com/range/" + firstFive;
         const data = getData(getUrl);
-        const jsonData = handleData(data)
+        const jsonData = handleData(data.json());
         isValid = checkForMatch(jsonData, key);
     }
     return key["clearkey"];
@@ -43,12 +43,17 @@ function keyGen() {
     let hashKey = shaObj.getHash("HEX");
     return {"clearkey":key,"hashkey":hashKey};
 }
-
 function getData(geturl) {
-    return fetch(geturl, {
-        method: 'GET'
-    })
-        .then(res => {return res})
+    let jsonData = null;
+    $.ajax({            //TODO: crashes here: TypeError: $.ajax is not a function ??
+        type: "GET",
+        async: false,
+        url: geturl,
+        success: function (data) {
+            jsonData = data;
+        }
+    });
+    return jsonData;
 }
 
 function handleData(data) {

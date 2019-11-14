@@ -58,13 +58,16 @@ export function removeEntry(event) {
     console.log(event);
 }
 
+window.generatePassword = function generatePassword(event) {
+    const pw = genPW(event);
+}
+
 window.saveNewEntry = function saveNewEntry() {
     // example
     let newEntry = {};
     let formElements = document.forms["newEntryForm"].getElementsByTagName("input");
     newEntry.Url = formElements[0].value;
     exampleEntries.push(newEntry);
-    console.log(genPW());
     renderTable();
 }
 
