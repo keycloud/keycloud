@@ -58,6 +58,7 @@ function removeEntry(event) {
 
 function generatePassword(event) {
     const pw = genPW(event);
+    document.getElementById("pwInput").value = pw;
 }
 
 function saveNewEntry() {

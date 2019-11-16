@@ -3,13 +3,13 @@ function genPW(event) {
     let isValid = false;
     while (!isValid) {
         key = keyGen();
-        const firstFive = key["hashkey"].slice(0, 5);
+        const firstFive = key["hashKey"].slice(0, 5);
         const getUrl = "https://api.pwnedpasswords.com/range/" + firstFive;
         const data = getData(getUrl);
-        const jsonData = handleData(data.json());
+        const jsonData = handleData(data);
         isValid = checkForMatch(jsonData, key);
     }
-    return key["clearkey"];
+    return key["clearKey"];
 }
 
 function shuffle(array) {
@@ -41,14 +41,15 @@ function keyGen() {
     let shaObj = new jsSHA("SHA-1", "TEXT");
     shaObj.update(key);
     let hashKey = shaObj.getHash("HEX");
-    return {"clearkey":key,"hashkey":hashKey};
+    return {"clearKey":key,"hashKey":hashKey};
 }
-function getData(geturl) {
+
+function getData(getUrl) {
     let jsonData = null;
-    $.ajax({            //TODO: crashes here: TypeError: $.ajax is not a function ??
+    $.ajax({
         type: "GET",
         async: false,
-        url: geturl,
+        url: getUrl,
         success: function (data) {
             jsonData = data;
         }
@@ -69,14 +70,14 @@ function handleData(data) {
 }
 
 function checkForMatch(jsonData, key) {
-    let checkKey = key["hashkey"].slice(5);
+    let checkKey = key["hashKey"].slice(5);
     let retValue = false;
     let i;
     for (i = 0; i < jsonData.length; i++) {
-        var obj = jsonData[i];
+        let obj = jsonData[i];
         if (obj.hash === checkKey.toUpperCase()) {
             retValue = false;
-            console.log("MATCH FOUND AT " + i + "\n occured " + obj.count + " times");
+            console.log("MATCH FOUND AT " + i + "\n occurred " + obj.count + " times");
         } else {
             retValue = true;
         }
