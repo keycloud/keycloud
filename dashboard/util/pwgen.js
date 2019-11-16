@@ -1,4 +1,4 @@
-export default function genPW(event) {
+function genPW(event) {
     let key;
     let isValid = false;
     while (!isValid) {
