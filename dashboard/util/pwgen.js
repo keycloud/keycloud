@@ -1,4 +1,4 @@
-function genPW(event) {
+function genPW() {
     let key;
     let isValid = false;
     while (!isValid) {

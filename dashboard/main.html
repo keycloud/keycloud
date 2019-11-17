@@ -29,7 +29,7 @@
             <h3 class="masthead-brand" style="font-size: xx-large">KeyCloud</h3>
             <nav class="nav nav-masthead justify-content-center"
                  style="right: 3%;position: absolute;font-size: x-large">
-                <a class="nav-link active" href="#home" onclick="clickTab(this)">Home</a>
+                <a class="nav-link active" href="#overview" onclick="clickTab(this)">Overview</a>
                 <a class="nav-link" href="#settings" onclick="clickTab(this)">Settings</a>
             </nav>
         </div>
@@ -39,7 +39,7 @@
 
         <!-- MAIN TAB-->
 
-        <div class="tab mx-auto" id="home">
+        <div class="tab mx-auto" id="overview">
             <h1 class="cover-heading">Password list</h1>
             <table class="table table-striped table-dark" style="width: 80vw">
                 <thead>
@@ -79,12 +79,15 @@
                             <form name="newEntryForm">
                                 <div class="form-row" style="margin-bottom: 15px">
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="Url">
+                                        <input type="text" id="usernameInput" class="form-control" placeholder="Username">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" id="urlInput" class="form-control" placeholder="Url to website">
                                     </div>
                                     <div class="col">
                                         <input type="text" id="pwInput" class="form-control" placeholder="Password">
                                     </div>
-                                    <button onclick="generatePassword()" type="button" class="btn btn-info">
+                                    <button onclick="generatePassword()" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Click here to have a password generated">
                                         <span class="icon">&#9851;</span>
                                     </button>
                                 </div>
