@@ -55,16 +55,16 @@ func (a *Authenticator) WebAuthSignCount() uint32 {
 }
 
 type StorageInterface interface {
-	AddAuthenticator(webauthn.User, webauthn.Authenticator) error
+	AddAuthenticator(User, webauthn.Authenticator) error
 	GetAuthenticator([]byte) (webauthn.Authenticator, error)
-	GetAuthenticators(webauthn.User) ([]webauthn.Authenticator, error)
+	GetAuthenticators(User) ([]webauthn.Authenticator, error)
 	GetUser(webauthnID string) *User
 	AddUser(*User) error
 	RemoveUser(*User) error
 	UpdateUser(*User) error
-	GetSessionKeyForUser(webauthn.User) []byte
-	SetSessionKeyForUser(webauthn.User, []byte) error
-	DeleteSessionKeyForUser(webauthn.User) error
+	GetSessionKeyForUser(User) []byte
+	SetSessionKeyForUser(User, []byte) error
+	DeleteSessionKeyForUser(User) error
 	GetPassword(*User, string) (*Password, error)
 	AddPassword(*User, string, *Password) error
 	UpdatePassword(*User, string, *Password) error
