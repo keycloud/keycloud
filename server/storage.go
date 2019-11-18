@@ -9,6 +9,7 @@ import (
 type User struct {
 	Name           string                    `json:"name"`
 	Authenticators map[string]*Authenticator `json:"-"`
+	SecurityToken  []byte
 }
 
 type Authenticator struct {
@@ -60,6 +61,15 @@ func (s *Storage) GetAuthenticator(id []byte) (webauthn.Authenticator, error) {
 	return authr, nil
 }
 
+func (s *Storage) GetUser(webauthnID string) (user *User) {
+	u, ok := s.users[webauthnID]
+	if !ok {
+		return nil
+	} else {
+		return u
+	}
+}
+
 func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticator, error) {
 	u, ok := s.users[string(user.WebAuthID())]
 	if !ok {
@@ -75,6 +85,10 @@ func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticato
 
 func (u *User) WebAuthID() []byte {
 	return []byte(u.Name)
+}
+
+func (u *User) GetSecurityToken() []byte {
+	return u.SecurityToken
 }
 
 func (u *User) WebAuthName() string {
