@@ -67,7 +67,7 @@ func (server FileServer) ServeFileWithCookieCheck(writer http.ResponseWriter, re
 	secureCookie, ok1 := secureCookieRaw.([]byte)
 	userId, ok2 := userIdRaw.(string)
 	user := server.storage.GetUser(userId)
-	if !ok1 || !ok2 || user == nil || !bytes.Equal(secureCookie, user.GetSecurityToken()) {
+	if !ok1 || !ok2 || user == nil || !bytes.Equal(secureCookie, server.storage.GetSessionKeyForUser(user)) {
 		//Unauthorized
 		writer.WriteHeader(401)
 		_, _ = writer.Write([]byte("401 - Unauthorized - "))

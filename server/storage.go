@@ -6,21 +6,6 @@ import (
 	"webauthn/webauthn"
 )
 
-type User struct {
-	Name           string                    `json:"name"`
-	Authenticators map[string]*Authenticator `json:"-"`
-	SecurityToken  []byte
-}
-
-type Authenticator struct {
-	User         *User
-	ID           []byte
-	CredentialID []byte
-	PublicKey    []byte
-	AAGUID       []byte
-	SignCount    uint32
-}
-
 type Storage struct {
 	users          map[string]*User
 	authenticators map[string]*Authenticator
@@ -83,38 +68,6 @@ func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticato
 	return authrs, nil
 }
 
-func (u *User) WebAuthID() []byte {
-	return []byte(u.Name)
-}
-
-func (u *User) GetSecurityToken() []byte {
-	return u.SecurityToken
-}
-
-func (u *User) WebAuthName() string {
-	return u.Name
-}
-
-func (u *User) WebAuthDisplayName() string {
-	return u.Name
-}
-
-func (a *Authenticator) WebAuthID() []byte {
-	return a.ID
-}
-
-func (a *Authenticator) WebAuthCredentialID() []byte {
-	return a.CredentialID
-}
-
-func (a *Authenticator) WebAuthPublicKey() []byte {
-	return a.PublicKey
-}
-
-func (a *Authenticator) WebAuthAAGUID() []byte {
-	return a.AAGUID
-}
-
-func (a *Authenticator) WebAuthSignCount() uint32 {
-	return a.SignCount
+func (s *Storage) GetSessionKeyForUser(user webauthn.User) []byte {
+	return []byte(user.WebAuthName())
 }
