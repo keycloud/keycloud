@@ -8,6 +8,7 @@
     - [1.4 References](#14-references)
     - [1.5 Overview](#15-overview)
 - [2. Architectural Representation](#2-architectural-representation)
+    - [2.1 Technologies used](#21-technologies-used)
 - [3. Architectural Goals and Constraints](#3-architectural-goals-and-constraints)
 - [4. Use-Case View](#4-use-case-view)
     - [4.1 Use-Case Realizations](#41-use-case-realizations)
@@ -25,10 +26,13 @@
 
 ## 1. Introduction
 ### 1.1 Purpose
+This document provides an architectural overview of the system, using a number of different architectural views.
 ### 1.2 Scope
+The scope of this SAD is to show the overall architecture of the KeyCloud project. Use-Cases, classes used in the backend and the database structure are depicted.
 ### 1.3 Definitions, Acronyms and Abbreviations
 Abbreviation | |
 --- | --- 
+IDE | Integrated Development Environment
 n/a | not applicable  
 SAD | Software Architecture Document
 SRS | Software Requirements Specification
@@ -46,30 +50,54 @@ Title | Date | Publishing organization |
 [SRS](../doc/SRS.md) | 12.10.2019 | KeyCloud  
 [SAD](../doc/SAD.md) | 19.11.2019 | KeyCloud  
 [TeamCity](http://shared.zeggiedieziege.de:10000/) | 19.11.2019 | KeyCloud
-
 ### 1.5 Overview
+This document contains the architectural representation, goals and constraints.
 
 ## 2. Architectural Representation
+tbd
+### 2.1 Technologies used
+IDEs:
+- Frontend: JetBrains WebStorm
+- Backend: JetBrains GoLand
+
+Languages:
+- Frontend: JavaScript, HTML, CSS
+- Backend: Go
+- Database: Sqlite
+- Testing: Java (Cucumber), Go
 
 ## 3. Architectural Goals and Constraints
+tbd
 
 ## 4. Use-Case View
+![Use Case Diagram](./images/UseCases.png)
 ### 4.1 Use-Case Realizations
+tbd
 
 ## 5. Logical View
+tbd
 ### 5.1 Overview
 ### 5.2 Architecturally Significant Design Packages
 
 ## 6. Process View
+tbd
 
 ## 7. Deployment View
+tbd
 
 ## 8. Implementation View
 ### 8.1 Overview
+The following graphic describes the overall class organization of the backend.  
+![Class-Diagram](./backend/ClassDiagram.svg)
 ### 8.2 Layers
 
+
 ## 9. Data View
+The following diagram describes the relationship model of our database.  
+![Entity-Relation Diagram](./backend/database/er-diagram.svg)
 
 ## 10. Size and Performance
+tbd
 
 ## 11. Quality
+tbd

@@ -1,0 +1,101 @@
+<svg class="diagram-root" style="background: #f5f6f6" xmlns="http://www.w3.org/2000/svg">
+    <style>.diagram-root { font-family: "Helvetica Neue", sans-serif; font-size: 12px; } .t { overflow: visible; } .t-bg
+        { y: 40; fill: #fff; } .th { fill: #005aa0; } .tht { fill: #fff; font-size: 14px; } .tf { fill: #323c46;
+        overflow: visible; } .tf.pk { fill: #005aa0; font-weight: bold; } .tf.fk { font-weight: bold; } .ty { fill:
+        #adb1b5; font-weight: normal; text-anchor: end; } .r { fill: transparent; stroke: #c3c3c3; stroke-width: 1; } .l
+        { stroke: 1; } .i { fill: #c2c7ce; stroke: #c2c7ce; } .i.ix { fill: #afb3b6; stroke: #000; } .fa { fill:
+        transparent; overflow: visible; } .fa .bg.hover { fill: #f7f7f7; } .c { cy: 12; r: 4; stroke: #d2d2dc; fill:
+        #d2d2dc; } .hr { fill: transparent; stroke: #323c46; stroke-opacity: 0.035; stroke-width: 13; } .dc { stroke:
+        #fa5a3c; fill: #fa5a3c; } .x { stroke: white; stroke-width: 1; } .hl .th { fill: #1b9bff; } .hl .tht { } .fhl
+        .bg { fill: #e7f4ff; } .fhls .bg { } .r.hl { stroke: #1b9bff; } .dim { opacity: 0.25; }
+    </style>
+    <g class="drawing-wrapper" transform="translate(2, 18) scale(1,1)">
+        <g class="rs">
+            <path d="M 382 348 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 382 348 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M382 348 L382 348 370 348 M 382 354 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 382 354 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M382 354 L382 354 375 348 382 342 M 382 342 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 382 342 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M370 348 Q 333.02 348, 296.03 217.5 T 222.07 87 M 210.07 87 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 210.07 87 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M210.07 87 L210.07 87 222.07 87 M216.07 93 L216.07 93 216.07 81"
+                  id="h4196210035" class="r"></path>
+            <path d="M 691 279 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 691 279 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M691 279 L691 279 679 279 M 691 285 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 691 285 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M691 285 L691 285 684 279 691 273 M 691 273 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 691 273 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M679 279 Q 646.59 279, 614.18 301 T 549.36 323 M 537.36 323 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 537.36 323 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M537.36 323 L537.36 323 549.36 323 M543.36 329 L543.36 329 543.36 317"
+                  id="h3101616472" class="r"></path>
+            <path d="M 453 129 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 453 129 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M453 129 L453 129 441 129 M 453 135 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 453 135 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M453 135 L453 135 446 129 453 123 M 453 123 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 453 123 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M441 129 Q 386.27 129, 331.54 108 T 222.07 87 M 210.07 87 m -1, 0 a 1,1 0 1,0 2,0 a 1,1 0 1,0 -2,0 M 210.07 87 m -0.5, 0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0  M210.07 87 L210.07 87 222.07 87 M216.07 93 L216.07 93 216.07 81"
+                  id="h3155468423" class="r"></path>
+        </g>
+        <g class="hrs"></g>
+        <g class="ts">
+            <svg width="180.07" height="175" x="30" y="30" id="h2948373614" class="t">
+                <rect height="40" width="180.07" class="th"></rect>
+                <text x="13" y="25" class="tht">users</text>
+                <rect height="135" width="180.07" class="t-bg"></rect>
+                <text x="13" y="61" class="tf pk">userid
+                    <tspan x="167.07" class="ty">varchar(36)</tspan>
+                </text>
+                <path d="M7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14M12.65,10C11.83,7.67 9.61,6 7, 6A6, 6 0 0, 0 1, 12A6, 6 0 0, 0 7, 18C9.61, 18 11.83, 16.33 12.65, 14H17V18H21V14H23V10H12.65Z"
+                      class="i pk" transform="translate(85.716484375, 48) scale(0.65)"></path>
+                <text x="13" y="86" class="tf">username
+                    <tspan x="167.07" class="ty">varchar(16)</tspan>
+                </text>
+                <text x="13" y="111" class="tf">passwd
+                    <tspan x="167.07" class="ty">varchar(128)</tspan>
+                </text>
+                <text x="13" y="136" class="tf">mail
+                    <tspan x="167.07" class="ty">varchar(255)</tspan>
+                </text>
+                <text x="13" y="161" class="tf">creation_date
+                    <tspan x="167.07" class="ty">varchar(19)</tspan>
+                </text>
+            </svg>
+            <svg width="155.36" height="150" x="382" y="266" id="h2199521457" class="t">
+                <rect height="40" width="155.36" class="th"></rect>
+                <text x="13" y="25" class="tht">passwds</text>
+                <rect height="110" width="155.36" class="t-bg"></rect>
+                <text x="13" y="61" class="tf pk">entryid
+                    <tspan x="142.36" class="ty">INTEGER</tspan>
+                </text>
+                <path d="M7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14M12.65,10C11.83,7.67 9.61,6 7, 6A6, 6 0 0, 0 1, 12A6, 6 0 0, 0 7, 18C9.61, 18 11.83, 16.33 12.65, 14H17V18H21V14H23V10H12.65Z"
+                      class="i pk" transform="translate(69.02210937500001, 48) scale(0.65)"></path>
+                <text x="13" y="86" class="tf fk">userid
+                    <tspan x="142.36" class="ty">varchar(36)</tspan>
+                </text>
+                <text x="13" y="111" class="tf">url
+                    <tspan x="142.36" class="ty">varchar(255)</tspan>
+                </text>
+                <text x="13" y="136" class="tf">passwd
+                    <tspan x="142.36" class="ty">varchar(32)</tspan>
+                </text>
+            </svg>
+            <svg width="177.39" height="150" x="691" y="197" id="h1340133017" class="t">
+                <rect height="40" width="177.39" class="th"></rect>
+                <text x="13" y="25" class="tht">custom_data</text>
+                <rect height="110" width="177.39" class="t-bg"></rect>
+                <text x="13" y="61" class="tf pk">addtionalid
+                    <tspan x="164.39" class="ty">INTEGER</tspan>
+                </text>
+                <path d="M7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14M12.65,10C11.83,7.67 9.61,6 7, 6A6, 6 0 0, 0 1, 12A6, 6 0 0, 0 7, 18C9.61, 18 11.83, 16.33 12.65, 14H17V18H21V14H23V10H12.65Z"
+                      class="i pk" transform="translate(91.05210937499999, 48) scale(0.65)"></path>
+                <text x="13" y="86" class="tf fk">entryid
+                    <tspan x="164.39" class="ty">INTEGER</tspan>
+                </text>
+                <text x="13" y="111" class="tf">name
+                    <tspan x="164.39" class="ty">varchar(255)</tspan>
+                </text>
+                <text x="13" y="136" class="tf">hidden
+                    <tspan x="164.39" class="ty">INTEGER</tspan>
+                </text>
+            </svg>
+            <svg width="177.38" height="125" x="453" y="47" id="h763081409" class="t">
+                <rect height="40" width="177.38" class="th"></rect>
+                <text x="13" y="25" class="tht">sessions</text>
+                <rect height="85" width="177.38" class="t-bg"></rect>
+                <text x="13" y="61" class="tf pk">sessionid
+                    <tspan x="164.38" class="ty">varchar(36)</tspan>
+                </text>
+                <path d="M7,14A2,2 0 0,1 5,12A2,2 0 0,1 7,10A2,2 0 0,1 9,12A2,2 0 0,1 7,14M12.65,10C11.83,7.67 9.61,6 7, 6A6, 6 0 0, 0 1, 12A6, 6 0 0, 0 7, 18C9.61, 18 11.83, 16.33 12.65, 14H17V18H21V14H23V10H12.65Z"
+                      class="i pk" transform="translate(83.026484375, 48) scale(0.65)"></path>
+                <text x="13" y="86" class="tf fk">userid
+                    <tspan x="164.38" class="ty">varchar(36)</tspan>
+                </text>
+                <text x="13" y="111" class="tf">expiredate
+                    <tspan x="164.38" class="ty">varchar(19)</tspan>
+                </text>
+            </svg>
+        </g>
+    </g>
+</svg>
