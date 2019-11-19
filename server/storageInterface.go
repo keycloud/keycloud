@@ -2,10 +2,10 @@ package main
 
 import "webauthn/webauthn"
 
-
 type User struct {
 	Name           string                    `json:"name"`
 	Authenticators map[string]*Authenticator `json:"-"`
+	MasterPassword []byte
 }
 
 type Authenticator struct {
@@ -18,7 +18,8 @@ type Authenticator struct {
 }
 
 type Password struct {
-	Password []byte
+	Password string
+	Id       string
 	//TODO: Add further attributes
 }
 
@@ -55,17 +56,18 @@ func (a *Authenticator) WebAuthSignCount() uint32 {
 }
 
 type StorageInterface interface {
-	AddAuthenticator(User, webauthn.Authenticator) error
+	AddAuthenticator(webauthn.User, webauthn.Authenticator) error
 	GetAuthenticator([]byte) (webauthn.Authenticator, error)
-	GetAuthenticators(User) ([]webauthn.Authenticator, error)
+	GetAuthenticators(webauthn.User) ([]webauthn.Authenticator, error)
 	GetUser(webauthnID string) *User
 	AddUser(*User) error
 	RemoveUser(*User) error
 	UpdateUser(*User) error
-	GetSessionKeyForUser(User) []byte
-	SetSessionKeyForUser(User, []byte) error
-	DeleteSessionKeyForUser(User) error
+	GetSessionKeyForUser(*User) []byte
+	SetSessionKeyForUser(*User, []byte) error
+	DeleteSessionKeyForUser(*User) error
 	GetPassword(*User, string) (*Password, error)
 	AddPassword(*User, string, *Password) error
 	UpdatePassword(*User, string, *Password) error
+	DeletePassword(*User, string) error
 }

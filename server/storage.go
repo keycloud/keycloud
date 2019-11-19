@@ -68,6 +68,43 @@ func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticato
 	return authrs, nil
 }
 
-func (s *Storage) GetSessionKeyForUser(user webauthn.User) []byte {
-	return []byte(user.WebAuthName())
+/*
+DUMMY IMPLEMENTATION
+*/
+func (s *Storage) GetSessionKeyForUser(user *User) []byte {
+	return []byte("abc")
+}
+func (s *Storage) SetSessionKeyForUser(user *User, b []byte) error {
+	return nil
+}
+func (s *Storage) DeleteSessionKeyForUser(user *User) error {
+	return nil
+}
+func (s *Storage) AddUser(u *User) error {
+	s.users[string(u.WebAuthID())] = u
+	return nil
+}
+func (s *Storage) RemoveUser(u *User) error {
+	return nil
+}
+func (s *Storage) UpdateUser(u *User) error {
+	return nil
+}
+
+func (s *Storage) AddPassword(u *User, st string, p *Password) error {
+	return nil
+}
+
+func (s *Storage) GetPassword(u *User, st string) (*Password, error) {
+	return &Password{
+		Password: "test",
+		Id:       "test",
+	}, nil
+}
+
+func (s *Storage) UpdatePassword(u *User, st string, p *Password) error {
+	return nil
+}
+func (s *Storage) DeletePassword(u *User, st string) error {
+	return nil
 }
