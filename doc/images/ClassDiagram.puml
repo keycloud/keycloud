@@ -1,0 +1,139 @@
+@startuml
+namespace main {
+    class Authenticator << (S,Aquamarine) >> {
+        + User *User
+        + ID []byte
+        + CredentialID []byte
+        + PublicKey []byte
+        + AAGUID []byte
+        + SignCount uint32
+
+        + WebAuthID() []byte
+        + WebAuthCredentialID() []byte
+        + WebAuthPublicKey() []byte
+        + WebAuthAAGUID() []byte
+        + WebAuthSignCount() uint32
+
+    }
+    class AuthnHandler << (S,Aquamarine) >> {
+        - sessionName string
+        - authn *webauthn.WebAuthn
+        - cookieStore *sessions.CookieStore
+        - storage StorageInterface
+        - securityTokenName string
+        - userFieldName string
+        - cookieSessionName string
+
+        - startRegistration(writer http.ResponseWriter, request *http.Request) 
+        - finishRegistration(writer http.ResponseWriter, request *http.Request) 
+        - startLogin(writer http.ResponseWriter, request *http.Request) 
+        - finishLogin(writer http.ResponseWriter, request *http.Request) 
+        - standardLogin(writer http.ResponseWriter, request *http.Request) 
+        - standardRegister(writer http.ResponseWriter, request *http.Request) 
+        - logout(writer http.ResponseWriter, request *http.Request) 
+
+    }
+    class CRUDHandler << (S,Aquamarine) >> {
+        - cookieStore *sessions.CookieStore
+        - storage StorageInterface
+
+        + GetPassword(writer http.ResponseWriter, request *http.Request) 
+        + AddPassword(writer http.ResponseWriter, request *http.Request) 
+        + RemovePassword(writer http.ResponseWriter, request *http.Request) 
+        + RemoveUser(writer http.ResponseWriter, request *http.Request) 
+        + UpdateUser(writer http.ResponseWriter, request *http.Request) 
+        + GetUser(writer http.ResponseWriter, request *http.Request) 
+
+    }
+    class FileServer << (S,Aquamarine) >> {
+        - baseDir string
+        - cookieStore *sessions.CookieStore
+        - sessionName string
+        - cookieName string
+        - storage *Storage
+        - userFieldName string
+
+        + Router *mux.Router
+
+        + ServeFileWithoutCheck(writer http.ResponseWriter, request *http.Request) 
+
+    }
+    class GetPasswordRequest << (S,Aquamarine) >> {
+        + PasswordIdentifier string
+
+    }
+    class Password << (S,Aquamarine) >> {
+        + Password string
+        + Id string
+
+    }
+    class PasswordRequest << (S,Aquamarine) >> {
+        + Password string
+        + Id string
+
+    }
+    class Storage << (S,Aquamarine) >> {
+        - users <font color=blue>map</font>[string]*User
+        - authenticators <font color=blue>map</font>[string]*Authenticator
+
+        + AddAuthenticator(user webauthn.User, authenticator webauthn.Authenticator) error
+        + GetAuthenticator(id []byte) (webauthn.Authenticator, error)
+        + GetUser(webauthnID string) *User
+        + GetAuthenticators(user webauthn.User) ([]webauthn.Authenticator, error)
+        + GetSessionKeyForUser(user *User) []byte
+        + SetSessionKeyForUser(user *User, b []byte) error
+        + DeleteSessionKeyForUser(user *User) error
+        + AddUser(u *User) error
+        + RemoveUser(u *User) error
+        + UpdateUser(u *User) error
+        + AddPassword(u *User, st string, p *Password) error
+        + GetPassword(u *User, st string) (*Password, error)
+        + UpdatePassword(u *User, st string, p *Password) error
+        + DeletePassword(u *User, st string) error
+
+    }
+    interface StorageInterface  {
+        + AddAuthenticator( webauthn.User,  webauthn.Authenticator) error
+        + GetAuthenticator( []byte) (webauthn.Authenticator, error)
+        + GetAuthenticators( webauthn.User) ([]webauthn.Authenticator, error)
+        + GetUser(webauthnID string) *User
+        + AddUser( *User) error
+        + RemoveUser( *User) error
+        + UpdateUser( *User) error
+        + GetSessionKeyForUser( *User) []byte
+        + SetSessionKeyForUser( *User,  []byte) error
+        + DeleteSessionKeyForUser( *User) error
+        + GetPassword( *User,  string) (*Password, error)
+        + AddPassword( *User,  string,  *Password) error
+        + UpdatePassword( *User,  string,  *Password) error
+        + DeletePassword( *User,  string) error
+
+    }
+    class User << (S,Aquamarine) >> {
+        + Name string
+        + Authenticators <font color=blue>map</font>[string]*Authenticator
+        + MasterPassword []byte
+
+        + WebAuthID() []byte
+        + WebAuthName() string
+        + WebAuthDisplayName() string
+
+    }
+    class UserRequest << (S,Aquamarine) >> {
+        + Name string
+
+    }
+    class UsernamePasswordRequest << (S,Aquamarine) >> {
+        + Username string
+        + Password string
+
+    }
+    class UsernameRequest << (S,Aquamarine) >> {
+        + Username string
+
+    }
+}
+
+"main.StorageInterface" <|-- "main.Storage"
+
+@enduml
