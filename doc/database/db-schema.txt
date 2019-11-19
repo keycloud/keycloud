@@ -1,0 +1,27 @@
+CREATE TABLE users (
+userid varchar(36) PRIMARY KEY NOT NULL,
+username varchar(16) NOT NULL,
+passwd varchar(128) NOT NULL,
+mail varchar(255) NOT NULL,
+creation_date varchar(19) NOT NULL
+);
+CREATE TABLE passwds (
+entryid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+userid varchar(36) NOT NULL,
+url varchar(255) NOT NULL,
+passwd varchar(32) NOT NULL,
+FOREIGN KEY (userid) REFERENCES users(userid)
+);
+CREATE TABLE custom_data (
+addtionalid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+entryid INTEGER NOT NULL,
+name varchar(255) NOT NULL,
+hidden INTEGER NOT NULL,
+FOREIGN KEY (entryid) REFERENCES passwds(entryid)
+);
+CREATE TABLE sessions (
+sessionid varchar(36) PRIMARY KEY NOT NULL,
+userid varchar(36) NOT NULL,
+expiredate varchar(19) NOT NULL,
+FOREIGN KEY (userid) REFERENCES users(userid)
+);
