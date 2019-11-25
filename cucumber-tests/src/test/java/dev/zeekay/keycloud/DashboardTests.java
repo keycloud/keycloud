@@ -26,8 +26,9 @@ public class DashboardTests {
     public void setupChrome(){
         WebDriverManager.chromedriver().setup();
         ChromeOptions chrome_options = new ChromeOptions();
-		    chrome_options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
-		    driver = new ChromeDriver(chrome_options);
+        chrome_options.addArguments("--no-sandbox", "--disable-dev-shm-usage"); // TODO add --headless
+
+		driver = new ChromeDriver(chrome_options);
         baseUrl = "http://localhost:8000/";
 
     }
@@ -36,12 +37,12 @@ public class DashboardTests {
     // UC_register
     @Given("^I am on the landing page$")
     public void openLandingPage(){
-        driver.get(baseUrl +"index.html");
+        driver.get(baseUrl +"login.html");
     }
 
     @When("^I type in \"([^\"]*)\" as my username and click register$")
     public void insertUsernameAndRegister(String username) throws Exception{
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         WebElement usernameIn = driver.findElementById("inputUser");
         usernameIn.sendKeys(username);
         driver.findElementById("registerBtn").click();
@@ -92,8 +93,8 @@ public class DashboardTests {
 
     @After()
     public void closeBrowser() {
-        if(driver != null)
-            driver.quit();
+//        if(driver != null)
+//            driver.quit();
     }
 
     @When("^I copy the password for \"([^\"]*)\" to clipboard$")

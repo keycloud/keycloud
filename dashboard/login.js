@@ -85,6 +85,7 @@ class WebAuthn {
                         username: webAuthnConfig.username
                     }),
                 })
+                .then(res => console.log(res))
             })
             .then(WebAuthn._checkStatus(201));
     }
