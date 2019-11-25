@@ -6,20 +6,6 @@ import (
 	"webauthn/webauthn"
 )
 
-type User struct {
-	Name           string                    `json:"name"`
-	Authenticators map[string]*Authenticator `json:"-"`
-}
-
-type Authenticator struct {
-	User         *User
-	ID           []byte
-	CredentialID []byte
-	PublicKey    []byte
-	AAGUID       []byte
-	SignCount    uint32
-}
-
 type Storage struct {
 	users          map[string]*User
 	authenticators map[string]*Authenticator
@@ -60,6 +46,15 @@ func (s *Storage) GetAuthenticator(id []byte) (webauthn.Authenticator, error) {
 	return authr, nil
 }
 
+func (s *Storage) GetUser(webauthnID string) (user *User) {
+	u, ok := s.users[webauthnID]
+	if !ok {
+		return nil
+	} else {
+		return u
+	}
+}
+
 func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticator, error) {
 	u, ok := s.users[string(user.WebAuthID())]
 	if !ok {
@@ -73,34 +68,43 @@ func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticato
 	return authrs, nil
 }
 
-func (u *User) WebAuthID() []byte {
-	return []byte(u.Name)
+/*
+DUMMY IMPLEMENTATION
+*/
+func (s *Storage) GetSessionKeyForUser(user *User) []byte {
+	return []byte("abc")
+}
+func (s *Storage) SetSessionKeyForUser(user *User, b []byte) error {
+	return nil
+}
+func (s *Storage) DeleteSessionKeyForUser(user *User) error {
+	return nil
+}
+func (s *Storage) AddUser(u *User) error {
+	s.users[string(u.WebAuthID())] = u
+	return nil
+}
+func (s *Storage) RemoveUser(u *User) error {
+	return nil
+}
+func (s *Storage) UpdateUser(u *User) error {
+	return nil
 }
 
-func (u *User) WebAuthName() string {
-	return u.Name
+func (s *Storage) AddPassword(u *User, st string, p *Password) error {
+	return nil
 }
 
-func (u *User) WebAuthDisplayName() string {
-	return u.Name
+func (s *Storage) GetPassword(u *User, st string) (*Password, error) {
+	return &Password{
+		Password: "test",
+		Id:       "test",
+	}, nil
 }
 
-func (a *Authenticator) WebAuthID() []byte {
-	return a.ID
+func (s *Storage) UpdatePassword(u *User, st string, p *Password) error {
+	return nil
 }
-
-func (a *Authenticator) WebAuthCredentialID() []byte {
-	return a.CredentialID
-}
-
-func (a *Authenticator) WebAuthPublicKey() []byte {
-	return a.PublicKey
-}
-
-func (a *Authenticator) WebAuthAAGUID() []byte {
-	return a.AAGUID
-}
-
-func (a *Authenticator) WebAuthSignCount() uint32 {
-	return a.SignCount
+func (s *Storage) DeletePassword(u *User, st string) error {
+	return nil
 }
