@@ -1,0 +1,1204 @@
+{
+	"info": {
+		"_postman_id": "824034ec-d67d-4462-afce-5532f06ba68a",
+		"name": "KeyCloud",
+		"description": "# Introduction\nAPI for KeyCloud Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/standard/register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/javascript",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/standard/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"standard",
+						"register"
+					]
+				},
+				"description": "Standard Registration"
+			},
+			"response": [
+				{
+					"name": "Successfull registered",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/javascript",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/standard/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"standard",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Set-Cookie",
+							"value": "keycloud-main=MTU3NDE1NDY0NXxZbmsxRHVRRGN2QmR3R1VYcm1tb0s5eXVlaTh6N0h4NWE3UUZvOF9DN0daWV9CREFtanhtVXBMOThrbWU4eDN4SDFyaDhBU2taakduejh1ZGFBRXBMeEVad0liQm43WnRmTlpleDRqN29mQ1dwMHFDNHFmbTljMmVEQ2VXZUZWdk1OMks5SGtVZTROaWk4VkFBUEJxWHRidU5laDhHZVMtMVRLR1Z3PT18N1-SJ_QLXZYoJNfqIS4OL5zNM17z1asD4gFrJCROw3M=; Path=/; Expires=Thu, 19 Dec 2019 09:10:45 GMT; Max-Age=2592000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:10:45 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "Registered"
+				},
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/standard/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"standard",
+								"register"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/user/get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "779932a3-9173-496d-b922-ad2474994980",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.globals.set(\"master_password\", jsonData.MasterPassword);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/user/get",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"get"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Successful get Userinformation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/user/get",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"get"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:11:25 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "51"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Name\": \"test\",\n    \"MasterPassword\": \"qQcXnpWHRxZJheZC\"\n}"
+				},
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/user/get",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"get"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Logout",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Set-Cookie",
+							"value": "keycloud-main=MTU3NDE1NDgzN3xKc1ZHc1FhRDJhTnI2c3dTajctNHdsTkxlbkIxNFpveDVyV05PamkwclM5eGNPbGl8fTQvQMurldThm957VQenr7US9ejg7OSwqOauxGB_F8I=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Max-Age=0"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:13:57 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "Logged out"
+				},
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/standard/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/javascript",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"test\",\n\t\"password\": \"{{master_password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/standard/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"standard",
+						"login"
+					]
+				},
+				"description": "Standard Login with Username and MasterPassword"
+			},
+			"response": [
+				{
+					"name": "Successful logged in",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/javascript",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"test\",\n\t\"password\": \"{{master_password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/standard/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"standard",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Set-Cookie",
+							"value": "keycloud-main=MTU3NDE1NDg3NnxLU2ZwUmdNOVU5Zm54NFhSSXV1T3FhUVRxZHE4dlRmY05WVVdqWklaRWNNQmxuSHJRNGlyR2lMYjVtSXI5UjhJYTI0YzVlaFB1ZmZHQzF5Ykxud3dzTWhtYUVndUpGbjdOV1FmT0NsLVdxT1ZMbVFzOGI5UmlyazFIR3NjUHd2WFBEV3Qzai1jNXVTcWxZVWI2cVdsVldwbzM3WXhMdFlYT2pzc3ZRPT18jNVe0V3wWT6xnM3mOp8Zz87sX5NcZVNWORZXlzoGz4Y=; Path=/; Expires=Thu, 19 Dec 2019 09:14:36 GMT; Max-Age=2592000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:14:36 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/standard/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"standard",
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "User removed",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/user/remove",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"remove"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:15:01 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "35"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Status\": \"REMOVED\",\n    \"Error\": \"null\"\n}"
+				},
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/user/remove",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"remove"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/user",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/javascript"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/user/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Updated User",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/javascript",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/update",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"update"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:15:35 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "35"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Status\": \"UPDATED\",\n    \"Error\": \"null\"\n}"
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/password",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/javascript",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"https://google.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/password",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"password"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Password",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/javascript",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"https://google.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/password/get",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"password",
+								"get"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:15:53 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "31"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\"Password\":\"test\",\"Id\":\"test\"}"
+				},
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/password/get",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"password",
+								"get"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/javascript",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"password\": \"password\",\n\t\"id\": \"https://google.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/password",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"password"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/password/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"password",
+								"add"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Added Password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/javascript",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\": \"password\",\n\t\"id\": \"https://google.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/password/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"password",
+								"add"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:16:12 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "35"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Status\": \"CREATED\",\n    \"Error\": \"null\"\n}"
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/password",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/javascript"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"https://google.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "javascript"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/password",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"password"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/password/remove",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"password",
+								"remove"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Removed Password",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/javascript",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"https://google.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/password/remove",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"password",
+								"remove"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 19 Nov 2019 09:16:29 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "35"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Status\": \"REMOVED\",\n    \"Error\": \"null\"\n}"
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/webauthn/registration/finish",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/webauthn/registration/finish",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"webauthn",
+						"registration",
+						"finish"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/webauthn/registration/finish",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"webauthn",
+								"registration",
+								"finish"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/webauthn/registration/start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/webauthn/registration/start",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"webauthn",
+						"registration",
+						"start"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/webauthn/registration/start",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"webauthn",
+								"registration",
+								"start"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/webauthn/login/finish",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/webauthn/login/finish",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"webauthn",
+						"login",
+						"finish"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/webauthn/login/finish",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"webauthn",
+								"login",
+								"finish"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "localhost:8080/webauthn/login/start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/webauthn/login/start",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"webauthn",
+						"login",
+						"start"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8080/webauthn/login/start",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"webauthn",
+								"login",
+								"start"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"protocolProfileBehavior": {}
+}
