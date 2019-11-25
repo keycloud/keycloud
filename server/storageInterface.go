@@ -1,11 +1,14 @@
 package main
 
-import "webauthn/webauthn"
+import (
+	"webauthn/webauthn"
+)
 
 type User struct {
 	Name           string                    `json:"name"`
 	Authenticators map[string]*Authenticator `json:"-"`
 	MasterPassword []byte
+	Mail		   string					 `json:"mail"`
 }
 
 type Authenticator struct {
@@ -20,6 +23,7 @@ type Authenticator struct {
 type Password struct {
 	Password string
 	Id       string
+	Url	     string
 	//TODO: Add further attributes
 }
 

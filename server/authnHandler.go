@@ -21,6 +21,7 @@ type AuthnHandler struct {
 }
 type UsernameRequest struct {
 	Username string `json:"username"`
+	Mail 	 string `json:"mail"`
 }
 
 type UsernamePasswordRequest struct {
@@ -153,6 +154,7 @@ func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request
 	b, err := ioutil.ReadAll(request.Body)
 	defer request.Body.Close()
 	var userMsg UsernameRequest
+	// TODO use json.decoder instead of json.unmarshal (https://stackoverflow.com/a/55052845)
 	err = json.Unmarshal(b, &userMsg)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -161,6 +163,7 @@ func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request
 		Name:           userMsg.Username,
 		Authenticators: nil,
 		MasterPassword: GenerateMasterPassword(),
+		Mail: userMsg.Mail,
 	}
 	err = handler.storage.AddUser(&user)
 	SaveLoginInSession(handler, writer, request, &user)

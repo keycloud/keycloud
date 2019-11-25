@@ -71,40 +71,68 @@ func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticato
 /*
 DUMMY IMPLEMENTATION
 */
+// TODO implement session functions
 func (s *Storage) GetSessionKeyForUser(user *User) []byte {
 	return []byte("abc")
 }
+
 func (s *Storage) SetSessionKeyForUser(user *User, b []byte) error {
 	return nil
 }
+
 func (s *Storage) DeleteSessionKeyForUser(user *User) error {
 	return nil
 }
-func (s *Storage) AddUser(u *User) error {
+
+func (s *Storage) AddUser(u *User) (*User, error) {
 	s.users[string(u.WebAuthID())] = u
-	return nil
-}
-func (s *Storage) RemoveUser(u *User) error {
-	return nil
-}
-func (s *Storage) UpdateUser(u *User) error {
-	return nil
+	queryAddUser(connectDatabase(), u)
+	return u, nil
 }
 
-func (s *Storage) AddPassword(u *User, st string, p *Password) error {
-	return nil
+func (s *Storage) RemoveUser(u *User) (bool, error) {
+	s.users[string(u.WebAuthID())] = u
+	queryRemoveUser(connectDatabase(), u)
+	// TODO return bool depending on user got removed
+	return true, nil
+}
+
+func (s *Storage) UpdateUser(u *User) (*User, error) {
+	s.users[string(u.WebAuthID())] = u
+	queryUpdateUser(connectDatabase(), u)
+	return u, nil
+}
+
+func (s *Storage) AddPassword(u *User, st string, p *Password) (*Password, error) {
+	s.users[string(u.WebAuthID())] = u
+	queryAddPassword(connectDatabase(), u, p)
+	return p, nil
 }
 
 func (s *Storage) GetPassword(u *User, st string) (*Password, error) {
+	// TODO remove mockup url
+	url := "http://keycloud.zeekay.dev/"
+	s.users[string(u.WebAuthID())] = u
+	rs := queryGetPassword(connectDatabase(), u, url)
+	// TODO parse rs to passwd
+	passwd := "mockup_passwd"
+	id := "mockup_id"
+
 	return &Password{
-		Password: "test",
-		Id:       "test",
+		Password: passwd,
+		Id:       id,
 	}, nil
 }
 
-func (s *Storage) UpdatePassword(u *User, st string, p *Password) error {
-	return nil
+func (s *Storage) UpdatePassword(u *User, st string, p *Password) (*Password, error) {
+	s.users[string(u.WebAuthID())] = u
+	queryUpdatePassword(connectDatabase(), u, p)
+	return p, nil
 }
-func (s *Storage) DeletePassword(u *User, st string) error {
-	return nil
+
+func (s *Storage) DeletePassword(u *User, p *Password) (bool, error) {
+	s.users[string(u.WebAuthID())] = u
+	queryDeletePassword(connectDatabase(), p)
+	// TODO return bool depending on passwd got removed
+	return true, nil
 }
