@@ -77,13 +77,15 @@ func main() {
 		storage:     storage,
 	}
 	//sign in routes
-	webauthnRouter.HandleFunc("/dashboard/index.html", fileServer.ServeFileWithoutCheck).Methods("GET")
-	webauthnRouter.HandleFunc("/dashboard/signin.css", fileServer.ServeFileWithoutCheck).Methods("GET")
+	webauthnRouter.HandleFunc("/dashboard/login.html", fileServer.ServeFileWithoutCheck).Methods("GET")
+	webauthnRouter.HandleFunc("/dashboard/login.css", fileServer.ServeFileWithoutCheck).Methods("GET")
+	webauthnRouter.HandleFunc("/dashboard/login.js", fileServer.ServeFileWithoutCheck).Methods("GET")
 	webauthnRouter.HandleFunc("/dashboard/icon.png", fileServer.ServeFileWithoutCheck).Methods("GET")
 	//other static file routes with permission check middleware
 	webauthnRouter.NewRoute().MatcherFunc(func(request *http.Request, match *mux.RouteMatch) bool {
 		Path := request.URL.Path[1:]
-		return !strings.Contains(Path, "index.html") && !strings.Contains(Path, "signin.css") &&
+		return !strings.Contains(Path, "login.html") && !strings.Contains(Path, "login.css") &&
+			!strings.Contains(Path, "login.js") &&
 			!strings.Contains(Path, "icon.png") && strings.Contains(Path, "dashboard")
 	}).Handler(checkCookiePermissionsMiddleware(http.HandlerFunc(fileServer.ServeFileWithoutCheck))).Methods("GET")
 

@@ -7,9 +7,11 @@ const webAuthnConfig = {
 $(document).ready(function() {
     // when user clicks submit in the register form, start the registration process
     $("#register-form").submit(function (event) {
+        // register -> get cookie; GET user(cookie) -> userinfo; route to main.html
         event.preventDefault();
         webAuthnConfig.username = $(event.target).children("input[name=username]")[0].value;
         new WebAuthn().register();
+        new WebAuthn().user();
     });
 
     // when user clicks submit in the login form, start the log in process
@@ -43,8 +45,18 @@ class WebAuthn {
     }
 
     register() {
-        // TODO: add valid path as soon as we have it
-        return fetch('/webauthn/registration/start', {
+        return fetch('/standard/register', {
+            method: 'POST',
+            body: JSON.stringify({'username': webAuthnConfig.username}),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(res => console.log(res))
+            .then(WebAuthn._checkStatus(201));
+
+        
+        /*return fetch('/webauthn/registration/start', {
             method: 'POST',
             body: JSON.stringify({'username': webAuthnConfig.username}),
             headers: {
@@ -65,9 +77,8 @@ class WebAuthn {
                 }
                 return res;
             })
-            .then(res => navigator.credentials.create(res))
+            //.then(res => navigator.credentials.create(res))
             .then(credential => {
-                // TODO: add valid path as soon as we have it
                 return fetch('/webauthn/registration/finish', {
                     method: 'POST',
                     headers: {
@@ -86,11 +97,12 @@ class WebAuthn {
                     }),
                 })
                 .then(res => console.log(res))
-            })
-            .then(WebAuthn._checkStatus(201));
+            })*/
     }
 
     login() {
+
+        // TODO change to standard login
         var form = new FormData();
         form.append("username", webAuthnConfig.username);
         // TODO: add valid path as soon as we have it
@@ -136,5 +148,11 @@ class WebAuthn {
                 })
             })
             .then(WebAuthn._checkStatus(200));
+    }
+
+    user() {
+        return fetch('user', {
+            method: 'GET'
+        }).then(res => console.log(res))
     }
 }

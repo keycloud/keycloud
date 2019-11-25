@@ -29,7 +29,7 @@ public class DashboardTests {
         chrome_options.addArguments("--no-sandbox", "--disable-dev-shm-usage"); // TODO add --headless
 
 		driver = new ChromeDriver(chrome_options);
-        baseUrl = "http://localhost:8000/";
+        baseUrl = "http://localhost:8080/";
 
     }
 
@@ -37,7 +37,7 @@ public class DashboardTests {
     // UC_register
     @Given("^I am on the landing page$")
     public void openLandingPage(){
-        driver.get(baseUrl +"login.html");
+        driver.get(baseUrl +"dashboard/login.html");
     }
 
     @When("^I type in \"([^\"]*)\" as my username and click register$")
