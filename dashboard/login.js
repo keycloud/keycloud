@@ -54,7 +54,7 @@ class WebAuthn {
             }
         }).then(res => console.log(res))
             .then(WebAuthn._checkStatus(201));
-        
+
         /*return fetch('/webauthn/registration/start', {
             method: 'POST',
             body: JSON.stringify({'username': webAuthnConfig.username}),

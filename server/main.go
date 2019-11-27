@@ -2,32 +2,33 @@ package main
 
 import (
 	"bytes"
+	"database/sql"
+	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
-	"log"
+	"webauthn/webauthn"
 	"math/rand"
 	"net/http"
 	"strings"
 	"time"
-	"webauthn/webauthn"
 )
 
-var (
-	storage = &Storage{
-		authenticators: make(map[string]*Authenticator),
-		users:          make(map[string]*User),
-	}
-	authn               *webauthn.WebAuthn
-	err                 error
-	store               *sessions.CookieStore
-	webAuthnSessionName string = "two-factor-authn-session"
-	fileServer          *FileServer
-	webauthnHandler     *AuthnHandler
-	crudHandler         *CRUDHandler
+const(
 	secureTokenName     string = "keycloud-secure-key"
 	sessionName         string = "keycloud-main"
 	userFieldName       string = "keycloud-user-id"
+	webAuthnSessionName string = "two-factor-authn-session"
+)
+
+var (
+	authn               *webauthn.WebAuthn
+	err                 error
+	store               *sessions.CookieStore
+	fileServer          *FileServer
+	webauthnHandler     *AuthnHandler
+	crudHandler         *CRUDHandler
+	database 			*sql.DB
+	storage				StorageInterface
 )
 
 func main() {
@@ -36,14 +37,29 @@ func main() {
 		 - initialize new random keys on every startup -> new login required every server restart
 	*/
 	rand.Seed(time.Now().UnixNano())
-	authKeyOne := securecookie.GenerateRandomKey(64)
-	encryptionKeyOne := securecookie.GenerateRandomKey(32)
-	store = sessions.NewCookieStore(authKeyOne, encryptionKeyOne)
+	//authKeyOne := securecookie.GenerateRandomKey(64)
+	//encryptionKeyOne := securecookie.GenerateRandomKey(32)
+	// TODO: change for productive server again
+	store = sessions.NewCookieStore([]byte("aaaaaaaaaaaaaaaa"), []byte("aaaaaaaaaaaaaaaa"))
+
+	// Connect to database
+	database, err = connectDatabase()
+	defer database.Close()
+	if err != nil{
+		panic(err)
+	}
+	// Delete all previous stored Sessions
+	err = ClearAllSessionKeys(database)
+	if err != nil{
+		fmt.Println(err)
+	}
+
+	storage = &Storage{
+		database: database,
+	}
 
 	authn, err = webauthn.New(&webauthn.Config{
-		// A human-readable identifier for the relying party (i.e. your app), intended only for display.
 		RelyingPartyName: "KeyCloud",
-		// Storage for the authenticator.
 		AuthenticatorStore: storage,
 	})
 	if err != nil {
@@ -87,18 +103,18 @@ func main() {
 		return !strings.Contains(Path, "login.html") && !strings.Contains(Path, "login.css") &&
 			!strings.Contains(Path, "login.js") &&
 			!strings.Contains(Path, "icon.png") && strings.Contains(Path, "dashboard")
-	}).Handler(checkCookiePermissionsMiddleware(http.HandlerFunc(fileServer.ServeFileWithoutCheck))).Methods("GET")
+	}).Handler(checkCookiePermissionsMiddleware(http.HandlerFunc(fileServer.ServeFileWithoutCheck))).Methods(http.MethodGet)
 
 	/*
 		Web Authn API implementation for 2FA and standard login calls
 	*/
-	webauthnRouter.HandleFunc("/webauthn/registration/start", webauthnHandler.startRegistration).Methods("POST")
-	webauthnRouter.HandleFunc("/webauthn/registration/finish", webauthnHandler.finishRegistration).Methods("POST")
-	webauthnRouter.HandleFunc("/webauthn/login/start", webauthnHandler.startLogin).Methods("POST")
-	webauthnRouter.HandleFunc("/webauthn/login/finish", webauthnHandler.finishLogin).Methods("POST")
-	webauthnRouter.HandleFunc("/standard/login", webauthnHandler.standardLogin).Methods("POST")
-	webauthnRouter.HandleFunc("/standard/register", webauthnHandler.standardRegister).Methods("POST")
-	webauthnRouter.HandleFunc("/logout", webauthnHandler.logout).Methods("POST")
+	webauthnRouter.HandleFunc("/webauthn/registration/start", webauthnHandler.startRegistration).Methods(http.MethodPost)
+	webauthnRouter.HandleFunc("/webauthn/registration/finish", webauthnHandler.finishRegistration).Methods(http.MethodPost)
+	webauthnRouter.HandleFunc("/webauthn/login/start", webauthnHandler.startLogin).Methods(http.MethodPost)
+	webauthnRouter.HandleFunc("/webauthn/login/finish", webauthnHandler.finishLogin).Methods(http.MethodPost)
+	webauthnRouter.HandleFunc("/standard/login", webauthnHandler.standardLogin).Methods(http.MethodPost)
+	webauthnRouter.HandleFunc("/standard/register", webauthnHandler.standardRegister).Methods(http.MethodPost)
+	webauthnRouter.HandleFunc("/logout", webauthnHandler.logout).Methods(http.MethodPost)
 
 	/*
 		CRUD operations for the Users and the user's passwords
@@ -107,10 +123,11 @@ func main() {
 	webauthnRouter.Handle("/user", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.RemoveUser))).Methods(http.MethodDelete)
 	webauthnRouter.Handle("/user", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.UpdateUser))).Methods(http.MethodPut)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPassword))).Methods(http.MethodGet)
-	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.AddPassword))).Methods(http.MethodPost)
+	webauthnRouter.Handle("/passwords", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswords))).Methods(http.MethodGet)
+	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.CreatePassword))).Methods(http.MethodPost)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.RemovePassword))).Methods(http.MethodDelete)
 
-	log.Fatal(http.ListenAndServe(":8080", webauthnRouter))
+	panic(http.ListenAndServe(":8080", webauthnRouter))
 }
 
 func checkCookiePermissionsMiddleware(next http.Handler) http.Handler {
@@ -119,8 +136,8 @@ func checkCookiePermissionsMiddleware(next http.Handler) http.Handler {
 		if err != nil {
 			//Unauthorized
 			writer.WriteHeader(401)
-			_, _ = writer.Write([]byte(err.Error()))
-
+			_, _ = writer.Write([]byte("401 - Unauthorized - "))
+			return
 		}
 		secureCookieRaw, err1 := webauthn.WrapMap(session.Values).Get(secureTokenName)
 		userIdRaw, err2 := webauthn.WrapMap(session.Values).Get(userFieldName)
@@ -132,8 +149,9 @@ func checkCookiePermissionsMiddleware(next http.Handler) http.Handler {
 		}
 		secureCookie, ok1 := secureCookieRaw.([]byte)
 		userId, ok2 := userIdRaw.([]byte)
-		user := storage.GetUser(string(userId))
-		if !ok1 || !ok2 || user == nil || !bytes.Equal(secureCookie, storage.GetSessionKeyForUser(user)) {
+		user, err1 := storage.GetUser(string(userId))
+		sessionKey, err2 := storage.GetSessionKeyForUser(user)
+		if !ok1 || !ok2 || user == nil || err1 != nil || err2 != nil || !bytes.Equal(secureCookie, sessionKey) {
 			//Unauthorized
 			writer.WriteHeader(401)
 			_, _ = writer.Write([]byte("401 - Unauthorized - "))
@@ -146,14 +164,4 @@ func checkCookiePermissionsMiddleware(next http.Handler) http.Handler {
 		request.Form.Add("UserId", string(userId))
 		next.ServeHTTP(writer, request)
 	})
-}
-
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-func GenerateMasterPassword() []byte {
-	b := make([]byte, 16)
-	for i := range b {
-		b[i] = letterBytes[rand.Intn(len(letterBytes))]
-	}
-	return b
 }

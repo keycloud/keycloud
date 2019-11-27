@@ -14,7 +14,7 @@ type FileServer struct {
 	cookieStore   *sessions.CookieStore
 	sessionName   string
 	cookieName    string
-	storage       *Storage
+	storage       StorageInterface
 	userFieldName string
 }
 
