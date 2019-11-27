@@ -14,7 +14,6 @@
     - [4.1 Use-Case Realizations](#41-use-case-realizations)
 - [5. Logical View](#5-logical-view)
     - [5.1 Overview](#51-overview)
-    - [5.2 Architecturally Significant Design Packages](#52-architecturally-significant-design-packages)
 - [6. Process View](#6-process-view)
 - [7. Deployment View](#7-deployment-view)
 - [8. Implementation View](#8-implementation-view)
@@ -33,6 +32,7 @@ The scope of this SAD is to show the overall architecture of the KeyCloud projec
 Abbreviation | |
 --- | --- 
 IDE | Integrated Development Environment
+MVC | Model View Controller
 n/a | not applicable  
 SAD | Software Architecture Document
 SRS | Software Requirements Specification
@@ -54,7 +54,9 @@ Title | Date | Publishing organization |
 This document contains the architectural representation, goals and constraints.
 
 ## 2. Architectural Representation
-tbd
+Our application is build using Golang in the backend and HTML, CSS and plain JavaScript (cosmetics are made using bootstrap). 
+Because Golang is a multi-paradigm language which mainly works functional, we do not have relationships between our classes. 
+This is also the reason why we don't have a MVC architecture. Nevertheless, we tried our best to divide our classes up in these three categories.
 ### 2.1 Technologies used
 IDEs:
 - Frontend: JetBrains WebStorm
@@ -62,12 +64,12 @@ IDEs:
 
 Languages:
 - Frontend: JavaScript, HTML, CSS
-- Backend: Go
+- Backend: Golang
 - Database: Sqlite
-- Testing: Java (Cucumber), Go
+- Testing: Java (Cucumber), Golang
 
 ## 3. Architectural Goals and Constraints
-tbd
+n/a
 
 ## 4. Use-Case View
 ![Use Case Diagram](./images/UseCases.png)
@@ -75,22 +77,22 @@ tbd
 tbd
 
 ## 5. Logical View
-tbd
-### 5.1 Overview
-### 5.2 Architecturally Significant Design Packages
-
-## 6. Process View
-tbd
-
-## 7. Deployment View
-tbd
-
-## 8. Implementation View
-### 8.1 Overview
 The following graphic describes the overall class organization of the backend.  
 ![Class-Diagram](./backend/ClassDiagram.svg)
-### 8.2 Layers
+### 5.1 Overview
 
+## 6. Process View
+n/a
+
+## 7. Deployment View  
+![Deployment View](./images/DeploymentView.png)
+
+## 8. Implementation View
+n/a
+### 8.1 Overview
+n/a
+### 8.2 Layers
+n/a
 
 ## 9. Data View
 The following diagram describes the relationship model of our database.  
