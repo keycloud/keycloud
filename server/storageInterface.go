@@ -1,11 +1,15 @@
 package main
 
-import "webauthn/webauthn"
+import (
+	"webauthn/webauthn"
+)
 
 type User struct {
 	Name           string                    `json:"name"`
 	Authenticators map[string]*Authenticator `json:"-"`
 	MasterPassword []byte
+	Mail		   string
+	Uuid 		   []byte
 }
 
 type Authenticator struct {
@@ -20,11 +24,12 @@ type Authenticator struct {
 type Password struct {
 	Password string
 	Id       string
-	//TODO: Add further attributes
+	Url	     string
+	Username string
 }
 
 func (u *User) WebAuthID() []byte {
-	return []byte(u.Name)
+	return []byte(u.Uuid)
 }
 
 func (u *User) WebAuthName() string {
@@ -59,15 +64,19 @@ type StorageInterface interface {
 	AddAuthenticator(webauthn.User, webauthn.Authenticator) error
 	GetAuthenticator([]byte) (webauthn.Authenticator, error)
 	GetAuthenticators(webauthn.User) ([]webauthn.Authenticator, error)
-	GetUser(webauthnID string) *User
-	AddUser(*User) error
+	// User operations
+	GetUser(webauthnID string) (*User, error)
+	CreateUser(*User) error
 	RemoveUser(*User) error
 	UpdateUser(*User) error
-	GetSessionKeyForUser(*User) []byte
-	SetSessionKeyForUser(*User, []byte) error
+	// Session operations
+	GetSessionKeyForUser(*User) ([]byte, error)
+	UpdateOrCreateSessionKeyForUser(*User, []byte) error
 	DeleteSessionKeyForUser(*User) error
-	GetPassword(*User, string) (*Password, error)
-	AddPassword(*User, string, *Password) error
+	// Password operations
+	GetPassword(user *User, url string, username string) (*Password, error)
+	GetPasswords(*User) ([] *Password, error)
+	CreatePassword(*User, string, *Password) error
 	UpdatePassword(*User, string, *Password) error
-	DeletePassword(*User, string) error
+	DeletePassword(user *User, url string, username string) error
 }

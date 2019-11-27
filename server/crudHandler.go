@@ -14,7 +14,8 @@ type CRUDHandler struct {
 }
 
 type GetPasswordRequest struct {
-	PasswordIdentifier string `json:"id"`
+	Url      string `json:"url"`
+	Username string `json:"username"`
 }
 
 type UserRequest struct {
@@ -23,11 +24,12 @@ type UserRequest struct {
 
 type PasswordRequest struct {
 	Password string `json:"password"`
-	Id       string `json:"id"`
+	Url      string `json:"url"`
+	Username string `json:"username"`
 }
 
 func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http.Request) {
-	user := handler.storage.GetUser(request.Form.Get("UserId"))
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
 	b, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -36,7 +38,7 @@ func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http
 	defer request.Body.Close()
 	var passwordId GetPasswordRequest
 	err = json.Unmarshal(b, &passwordId)
-	password, err := handler.storage.GetPassword(user, passwordId.PasswordIdentifier)
+	password, err := handler.storage.GetPassword(user, passwordId.Url, "")
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
@@ -52,8 +54,18 @@ func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http
 	_, _ = fmt.Fprint(writer, string(passwordJson))
 }
 
-func (handler CRUDHandler) AddPassword(writer http.ResponseWriter, request *http.Request) {
-	user := handler.storage.GetUser(request.Form.Get("UserId"))
+func (handler CRUDHandler) GetPasswords(writer http.ResponseWriter, request *http.Request) {
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
+	passwords, err := handler.storage.GetPasswords(user)
+	responseMessagJSON, err := json.Marshal(passwords)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+	}
+	_, _ = fmt.Fprint(writer, string(responseMessagJSON))
+}
+
+func (handler CRUDHandler) CreatePassword(writer http.ResponseWriter, request *http.Request) {
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
 	b, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -62,9 +74,10 @@ func (handler CRUDHandler) AddPassword(writer http.ResponseWriter, request *http
 	defer request.Body.Close()
 	var password PasswordRequest
 	err = json.Unmarshal(b, &password)
-	err = handler.storage.AddPassword(user, password.Id, &Password{
+	err = handler.storage.CreatePassword(user, password.Url, &Password{
 		Password: password.Password,
-		Id:       password.Id,
+		Url:      password.Url,
+		Username: password.Username,
 	})
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -74,7 +87,7 @@ func (handler CRUDHandler) AddPassword(writer http.ResponseWriter, request *http
 }
 
 func (handler CRUDHandler) RemovePassword(writer http.ResponseWriter, request *http.Request) {
-	user := handler.storage.GetUser(request.Form.Get("UserId"))
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
 	b, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -83,7 +96,7 @@ func (handler CRUDHandler) RemovePassword(writer http.ResponseWriter, request *h
 	defer request.Body.Close()
 	var passwordId GetPasswordRequest
 	err = json.Unmarshal(b, &passwordId)
-	err = handler.storage.DeletePassword(user, passwordId.PasswordIdentifier)
+	err = handler.storage.DeletePassword(user, passwordId.Url, passwordId.Username)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
@@ -92,7 +105,8 @@ func (handler CRUDHandler) RemovePassword(writer http.ResponseWriter, request *h
 }
 
 func (handler CRUDHandler) RemoveUser(writer http.ResponseWriter, request *http.Request) {
-	user := handler.storage.GetUser(request.Form.Get("UserId"))
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
+	//TODO: remove all passwords before removing the User either as go implementation or as db constraint etc.
 	err = handler.storage.RemoveUser(user)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -110,7 +124,7 @@ func (handler CRUDHandler) UpdateUser(writer http.ResponseWriter, request *http.
 	defer request.Body.Close()
 	var user UserRequest
 	err = json.Unmarshal(b, &user)
-	if user.Name == "" {
+	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -125,8 +139,7 @@ func (handler CRUDHandler) UpdateUser(writer http.ResponseWriter, request *http.
 }
 
 func (handler CRUDHandler) GetUser(writer http.ResponseWriter, request *http.Request) {
-	user := handler.storage.GetUser(request.Form.Get("UserId"))
-	err = handler.storage.RemoveUser(user)
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
@@ -150,7 +163,7 @@ func (handler CRUDHandler) GetUser(writer http.ResponseWriter, request *http.Req
 }
 
 func sendCRUDAnswer(statusMessage string, errMessage string, writer http.ResponseWriter) {
-	responseMessagJSON, err := json.Marshal(struct {
+	responseMessageJSON, err := json.Marshal(struct {
 		Status string
 		Error  string
 	}{
@@ -160,5 +173,5 @@ func sendCRUDAnswer(statusMessage string, errMessage string, writer http.Respons
 	checkError(err, writer)
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
-	_, _ = fmt.Fprint(writer, string(responseMessagJSON))
+	_, _ = fmt.Fprint(writer, string(responseMessageJSON))
 }
