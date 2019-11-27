@@ -91,6 +91,7 @@ Additional features might include the generation of passwords.
 Following use cases for the dashboard have been finalized:
 - [UC create account](UC/UC_CreateAccount.md)
 - [UC add password](UC/UC_AddPassword.md)
+- [UC copy password](UC/UC_CopyPassword.md)
 #### 3.1.2 Chrome-Plugin
 The chrome-plugin will enable the user to get his passwords in the Google Chrome browser.
 Additional features might include the function to add and remove individual passwords.
