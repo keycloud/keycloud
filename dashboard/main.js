@@ -46,8 +46,8 @@ function addTableRow(value) {
     <th scope="row">${value.i}</th>
     <td>${value.Username}</td>
     <td><a target="_blank" rel="noopener noreferrer" href="${value.Url}">${value.Url}</a></td>
-    <td><button type="button" class="btn btn-info" id="${value.i}" onclick="copyToClipboard(this.id)"><i class="fa fa-clipboard" ></i> Copy to Clipboard</button></td>
-    <td><button type="button" class="btn btn-danger" id="${value.i}" onclick="removeEntry(this.id)"><i class="fa fa-remove"></i></button></td>
+    <td><button type="button" class="btn btn-info" id="cp${value.i}" onclick="copyToClipboard(this.id)"><i class="fa fa-clipboard" ></i> Copy to Clipboard</button></td>
+    <td><button type="button" class="btn btn-danger" id="rm${value.i}" onclick="removeEntry(this.id)"><i class="fa fa-remove"></i></button></td>
     </tr>`);
 }
 
@@ -56,7 +56,7 @@ function updateModal(){
 }
 
 function removeEntry(id) {
-    exampleEntries.splice(id, 1);
+    exampleEntries.splice(id.slice(2,), 1);
     renderTable(); // works so far, needs some work done on the indices
 }
 
@@ -65,7 +65,7 @@ function generatePassword() {
 }
 
 function copyToClipboard(id) {
-    let pw = exampleEntries[id].Password;
+    let pw = exampleEntries[id.slice(2,)].Password;
     window.prompt("Copy to clipboard: Ctrl+C", pw); // Workaround for now, could use other, prettier techniques
 }
 

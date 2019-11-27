@@ -2,7 +2,8 @@
 // see the docs for a full list of configuration options
 const webAuthnConfig = {
     timeout: 30000,
-    username: undefined
+    username: undefined,
+    pw: undefined
 };
 $(document).ready(function() {
     // when user clicks submit in the register form, start the registration process
@@ -18,7 +19,9 @@ $(document).ready(function() {
     $("#login-form").submit(function (event) {
         event.preventDefault();
         webAuthnConfig.username = $(event.target).children("input[name=username]")[0].value;
+        webAuthnConfig.pw = $(event.target).children("input[name=password]")[0].value;
         new WebAuthn().login();
+        new WebAuthn().redirect();
     });
 
 });
@@ -52,8 +55,7 @@ class WebAuthn {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then(res => console.log(res))
-            .then(WebAuthn._checkStatus(201));
+        }).then(WebAuthn._checkStatus(201));
 
         /*return fetch('/webauthn/registration/start', {
             method: 'POST',
@@ -100,6 +102,14 @@ class WebAuthn {
     }
 
     login() {
+        return fetch('/standard/login', {
+            method: 'POST',
+            body: JSON.stringify({'username': webAuthnConfig.username}),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(WebAuthn._checkStatus(201));
 
         // TODO change to standard login
         var form = new FormData();

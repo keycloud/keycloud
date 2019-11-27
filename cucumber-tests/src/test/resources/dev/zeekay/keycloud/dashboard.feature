@@ -4,7 +4,7 @@ Feature: Dashboard
   Scenario Outline: Register a new Account in KeyCloud
     Given I am on the landing page
     When I type in <user> as my username and click register
-    Then I will be on the settings page of a new created Account
+    Then I will be on the overview page of a new created Account
     Examples:
       | user |
       | "ich" |

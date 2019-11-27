@@ -22,15 +22,15 @@
     <script type="text/javascript" src="./util/pwgen.js"></script>
 </head>
 
-<body>
+<body onload='location.href="#overview"'>
 <div class="d-flex h-100 w-100 p-3 flex-column">
     <header class="masthead">
         <div class="inner">
             <h3 class="masthead-brand" style="font-size: xx-large">KeyCloud</h3>
             <nav class="nav nav-masthead justify-content-center"
                  style="right: 3%;position: absolute;font-size: x-large">
-                <a class="nav-link active" href="#overview" onclick="clickTab(this)">Overview</a>
-                <a class="nav-link" href="#settings" onclick="clickTab(this)">Settings</a>
+                <a class="nav-link active" id="overviewTab" href="#overview" onclick="clickTab(this)">Overview</a>
+                <a class="nav-link" id="settingsTab" href="#settings" onclick="clickTab(this)">Settings</a>
             </nav>
         </div>
     </header>
@@ -87,7 +87,9 @@
                                     <div class="col">
                                         <input type="text" id="pwInput" class="form-control" placeholder="Password">
                                     </div>
-                                    <button onclick="generatePassword()" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Click here to have a password generated">
+                                    <button onclick="generatePassword()" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right"
+                                            id="genBtn"
+                                            title="Click here to have a password generated">
                                         <span class="icon">&#9851;</span>
                                     </button>
                                 </div>
