@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/sessions"
+	"webauthn/webauthn"
 	"io/ioutil"
 	"net/http"
-	"webauthn/webauthn"
 )
 
 type AuthnHandler struct {
@@ -37,20 +37,21 @@ func (handler AuthnHandler) startRegistration(writer http.ResponseWriter, reques
 	}
 	b, err := ioutil.ReadAll(request.Body)
 	defer request.Body.Close()
+
 	var usernameMsg UsernameRequest
 	err = json.Unmarshal(b, &usernameMsg)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	name := usernameMsg.Username
-	u := handler.storage.GetUser(name)
+	u, err := handler.storage.GetUser(name)
 	if u == nil {
 		u = &User{
 			Name:           name,
 			Authenticators: make(map[string]*Authenticator),
-			MasterPassword: GenerateMasterPassword(),
+			MasterPassword: GeneratePassword(16),
 		}
-		err = handler.storage.AddUser(u)
+		err = handler.storage.CreateUser(u)
 	}
 	options := handler.authn.StartRegistration(request, writer, u, webauthn.WrapMap(session.Values))
 	err = session.Save(request, writer)
@@ -75,7 +76,7 @@ func (handler AuthnHandler) finishRegistration(writer http.ResponseWriter, reque
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	name := usernameMsg.Username
-	u := handler.storage.GetUser(name)
+	u, err := handler.storage.GetUser(name)
 	if u == nil {
 		return
 	}
@@ -94,8 +95,8 @@ func (handler AuthnHandler) startLogin(writer http.ResponseWriter, request *http
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	name := usernameMsg.Username
-	u := handler.storage.GetUser(name)
-	if u == nil {
+	u, err := handler.storage.GetUser(name)
+	if err != nil {
 		http.Error(writer, "No User", http.StatusInternalServerError)
 	}
 	options := handler.authn.StartLogin(request, writer, u, webauthn.WrapMap(session.Values))
@@ -115,8 +116,8 @@ func (handler AuthnHandler) finishLogin(writer http.ResponseWriter, request *htt
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	name := usernameMsg.Username
-	u := handler.storage.GetUser(name)
-	if u == nil {
+	u, err := handler.storage.GetUser(name)
+	if err != nil {
 		http.Error(writer, "No such user", http.StatusUnauthorized)
 		return
 	}
@@ -138,8 +139,8 @@ func (handler AuthnHandler) standardLogin(writer http.ResponseWriter, request *h
 		return
 	}
 	name := userPasswordMsg.Username
-	u := handler.storage.GetUser(name)
-	if u == nil {
+	u, err := handler.storage.GetUser(name)
+	if err != nil {
 		http.Error(writer, "401 - Unauthorized - ", http.StatusUnauthorized)
 		return
 	}
@@ -154,7 +155,6 @@ func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request
 	b, err := ioutil.ReadAll(request.Body)
 	defer request.Body.Close()
 	var userMsg UsernameRequest
-	// TODO use json.decoder instead of json.unmarshal (https://stackoverflow.com/a/55052845)
 	err = json.Unmarshal(b, &userMsg)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -162,10 +162,10 @@ func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request
 	user := User{
 		Name:           userMsg.Username,
 		Authenticators: nil,
-		MasterPassword: GenerateMasterPassword(),
-		Mail: userMsg.Mail,
+		MasterPassword: GeneratePassword(16),
+		Mail:           userMsg.Mail,
 	}
-	err = handler.storage.AddUser(&user)
+	err = handler.storage.CreateUser(&user)
 	SaveLoginInSession(handler, writer, request, &user)
 	_, _ = fmt.Fprint(writer, "Registered")
 }
@@ -191,13 +191,13 @@ func checkError(err error, writer http.ResponseWriter) {
 func SaveLoginInSession(handler AuthnHandler, writer http.ResponseWriter, request *http.Request, u *User) {
 	session, err := handler.cookieStore.New(request, handler.cookieSessionName)
 	checkError(err, writer)
-	cookieSecurityToken := []byte("abc") //securecookie.GenerateRandomKey(32)
+	cookieSecurityToken := GeneratePassword(16)
 	sessionValues := webauthn.WrapMap(session.Values)
 	err = sessionValues.Set(handler.securityTokenName, cookieSecurityToken)
 	err = sessionValues.Set(handler.userFieldName, u.WebAuthID())
 	checkError(err, writer)
 	err = session.Save(request, writer)
 	checkError(err, writer)
-	err = handler.storage.SetSessionKeyForUser(u, cookieSecurityToken)
+	err = handler.storage.UpdateOrCreateSessionKeyForUser(u, cookieSecurityToken)
 	checkError(err, writer)
 }

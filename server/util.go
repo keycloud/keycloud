@@ -1,8 +1,8 @@
 package main
 
 import (
-	"database/sql"
 	uuid "github.com/nu7hatch/gouuid"
+	"math/rand"
 )
 
 func newUUID() string {
@@ -14,8 +14,12 @@ func newUUID() string {
 	return u.String()
 }
 
-func getUUID(username string) sql.Result {
-	uuid := queryUuidFromUsername(connectDatabase(), username)
-	// TODO parse uuid from rs to string
-	return uuid
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+func GeneratePassword(length int) []byte {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return b
 }
