@@ -11,7 +11,7 @@ $(document).ready(function() {
         event.preventDefault();
         webAuthnConfig.username = $(event.target).children("input[name=username]")[0].value;
         new WebAuthn().register();
-        new WebAuthn().user();
+        new WebAuthn().redirect();
     });
 
     // when user clicks submit in the login form, start the log in process
@@ -54,7 +54,6 @@ class WebAuthn {
             }
         }).then(res => console.log(res))
             .then(WebAuthn._checkStatus(201));
-
         
         /*return fetch('/webauthn/registration/start', {
             method: 'POST',
@@ -150,9 +149,7 @@ class WebAuthn {
             .then(WebAuthn._checkStatus(200));
     }
 
-    user() {
-        return fetch('user', {
-            method: 'GET'
-        }).then(res => console.log(res))
+    redirect() {
+        window.location.replace('main.html')
     }
 }
