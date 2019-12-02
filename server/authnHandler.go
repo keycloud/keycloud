@@ -76,7 +76,7 @@ func (handler AuthnHandler) finishRegistration(writer http.ResponseWriter, reque
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	name := usernameMsg.Username
-	u, err := handler.storage.GetUser(name)
+	u, err := handler.storage.GetUserByName(name)
 	if u == nil {
 		return
 	}
@@ -95,7 +95,7 @@ func (handler AuthnHandler) startLogin(writer http.ResponseWriter, request *http
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	name := usernameMsg.Username
-	u, err := handler.storage.GetUser(name)
+	u, err := handler.storage.GetUserByName(name)
 	if err != nil {
 		http.Error(writer, "No User", http.StatusInternalServerError)
 	}
@@ -116,7 +116,7 @@ func (handler AuthnHandler) finishLogin(writer http.ResponseWriter, request *htt
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	name := usernameMsg.Username
-	u, err := handler.storage.GetUser(name)
+	u, err := handler.storage.GetUserByName(name)
 	if err != nil {
 		http.Error(writer, "No such user", http.StatusUnauthorized)
 		return
@@ -139,7 +139,7 @@ func (handler AuthnHandler) standardLogin(writer http.ResponseWriter, request *h
 		return
 	}
 	name := userPasswordMsg.Username
-	u, err := handler.storage.GetUser(name)
+	u, err := handler.storage.GetUserByName(name)
 	if err != nil {
 		http.Error(writer, "401 - Unauthorized - ", http.StatusUnauthorized)
 		return
@@ -149,6 +149,7 @@ func (handler AuthnHandler) standardLogin(writer http.ResponseWriter, request *h
 		return
 	}
 	SaveLoginInSession(handler, writer, request, u)
+	_, _ = fmt.Fprint(writer, "Logged in")
 }
 
 func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request *http.Request) {
@@ -159,20 +160,43 @@ func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
-	user := User{
+	user, err := QueryUserByName(database, userMsg.Username)
+	if (user != nil && user.Uuid != nil) || err != nil{
+		responseMessageJSON, err := json.Marshal(struct {
+			Status string
+			Error  string
+		}{
+			Status: "Not Registered",
+			Error:  "Username already exists",
+		})
+		checkError(err, writer)
+		writer.Header().Set("Content-Type", "application/json")
+		writer.WriteHeader(http.StatusBadRequest)
+		_, _ = fmt.Fprint(writer, string(responseMessageJSON))
+		return
+	}
+	user = &User{
 		Name:           userMsg.Username,
 		Authenticators: nil,
 		MasterPassword: GeneratePassword(16),
 		Mail:           userMsg.Mail,
 	}
-	err = handler.storage.CreateUser(&user)
-	SaveLoginInSession(handler, writer, request, &user)
+	err = handler.storage.CreateUser(user)
+	SaveLoginInSession(handler, writer, request, user)
 	_, _ = fmt.Fprint(writer, "Registered")
 }
 
 func (handler AuthnHandler) logout(writer http.ResponseWriter, request *http.Request) {
 	//Clear session cookies
 	session, err := handler.cookieStore.Get(request, handler.cookieSessionName)
+	checkError(err, writer)
+	err = handler.storage.DeleteSessionKeyForUser(&User{
+		Name:           "",
+		Authenticators: nil,
+		MasterPassword: nil,
+		Mail:           "",
+		Uuid:           []byte(request.Form.Get("UserId")),
+	})
 	checkError(err, writer)
 	session.Values = nil
 	session.Options.MaxAge = -1

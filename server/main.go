@@ -112,7 +112,8 @@ func main() {
 	webauthnRouter.HandleFunc("/webauthn/login/finish", webauthnHandler.finishLogin).Methods(http.MethodPost)
 	webauthnRouter.HandleFunc("/standard/login", webauthnHandler.standardLogin).Methods(http.MethodPost)
 	webauthnRouter.HandleFunc("/standard/register", webauthnHandler.standardRegister).Methods(http.MethodPost)
-	webauthnRouter.HandleFunc("/logout", webauthnHandler.logout).Methods(http.MethodPost)
+
+	webauthnRouter.Handle("/logout", checkCookiePermissionsMiddleware(http.HandlerFunc(webauthnHandler.logout))).Methods(http.MethodPost)
 
 	/*
 		CRUD operations for the Users and the user's passwords
