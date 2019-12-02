@@ -293,7 +293,6 @@ func QueryUserByName(db *sql.DB, name string) (user *User, err error) {
 	err = row.Scan(&user.Uuid, &user.Name, &user.Mail, &user.MasterPassword)
 	return user, nil
 }
-
 func UpdateOrCreateSessionKeyForUser(db *sql.DB, u *User, token []byte) (err error) {
 	// begin new statement
 	tx, err := db.Begin()
