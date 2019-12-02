@@ -19,7 +19,7 @@ public class GlobalHooks {
             }));
             server = new Thread(() -> {
                 try {
-                    process = Runtime.getRuntime().exec("./../server/server");
+                    process = Runtime.getRuntime().exec("./../server/server.exe");
                     StringBuilder output = new StringBuilder();
 
                     BufferedReader reader = new BufferedReader(

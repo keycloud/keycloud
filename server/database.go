@@ -13,7 +13,7 @@ const (
 	port     = 5432
 	user     = "postgres"
 	password = "password"
-	dbname   = "KeyCloud"
+	dbname   = "keycloud"	// alter to "KeyCloud"
 )
 
 func connectDatabase() (*sql.DB, error) {

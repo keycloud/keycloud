@@ -1,18 +1,21 @@
 var exampleEntries = [
     {
-        "i" : 1,
+        "i" : 0,
         "Username" : "Mark",
         "Url" : "https://www.google.com",
+        "Password" : "example",
     },{
-        "i" : 2,
+        "i" : 1,
         "Username" : "Jacob",
         "Url" : "https://www.google.com",
+        "Password" : "example",
     },{
-        "i" : 3,
+        "i" : 2,
         "Username" : "Larry",
         "Url" : "https://www.google.com",
+        "Password" : "example",
     }
-]
+];
 
 function clickTab(elem){
     for(let i = 0; i < $("a.nav-link").length; i++){
@@ -43,8 +46,8 @@ function addTableRow(value) {
     <th scope="row">${value.i}</th>
     <td>${value.Username}</td>
     <td><a target="_blank" rel="noopener noreferrer" href="${value.Url}">${value.Url}</a></td>
-    <td><button type="button" class="btn btn-info"><i class="fa fa-clipboard"></i> Copy to Clipboard</button></td>
-    <td><button type="button" class="btn btn-danger"><i class="fa fa-remove"></i></button></td>
+    <td><button type="button" class="btn btn-info" id="cp${value.i}" onclick="copyToClipboard(this.id)"><i class="fa fa-clipboard" ></i> Copy to Clipboard</button></td>
+    <td><button type="button" class="btn btn-danger" id="rm${value.i}" onclick="removeEntry(this.id)"><i class="fa fa-remove"></i></button></td>
     </tr>`);
 }
 
@@ -52,25 +55,46 @@ function updateModal(){
     $(".custom-field-row-added").remove();
 }
 
-function removeEntry(event) {
-    console.log(event);
+function removeEntry(id) {
+    exampleEntries.splice(id.slice(2,), 1);
+    renderTable(); // works so far, needs some work done on the indices
+    $('.toast').toast('show');
+}
+
+function generatePassword() {
+    document.getElementById("pwInput").value = genPW();
+}
+
+function copyToClipboard(id) {
+    let pw = exampleEntries[id.slice(2,)].Password;
+    window.prompt("Copy to clipboard: Ctrl+C", pw); // Workaround for now, could use other, prettier techniques
 }
 
 function saveNewEntry() {
-    // example
-    let newEntry = {};
-    let formElements = document.forms["newEntryForm"].getElementsByTagName("input");
-    newEntry.Url = formElements[0].value;
+    let newEntry = {
+        "i" : exampleEntries.length,
+        "Username" : "",
+        "Url" : "",
+        "Password" : "",
+    };
+    newEntry["Username"] = document.getElementById("usernameInput").value;
+    newEntry["Url"] = document.getElementById("urlInput").value;
+    newEntry["Password"] = document.getElementById("pwInput").value;
     exampleEntries.push(newEntry);
     renderTable();
 }
 
 function renderTable() {
     $(".entry").remove(); // clear table
-    exampleEntries.reverse();  // bc of callback TODO: find better solution this causes problems
+    exampleEntries.reverse();  // bc of callback
     exampleEntries.forEach(addTableRow);
+    exampleEntries.reverse();
 }
 
 $("document").ready(function() {
     renderTable();
-})
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    $('.toast').toast()
+});
