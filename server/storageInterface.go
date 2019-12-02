@@ -66,6 +66,7 @@ type StorageInterface interface {
 	GetAuthenticators(webauthn.User) ([]webauthn.Authenticator, error)
 	// User operations
 	GetUser(webauthnID string) (*User, error)
+	GetUserByName(name string) (*User, error)
 	CreateUser(*User) error
 	RemoveUser(*User) error
 	UpdateUser(*User) error

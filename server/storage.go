@@ -58,6 +58,9 @@ func (s *Storage) DeleteSessionKeyForUser(user *User) error {
 func (s *Storage) GetUser(ID string) (*User, error) {
 	return QueryUser(s.database, ID)
 }
+func (s *Storage) GetUserByName(name string) (*User, error) {
+	return QueryUserByName(s.database, name)
+}
 
 func (s *Storage) CreateUser(u *User) error {
 	return CreateUser(s.database, u)

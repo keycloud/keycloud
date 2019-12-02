@@ -269,6 +269,30 @@ func QueryUser(db *sql.DB, uuid string) (user *User, err error) {
 	return user, nil
 }
 
+func QueryUserByName(db *sql.DB, name string) (user *User, err error) {
+	// begin new statement
+	tx, err := db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	// prepare statement
+	stmt, err := db.Prepare("SELECT uuid, name, mail, masterpasswd FROM users WHERE name = $1")
+	if err != nil {
+		return nil, err
+	}
+	// execute statement
+	row := stmt.QueryRow(name)
+	// close connection and connection once query is executed
+	defer stmt.Close()
+	// end query
+	err = tx.Commit()
+	if err != nil {
+		return nil, err
+	}
+	user = &User{}
+	err = row.Scan(&user.Uuid, &user.Name, &user.Mail, &user.MasterPassword)
+	return user, nil
+}
 func UpdateOrCreateSessionKeyForUser(db *sql.DB, u *User, token []byte) (err error) {
 	// begin new statement
 	tx, err := db.Begin()
