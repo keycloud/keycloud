@@ -56,8 +56,7 @@ public class DashboardTests {
     @Then("^I will be on the overview page of a new created Account$")
     public void checkSettingsPage() throws Throwable {
         Thread.sleep(2000);
-        driver.findElementById("settingsTab").click();
-        assertEquals(baseUrl + "main.html?#overview", driver.getCurrentUrl());
+        assertEquals(baseUrl + "main.html#overview", driver.getCurrentUrl());
     }
 
 
@@ -93,8 +92,11 @@ public class DashboardTests {
 
     @When("^I press the remove button for the \"([^\"]*)\" password$")
     public void removePasswordEntry(String password) throws Exception {
+        pressAddPassword();
+        fillOutPopup();
+        Thread.sleep(500);
         numberOfEntries = driver.findElementsByClassName("entry").size();
-        driver.findElementById("rm1").click();
+        driver.findElementById("rm3").click();
     }
 
     @Then("^The password \"([^\"]*)\" entry is removed from the list$")
@@ -105,8 +107,11 @@ public class DashboardTests {
 
 
     @When("^I copy the password for \"([^\"]*)\" to clipboard$")
-    public void copyPasswordToClipboard(String url) {
-        driver.findElementById("cp1").click();
+    public void copyPasswordToClipboard(String url) throws Exception {
+        pressAddPassword();
+        fillOutPopup();
+        Thread.sleep(500);
+        driver.findElementById("cp3").click();
     }
 
     @Then("^I have the password for \"([^\"]*)\" in my clipboard$")

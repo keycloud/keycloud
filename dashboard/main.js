@@ -58,6 +58,7 @@ function updateModal(){
 function removeEntry(id) {
     exampleEntries.splice(id.slice(2,), 1);
     renderTable(); // works so far, needs some work done on the indices
+    $('.toast').toast('show');
 }
 
 function generatePassword() {
@@ -95,4 +96,5 @@ $("document").ready(function() {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+    $('.toast').toast()
 });
