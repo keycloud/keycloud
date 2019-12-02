@@ -31,7 +31,7 @@ public class DashboardTests {
     public void setupChrome() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions chrome_options = new ChromeOptions();
-        chrome_options.addArguments("--no-sandbox", "--disable-dev-shm-usage"); // TODO add --headless
+        chrome_options.addArguments("--no-sandbox", "--disable-dev-shm-usage", "--headless"); 
 
         driver = new ChromeDriver(chrome_options);
         baseUrl = "http://localhost:8080/dashboard/";
