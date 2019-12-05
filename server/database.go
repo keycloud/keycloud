@@ -4,22 +4,31 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
+	"gopkg.in/ini.v1"
+	"os"
+	"strconv"
 	"webauthn/webauthn"
 )
 
-// TODO: enter credentials for database / read credentials from file
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "keycloud"	// alter to "KeyCloud"
-)
 
 func connectDatabase() (*sql.DB, error) {
+	// read config.ini
+	cfg, err := ini.Load("config.ini")
+	if err != nil {
+		fmt.Printf("Fail to read file: %v", err)
+		os.Exit(1)
+	}
+
+	// due to integer parsing
+	port, _ := strconv.Atoi(cfg.Section("database").Key("port").Value())
+
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+		cfg.Section("database").Key("host").String(),
+		port,
+		cfg.Section("database").Key("user").String(),
+		cfg.Section("database").Key("password").String(),
+		cfg.Section("database").Key("dbname").String())
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return nil, err
