@@ -1,5 +1,3 @@
-## Table of Contents
-- [1. Use Case Create Account](#1-use-case-create-account)
   - [1.1 Brief Description](#11-brief-description)
 - [2. Flow of Events](#2-flow-of-events)
   - [2.1 Basic Flow](#21-basic-flow)
@@ -9,20 +7,19 @@
 - [5. Postconditions](#5-postconditions)
 - [6. Extension Points](#6-extension-points)
 
-## 1. Use-Case Add Password
+## 1. Use-Case Add 2FA
 ### 1.1 Brief Description
-This use case allows the user to copy his password without it being displayed in plain text in the list of passwords.
+This use case allows the user to add 2-factor authentication to his account.
 
 ## 2. Flow of Events
 ### 2.1 Basic Flow
-- User clicks on copy
-- User is shown an alert with the password preselected
-- User copies the password (ctrl+c or by hand)
+- User clicks on add 2FA button
+- User provides a second factor    
 #### 2.1.1 Activity Diagram
-![UC_AddPassword](img/UC/UC_CopyPassword.png)  
+![UC_Add2FA](img/UC/UC_Add2FA.png)  
 
 .feature  
-![FeatureFile](img/featureFileScreenshots/Featurefile_UC_CopyPassword.PNG)
+tbd
 #### 2.1.2 Mock up
 tbd
 ### 2.2 Alternative Flows
@@ -35,7 +32,7 @@ n/a
 User has to be logged in.
 
 ## 5. Postconditions
-Password is copied to the users clipboard.
+Second factor is saved in the database.
 
 ## 6. Extension Points
 n/a

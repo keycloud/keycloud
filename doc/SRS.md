@@ -76,7 +76,7 @@ KeyCloud offers free cloud space for your account data. You can access you data 
 
 Don’t worry your data is bio metric encrypted locally and thus only transferred and stored encrypted.
 ### 2.2 Use Case Diagram
-![Use Case Diagram](./images/UseCases.png)
+![Use Case Diagram](img/UseCases.png)
 
 ## 3. Specific Requirements
 
@@ -92,6 +92,8 @@ Following use cases for the dashboard have been finalized:
 - [UC create account](UC/UC_CreateAccount.md)
 - [UC add password](UC/UC_AddPassword.md)
 - [UC copy password](UC/UC_CopyPassword.md)
+- [UC add 2fa](UC/UC_Add2FA.md)
+- [UC login with 2fa](UC/UC_LoginWith2FA.md)
 #### 3.1.2 Chrome-Plugin
 The chrome-plugin will enable the user to get his passwords in the Google Chrome browser.
 Additional features might include the function to add and remove individual passwords.

@@ -72,20 +72,20 @@ Languages:
 n/a
 
 ## 4. Use-Case View
-![Use Case Diagram](./images/UseCases.png)
+![Use Case Diagram](img/UseCases.png)
 ### 4.1 Use-Case Realizations
 tbd
 
 ## 5. Logical View
 The following graphic describes the overall class organization of the backend.  
-![Class-Diagram](./backend/ClassDiagram.svg)
+![Class-Diagram](./backend/ClassDiagram.PNG)
 ### 5.1 Overview
 
 ## 6. Process View
 n/a
 
 ## 7. Deployment View  
-![Deployment View](./images/DeploymentView.png)
+![Deployment View](img/DeploymentView.png)
 
 ## 8. Implementation View
 n/a
@@ -96,7 +96,7 @@ n/a
 
 ## 9. Data View
 The following diagram describes the relationship model of our database.  
-![Entity-Relation Diagram](./backend/database/er-diagram.svg)
+![Entity-Relation Diagram](backend/database/er-diagram.svg)
 
 ## 10. Size and Performance
 tbd

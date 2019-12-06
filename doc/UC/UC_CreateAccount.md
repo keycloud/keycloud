@@ -1,8 +1,3 @@
-## Revision History
-Date | Version | Description | Author
---- | --- | --- | ---
-21.10.19 | 1.0 | First release of the UC | Lukas Priester
-
 ## Table of Contents
 - [1. Use Case Create Account](#1-use-case-create-account)
   - [1.1 Brief Description](#11-brief-description)
@@ -25,15 +20,15 @@ This use case allows the user to create an account. For the creation following c
 - User clicks on register
 - User is prompted with a password
 #### 2.1.1 Activity Diagram
-![UC_CreateAccount](images/UC/UC_CreateAccount.png) 
+![UC_CreateAccount](img/UC/UC_CreateAccount.png) 
  
 .feature  
-![FeatureFile](images/featureFileScreenshots/Featurefile_UC_RegisterAccount.PNG)
+![FeatureFile](img/featureFileScreenshots/Featurefile_UC_RegisterAccount.PNG)
 #### 2.1.2 Mock up
 ##### Register
-![Mockup_Register](images/mockups/Mockup_register.PNG)
+![Mockup_Register](img/mockups/Mockup_register.PNG)
 ##### Create Password
-![Mockup_CreatePassword](images/mockups/Mockup_createPassword.PNG)
+![Mockup_CreatePassword](img/mockups/Mockup_createPassword.PNG)
 ### 2.2 Alternative Flows
 n/a
 
