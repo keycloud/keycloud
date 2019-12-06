@@ -9,7 +9,7 @@
 
 ## 1. Use-Case Add Login with 2FA
 ### 1.1 Brief Description
-This use case allows the user to copy his password without it being displayed in plain text in the list of passwords.
+This use case allows the user to login using his second factor.
 
 ## 2. Flow of Events
 ### 2.1 Basic Flow
