@@ -22,7 +22,7 @@
     <script type="text/javascript" src="./util/pwgen.js"></script>
 </head>
 
-<body onload='location.href="#overview"'>
+<body onload='location.href="#overview";updateUserData();'>
 <div class="d-flex h-100 w-100 p-3 flex-column">
     <header class="masthead">
         <div class="inner">
@@ -132,9 +132,9 @@
         <div class="tab" id="settings">
             <h1 class="cover-heading">User 1</h1>
             <div class="form-check user-info justify-center-content">
-                <label for="pw">Your Password:</label>
-                <input id="pw" class="form-control" type="text" value="8132434950129301" readonly>
-                <button type="button" class="btn btn-outline-success">Add 2FA</button>
+                <label for="master-pw">Your Password:</label>
+                <input id="master-pw" class="form-control" type="text" value="" readonly>
+                <button type="button" class="btn btn-outline-success" id="add2FABtn" onclick="new WebAuthn().add2FA()">Add 2FA</button>
             </div>
         </div>
     </main>

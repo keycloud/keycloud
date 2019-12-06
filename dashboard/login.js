@@ -12,7 +12,6 @@ $(document).ready(function() {
         event.preventDefault();
         webAuthnConfig.username = $(event.target).children("input[name=username]")[0].value;
         new WebAuthn().register();
-        new WebAuthn().redirect();
     });
 
     // when user clicks submit in the login form, start the log in process
@@ -20,8 +19,7 @@ $(document).ready(function() {
         event.preventDefault();
         webAuthnConfig.username = $(event.target).children("input[name=username]")[0].value;
         webAuthnConfig.pw = $(event.target).children("input[name=password]")[0].value;
-        new WebAuthn().login();
-        new WebAuthn().redirect();
+		new WebAuthn().login();
     });
 
 });
@@ -55,66 +53,34 @@ class WebAuthn {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then(WebAuthn._checkStatus(201));
-
-        /*return fetch('/webauthn/registration/start', {
-            method: 'POST',
-            body: JSON.stringify({'username': webAuthnConfig.username}),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(WebAuthn._checkStatus(200))
-            .then(res => res.json())
-            .then(res => {
-                res.publicKey.challenge = WebAuthn._decodeBuffer(res.publicKey.challenge);
-                res.publicKey.user.id = WebAuthn._decodeBuffer(res.publicKey.user.id);
-                res.publicKey.authenticatorSelection.userVerification = "required";
-                if (res.publicKey.excludeCredentials) {
-                    for (var i = 0; i < res.publicKey.excludeCredentials.length; i++) {
-                        res.publicKey.excludeCredentials[i].id = WebAuthn._decodeBuffer(res.publicKey.excludeCredentials[i].id);
-                    }
+        }).then(function(response){
+                if(response.status !== 200){
+                    throw new Error(response.statusText);
+                }else {
+                    new WebAuthn().redirect();
                 }
-                return res;
-            })
-            //.then(res => navigator.credentials.create(res))
-            .then(credential => {
-                return fetch('/webauthn/registration/finish', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id: credential.id,
-                        rawId: WebAuthn._encodeBuffer(credential.rawId),
-                        response: {
-                            attestationObject: WebAuthn._encodeBuffer(credential.response.attestationObject),
-                            clientDataJSON: WebAuthn._encodeBuffer(credential.response.clientDataJSON)
-                        },
-                        type: credential.type,
-                        username: webAuthnConfig.username
-                    }),
-                })
-                .then(res => console.log(res))
-            })*/
+            });
     }
 
     login() {
-        return fetch('/standard/login', {
-            method: 'POST',
-            body: JSON.stringify({'username': webAuthnConfig.username}),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then(WebAuthn._checkStatus(201));
+        if ($("#use2FA").prop('checked') === false){
+            return fetch('/standard/login', {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: JSON.stringify({'username': webAuthnConfig.username, 'password': webAuthnConfig.pw}),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (response) {
+                if(response.status !== 200){
+                    throw new Error(response.statusText);
+                }else {
+                    new WebAuthn().redirect();
+                }
+            });
+        }
 
-        // TODO change to standard login
-        var form = new FormData();
-        form.append("username", webAuthnConfig.username);
-        // TODO: add valid path as soon as we have it
         return fetch('/webauthn/login/start', {
             method: 'POST',
             body: JSON.stringify({'username': webAuthnConfig.username}),
