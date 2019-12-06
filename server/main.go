@@ -93,34 +93,27 @@ func main() {
 		storage:     storage,
 	}
 	//sign in routes
-	webauthnRouter.HandleFunc("/dashboard/login.html", fileServer.ServeFileWithoutCheck).Methods("GET")
-	webauthnRouter.HandleFunc("/dashboard/login.css", fileServer.ServeFileWithoutCheck).Methods("GET")
-	webauthnRouter.HandleFunc("/dashboard/login.js", fileServer.ServeFileWithoutCheck).Methods("GET")
-	webauthnRouter.HandleFunc("/dashboard/icon.png", fileServer.ServeFileWithoutCheck).Methods("GET")
-	//files without content
-	webauthnRouter.HandleFunc("/dashboard/main.html", fileServer.ServeFileWithoutCheck).Methods("GET") // workaround for cucumber testing
-	webauthnRouter.HandleFunc("/dashboard/main.css", fileServer.ServeFileWithoutCheck).Methods("GET") // workaround for cucumber testing
-	webauthnRouter.HandleFunc("/dashboard/main.js", fileServer.ServeFileWithoutCheck).Methods("GET") // workaround for cucumber testing
-	webauthnRouter.HandleFunc("/dashboard/util/sha1.js", fileServer.ServeFileWithoutCheck).Methods("GET") // workaround for cucumber testing
-	webauthnRouter.HandleFunc("/dashboard/util/pwgen.js", fileServer.ServeFileWithoutCheck).Methods("GET") // workaround for cucumber testing
+	webauthnRouter.HandleFunc("/dashboard/login.html", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
+	webauthnRouter.HandleFunc("/dashboard/login.css", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
+	webauthnRouter.HandleFunc("/dashboard/login.js", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
+	webauthnRouter.HandleFunc("/dashboard/icon.png", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
 	//other static file routes with permission check middleware
 	webauthnRouter.NewRoute().MatcherFunc(func(request *http.Request, match *mux.RouteMatch) bool {
 		Path := request.URL.Path[1:]
-		return !strings.Contains(Path, "login.html") && !strings.Contains(Path, "login.css") &&
-			!strings.Contains(Path, "login.js") &&
-			!strings.Contains(Path, "main.html") && !strings.Contains(Path, "main.css") && // workaround for cucumber testing
-			!strings.Contains(Path, "main.js") && // workaround for cucumber testing
-			!strings.Contains(Path, "sha1.js") && // workaround for cucumber testing
-			!strings.Contains(Path, "pwgen.js") && // workaround for cucumber testing
-			!strings.Contains(Path, "icon.png") && strings.Contains(Path, "dashboard") &&
-			strings.Contains(Path, "dashboard/util") // workaround for cucumber testing
+		return !strings.Contains(Path, "login.css") && !strings.Contains(Path, "login.html") &&
+			!strings.Contains(Path, "login.js") && strings.Contains(Path, "dashboard")
 	}).Handler(checkCookiePermissionsMiddleware(http.HandlerFunc(fileServer.ServeFileWithoutCheck))).Methods(http.MethodGet)
 
 	/*
 		Web Authn API implementation for 2FA and standard login calls
 	*/
-	webauthnRouter.HandleFunc("/webauthn/registration/start", webauthnHandler.startRegistration).Methods(http.MethodPost)
-	webauthnRouter.HandleFunc("/webauthn/registration/finish", webauthnHandler.finishRegistration).Methods(http.MethodPost)
+	// Registration (adding a new 2FA) of a new authenticator should only be allowed when already logged in
+	// -> therefore also only available after cookie check
+	webauthnRouter.Handle("/webauthn/registration/start", checkCookiePermissionsMiddleware(
+		http.HandlerFunc(webauthnHandler.startRegistration))).Methods(http.MethodPost)
+	webauthnRouter.Handle("/webauthn/registration/finish", checkCookiePermissionsMiddleware(
+		http.HandlerFunc(webauthnHandler.finishRegistration))).Methods(http.MethodPost)
+
 	webauthnRouter.HandleFunc("/webauthn/login/start", webauthnHandler.startLogin).Methods(http.MethodPost)
 	webauthnRouter.HandleFunc("/webauthn/login/finish", webauthnHandler.finishLogin).Methods(http.MethodPost)
 	webauthnRouter.HandleFunc("/standard/login", webauthnHandler.standardLogin).Methods(http.MethodPost)

@@ -160,7 +160,7 @@ func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
-	user, err := QueryUserByName(database, userMsg.Username)
+	user, err := handler.storage.GetUserByName(userMsg.Username)
 	if (user != nil && user.Uuid != nil) || err != nil{
 		responseMessageJSON, err := json.Marshal(struct {
 			Status string
