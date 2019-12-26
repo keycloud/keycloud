@@ -7,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  webAuthnConfig = {
+    timeout: 30000,
+    username: undefined,
+    pw: undefined
+  };
+
   constructor() { }
 
   ngOnInit() {

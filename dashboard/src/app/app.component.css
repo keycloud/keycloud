@@ -1,0 +1,29 @@
+/*
+ * Header
+ */
+.header img {
+  float: left;
+  width: 100px;
+  height: 100px;
+}
+
+.header h3 {
+  position: relative;
+  top: 18px;
+  left: 10px;
+}
+
+.masthead {
+  margin-bottom: 2rem;
+  color: blue;
+}
+
+.masthead-brand {
+  margin-bottom: 0;
+}
+
+@media (min-width: 48em) {
+  .masthead-brand {
+    float: left;
+  }
+}
