@@ -47,7 +47,7 @@ export class WebAuthn {
           'Content-Type': 'application/json'
         }
       }).then(response => {
-        if(response.status !== 200) {
+        if (response.status !== 200) {
           throw new Error(response.statusText);
         } else {
           // redirect to dashboard
@@ -86,11 +86,16 @@ export class WebAuthn {
           },
           body: JSON.stringify({
             id: credential.id,
+            // @ts-ignore
             rawId: this._encodeBuffer(credential.rawId),
             response: {
+              // @ts-ignore
               clientDataJSON: this._encodeBuffer(credential.response.clientDataJSON),
+              // @ts-ignore
               authenticatorData: this._encodeBuffer(credential.response.authenticatorData),
+              // @ts-ignore
               signature: this._encodeBuffer(credential.response.signature),
+              // @ts-ignore
               userHandle: this._encodeBuffer(credential.response.userHandle),
             },
             type: credential.type,
