@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
   get f() { return this.newEntryForm.controls; }
 
   addCustomField() {
+    // TODO: This JQeury function cannot be used, causes error
     /*$(`<div class="form-row custom-field-row-added" style="margin-bottom: 15px">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="Custom Field Name">
@@ -65,6 +66,7 @@ export class DashboardComponent implements OnInit {
   }
 
   addTableRow(value) {
+    // TODO: This JQeury function cannot be used, causes error
     /*$('#pwTable').prepend(`<tr class="entry">
     <th scope="row">${value.i}</th>
     <td>${value.Username}</td>
@@ -77,12 +79,14 @@ export class DashboardComponent implements OnInit {
   }
 
   updateModal() {
+    // TODO: This JQeury function cannot be used, causes error
     // $('.custom-field-row-added').remove();
   }
 
   removeEntry(id) {
       this.exampleEntries.splice(id.slice(2, ), 1);
       this.renderTable(); // works so far, needs some work done on the indices
+    // TODO: This JQeury function cannot be used, causes error
       // $('.toast').toast('show');
   }
 
@@ -110,6 +114,7 @@ export class DashboardComponent implements OnInit {
   }
 
   renderTable() {
+    // TODO: This JQeury function cannot be used, causes error
     // $('.entry').remove(); // clear table
     this.exampleEntries.reverse();  // bc of callback
     this.exampleEntries.forEach(this.addTableRow);
