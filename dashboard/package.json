@@ -1,6 +1,6 @@
 {
-  "name": "dashboard",
-  "version": "0.0.0",
+  "name": "keycloud_dashboard",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,10 +12,13 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.2",
+    "@angular/cdk": "^9.2.1",
     "@angular/common": "~9.1.2",
     "@angular/compiler": "~9.1.2",
     "@angular/core": "~9.1.2",
+    "@angular/elements": "latest",
     "@angular/forms": "~9.1.2",
+    "@angular/material": "latest",
     "@angular/platform-browser": "~9.1.2",
     "@angular/platform-browser-dynamic": "~9.1.2",
     "@angular/router": "~9.1.2",

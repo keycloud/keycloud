@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Injector} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
@@ -12,5 +12,7 @@ export class AppComponent {
 
   constructor(
     router: Router,
-  ) {this.router = router}
+  ) {
+    this.router = router;
+  }
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {$} from 'protractor';
+import {Component, OnInit} from '@angular/core';
 import * as passwordGenerator from '../util/pwgen.js';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {DialogComponent} from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,7 +36,8 @@ export class DashboardComponent implements OnInit {
   ];
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -47,6 +49,24 @@ export class DashboardComponent implements OnInit {
   }
 
   get f() { return this.newEntryForm.controls; }
+
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: 'Angular For Beginners'
+    };
+
+    this.dialog.open(DialogComponent, dialogConfig);
+
+    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => console.log(`Dialog output: ${data}`)
+    );
+  }
 
   addCustomField() {
     // TODO: This JQeury function cannot be used, causes error
@@ -74,12 +94,6 @@ export class DashboardComponent implements OnInit {
   removeEntry(id) {
     console.log(`remove pressed with id ${id}`);
     this.exampleEntries.splice(id, 1);
-    // TODO: This JQeury function cannot be used, causes error
-      // $('.toast').toast('show');
-  }
-
-  generatePassword() {
-    this.generatedPassword = passwordGenerator.genPW();
   }
 
   copyToClipboard(id) {
