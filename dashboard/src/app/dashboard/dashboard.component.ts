@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
   get f() { return this.newEntryForm.controls; }
 
   addCustomField() {
-    $(`<div class="form-row custom-field-row-added" style="margin-bottom: 15px">
+    /*$(`<div class="form-row custom-field-row-added" style="margin-bottom: 15px">
                                     <div class="col">
                                         <input type="text" class="form-control" placeholder="Custom Field Name">
                                     </div>
@@ -61,11 +61,11 @@ export class DashboardComponent implements OnInit {
                                             Encrypt
                                         </label>
                                     </div>
-                                </div>`).insertBefore('#btn-add-field-group');
+                                </div>`).insertBefore('#btn-add-field-group');*/
   }
 
   addTableRow(value) {
-    $('#pwTable').prepend(`<tr class="entry">
+    /*$('#pwTable').prepend(`<tr class="entry">
     <th scope="row">${value.i}</th>
     <td>${value.Username}</td>
     <td><a target="_blank" rel="noopener noreferrer" href="${value.Url}">${value.Url}</a></td>
@@ -73,17 +73,17 @@ export class DashboardComponent implements OnInit {
     <i class="fa fa-clipboard" ></i> Copy to Clipboard</button></td>
     <td><button type="button" class="btn btn-danger" id="rm${value.i}" onclick="removeEntry(this.id)">
     <i class="fa fa-remove"></i></button></td>
-    </tr>`);
+    </tr>`);*/
   }
 
   updateModal() {
-    $('.custom-field-row-added').remove();
+    // $('.custom-field-row-added').remove();
   }
 
   removeEntry(id) {
       this.exampleEntries.splice(id.slice(2, ), 1);
       this.renderTable(); // works so far, needs some work done on the indices
-      $('.toast').toast('show');
+      // $('.toast').toast('show');
   }
 
   generatePassword() {
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
   }
 
   renderTable() {
-    $('.entry').remove(); // clear table
+    // $('.entry').remove(); // clear table
     this.exampleEntries.reverse();  // bc of callback
     this.exampleEntries.forEach(this.addTableRow);
     this.exampleEntries.reverse();
