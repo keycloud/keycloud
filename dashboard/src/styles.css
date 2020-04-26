@@ -1,2 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files
+ TODO: Pick a better theme https://material.angular.io/guide/theming#using-a-pre-built-theme
+  to fit the overall 'style' of the page*/
 @import '@angular/material/prebuilt-themes/pink-bluegrey.css';

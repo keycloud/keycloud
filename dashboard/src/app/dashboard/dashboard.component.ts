@@ -68,29 +68,6 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  addCustomField() {
-    // TODO: This JQeury function cannot be used, causes error
-    /*$(`<div class="form-row custom-field-row-added" style="margin-bottom: 15px">
-                                    <div class="col">
-                                        <input type="text" class="form-control" placeholder="Custom Field Name">
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" class="form-control" placeholder="Custom Field content">
-                                    </div>
-                                    <div class="col">
-                                        <input class="form-check-input big-checkbox" type="checkbox">
-                                        <label class="form-check-label" style="font-size: x-large;margin-left: 15px;">
-                                            Encrypt
-                                        </label>
-                                    </div>
-                                </div>`).insertBefore('#btn-add-field-group');*/
-  }
-
-  updateModal() {
-    // TODO: This JQeury function cannot be used, causes error
-    // $('.custom-field-row-added').remove();
-  }
-
   removeEntry(id) {
     console.log(`remove pressed with id ${id}`);
     this.exampleEntries.splice(id, 1);
