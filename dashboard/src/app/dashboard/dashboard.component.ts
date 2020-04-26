@@ -13,6 +13,8 @@ export class DashboardComponent implements OnInit {
   generatedPassword: string;
   newEntryForm: FormGroup;
 
+  header = ['i', 'Username', 'Url', 'Password', 'Delete'];
+
   exampleEntries = [
     {
       i : 0,
@@ -35,7 +37,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder
   ) {
-    this.renderTable();
   }
 
   ngOnInit() {
@@ -65,27 +66,14 @@ export class DashboardComponent implements OnInit {
                                 </div>`).insertBefore('#btn-add-field-group');*/
   }
 
-  addTableRow(value) {
-    // TODO: This JQeury function cannot be used, causes error
-    /*$('#pwTable').prepend(`<tr class="entry">
-    <th scope="row">${value.i}</th>
-    <td>${value.Username}</td>
-    <td><a target="_blank" rel="noopener noreferrer" href="${value.Url}">${value.Url}</a></td>
-    <td><button type="button" class="btn btn-info" id="cp${value.i}" onclick="copyToClipboard(this.id)">
-    <i class="fa fa-clipboard" ></i> Copy to Clipboard</button></td>
-    <td><button type="button" class="btn btn-danger" id="rm${value.i}" onclick="removeEntry(this.id)">
-    <i class="fa fa-remove"></i></button></td>
-    </tr>`);*/
-  }
-
   updateModal() {
     // TODO: This JQeury function cannot be used, causes error
     // $('.custom-field-row-added').remove();
   }
 
   removeEntry(id) {
-      this.exampleEntries.splice(id.slice(2, ), 1);
-      this.renderTable(); // works so far, needs some work done on the indices
+    console.log(`remove pressed with id ${id}`);
+    this.exampleEntries.splice(id, 1);
     // TODO: This JQeury function cannot be used, causes error
       // $('.toast').toast('show');
   }
@@ -95,8 +83,20 @@ export class DashboardComponent implements OnInit {
   }
 
   copyToClipboard(id) {
-    const pw = this.exampleEntries[id.slice(2, )].Password;
-    window.prompt('Copy to clipboard: Ctrl+C', pw); // Workaround for now, could use other, prettier techniques
+    console.log(`copy pressed with id ${id}`);
+    const pw = this.exampleEntries[id].Password;
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = pw;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    window.alert('Copied!');
   }
 
   saveNewEntry() {
@@ -110,15 +110,6 @@ export class DashboardComponent implements OnInit {
     newEntry.Url = this.f.urlInput.value;
     newEntry.Password = this.f.pwInput.value;
     this.exampleEntries.push(newEntry);
-    this.renderTable();
-  }
-
-  renderTable() {
-    // TODO: This JQeury function cannot be used, causes error
-    // $('.entry').remove(); // clear table
-    this.exampleEntries.reverse();  // bc of callback
-    this.exampleEntries.forEach(this.addTableRow);
-    this.exampleEntries.reverse();
   }
 
 }

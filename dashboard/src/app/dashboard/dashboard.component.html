@@ -1,110 +1,97 @@
 <div class="d-flex h-100 w-100 p-3 flex-column">
-  <header class="masthead">
-    <div class="inner">
-      <nav class="nav nav-masthead justify-content-center"
-           style="right: 3%;position: absolute;font-size: x-large">
-        <a class="nav-link active" id="overviewTab" routerLink="/dashboard">Overview</a>
-        <a class="nav-link" id="settingsTab" routerLink="/settings">Settings</a>
-      </nav>
-    </div>
-  </header>
+  <h1 class="cover-heading">Password list</h1>
+  <table class="table table-striped table-dark" style="width: 80vw">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Username</th>
+      <th scope="col">Link</th>
+      <th scope="col">Password</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tr *ngFor="let row of exampleEntries">
+      <td *ngFor="let column of header">
+        {{row[column]}}
+        <button type="button" class="btn btn-info" (click)="copyToClipboard(row.i)" *ngIf="column == 'Password'"
+                data-toggle="tooltip" data-placement="right"
+                title="Copied!">
+          <i class="fa fa-clipboard"></i> Copy to Clipboard
+        </button>
+        <button type="button" class="btn btn-danger" (click)="removeEntry(row.i)" *ngIf="column == 'Delete'">
+          <i class="fa fa-remove"></i></button>
+      </td>
+    </tr>
+  </table>
 
-  <main role="main" class="content">
+  <!-- popup -->
 
-    <!-- MAIN TAB-->
-
-    <div class="tab mx-auto" id="overview">
-      <h1 class="cover-heading">Password list</h1>
-      <table class="table table-striped table-dark" style="width: 80vw">
-        <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Username</th>
-          <th scope="col">Link</th>
-          <th scope="col">Password</th>
-          <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody id="pwTable">
-        <tr>
-          <td colspan="5" style="text-align: center;">
-            <button type="button" id="addEntryBtn" class="btn btn-success" data-toggle="modal"
-                    data-target="#addPwPopup" (click)="updateModal()">
-              <span class="icon plus"></span>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-      <!-- popup -->
-
-      <div class="modal fade" id="addPwPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-           aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content" style="background-color: #333333">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add new Password</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true" style="color: red">&times;</span>
+  <div class="modal fade" id="addPwPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content" style="background-color: #333333">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add new Password</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="customFieldList">
+          <form name="newEntryForm" [formGroup]="newEntryForm">
+            <div class="form-row" style="margin-bottom: 15px">
+              <div class="col">
+                <label for="usernameInput">Username</label>
+                <input type="text" id="usernameInput" formControlName="usernameInput" class="form-control"
+                       placeholder="Username">
+              </div>
+              <div class="col">
+                <label for="urlInput">Url</label>
+                <input type="text" id="urlInput" formControlName="urlInput" class="form-control"
+                       placeholder="Url to website">
+              </div>
+              <div class="col">
+                <label for="pwInput">Password</label>
+                <input type="text" [(ngModel)]="generatedPassword" id="pwInput" formControlName="pwInput"
+                       class="form-control" placeholder="Password">
+              </div>
+              <button (click)="generatePassword()" type="button" class="btn btn-info" data-toggle="tooltip"
+                      data-placement="right"
+                      id="genBtn"
+                      title="Click here to have a password generated">
+                <span class="icon">&#9851;</span>
               </button>
             </div>
-            <div class="modal-body" id="customFieldList">
-              <form name="newEntryForm" [formGroup]="newEntryForm">
-                <div class="form-row" style="margin-bottom: 15px">
-                  <div class="col">
-                    <label for="usernameInput">Username</label>
-                    <input type="text" id="usernameInput" formControlName="usernameInput" class="form-control" placeholder="Username">
-                  </div>
-                  <div class="col">
-                    <label for="urlInput">Url</label>
-                    <input type="text" id="urlInput" formControlName="urlInput" class="form-control" placeholder="Url to website">
-                  </div>
-                  <div class="col">
-                    <label for="pwInput">Password</label>
-                    <input type="text" [(ngModel)]="generatedPassword" id="pwInput" formControlName="pwInput" class="form-control" placeholder="Password">
-                  </div>
-                  <button (click)="generatePassword()" type="button" class="btn btn-info" data-toggle="tooltip" data-placement="right"
-                          id="genBtn"
-                          title="Click here to have a password generated">
-                    <span class="icon">&#9851;</span>
-                  </button>
-                </div>
-                <div class="form-row" style="margin-bottom: 15px">
-                  <div class="col">
-                    <input type="text" class="form-control" placeholder="Custom Field Name">
-                  </div>
-                  <div class="col">
-                    <input type="text" class="form-control" placeholder="Custom Field content">
-                  </div>
-                  <div class="col">
-                    <input class="form-check-input big-checkbox" type="checkbox">
-                    <label class="form-check-label"
-                           style="font-size: x-large;margin-left: 15px;">
-                      Encrypt
-                    </label>
-                  </div>
-                </div>
-                <div class="form-row justify-content-center" id="btn-add-field-group">
-                  <button type="button" class="btn btn-success" onclick="addCustomField()">
-                    <span class="icon plus"></span>
-                  </button>
-                </div>
-              </form>
+            <div class="form-row" style="margin-bottom: 15px">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Custom Field Name">
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Custom Field content">
+              </div>
+              <div class="col">
+                <input class="form-check-input big-checkbox" type="checkbox">
+                <label class="form-check-label"
+                       style="font-size: x-large;margin-left: 15px;">
+                  Encrypt
+                </label>
+              </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-              <button type="button" id="saveEntryBtn" class="btn btn-success" data-dismiss="modal"
-                      aria-label="Close" (click)="saveNewEntry()">Save changes
+            <div class="form-row justify-content-center" id="btn-add-field-group">
+              <button type="button" class="btn btn-success" onclick="addCustomField()">
+                <span class="icon plus"></span>
               </button>
             </div>
-
-          </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          <button type="button" id="saveEntryBtn" class="btn btn-success" data-dismiss="modal"
+                  aria-label="Close" (click)="saveNewEntry()">Save changes
+          </button>
         </div>
       </div>
     </div>
-
-  </main>
+  </div>
 
   <div aria-live="polite" aria-atomic="true" data-delay="2000" style="position: relative; min-height: 200px;">
     <div class="toast" style="position: absolute; top: 0; right: 0;">

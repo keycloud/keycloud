@@ -8,8 +8,9 @@ import {Router} from '@angular/router';
 })
 export class AppComponent {
   title = 'KeyCloud';
+  router: any;
 
   constructor(
-    private router: Router,
-  ) {}
+    router: Router,
+  ) {this.router = router}
 }
