@@ -13,6 +13,10 @@ import { DialogComponent } from './dialog/dialog.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const appRoutes: Routes = [
   { path : 'login', component : LoginComponent},
@@ -36,6 +40,10 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonToggleModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatSnackBarModule,
   ],
   providers: [
   ],

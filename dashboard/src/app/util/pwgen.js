@@ -1,3 +1,4 @@
+const jsSHA = require("jssha");
 export function genPW() {
   let key;
   let isValid = false;
@@ -38,7 +39,7 @@ function keyGen() {
     var rannumber = Math.floor(Math.random() * chars.length);
     key += chars[rannumber]
   }
-  let shaObj = new jsSHA("SHA-1", "TEXT");
+  const shaObj = new jsSHA("SHA-1", "TEXT");
   shaObj.update(key);
   let hashKey = shaObj.getHash("HEX");
   return {"clearKey":key,"hashKey":hashKey};

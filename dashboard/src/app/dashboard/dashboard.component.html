@@ -12,22 +12,19 @@
     </thead>
     <tr *ngFor="let row of exampleEntries">
       <td *ngFor="let column of header">
-        {{row[column]}}
-        <button type="button" class="btn btn-info" (click)="copyToClipboard(row.i)" *ngIf="column == 'Password'"
-                data-toggle="tooltip" data-placement="right"
-                title="Copied!">
-          <i class="fa fa-clipboard"></i> Copy to Clipboard
-        </button>
-        <button type="button" class="btn btn-danger" (click)="removeEntry(row.i)" *ngIf="column == 'Delete'">
-          <i class="fa fa-remove"></i></button>
+        <span *ngIf="column == 'i' || column == 'Username' || column == 'Url'">{{row[column]}}</span>
+        <button type="button" mat-raised-button color="primary" (click)="copyToClipboard(row.i)" *ngIf="column == 'Password'">Copy to Clipboard</button>
+        <button mat-raised-button
+                matTooltip="Delete entry"
+                color="warn"
+                (click)="removeEntry(row.i)" *ngIf="column == 'Delete'">X</button>
       </td>
     </tr>
     <tr>
       <td colspan="5" style="text-align: center;">
-        <button type="button" id="addEntryBtn" class="btn btn-success" data-toggle="modal"
-                (click)="openDialog()">
-          <span class="icon plus"></span>
-        </button>
+        <button mat-raised-button
+                matTooltip="Add new entry"
+                (click)="openDialog()">+</button>
       </td>
     </tr>
   </table>

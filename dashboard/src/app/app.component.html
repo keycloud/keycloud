@@ -6,8 +6,8 @@
       <nav class="nav nav-masthead justify-content-center"
            style="right: 3%;position: absolute;font-size: x-large"
             *ngIf="router.isActive('/dashboard', true) || router.isActive('/settings', true)">
-        <a class="nav-link" id="overviewTab" routerLink="/dashboard">Overview</a>
-        <a class="nav-link" id="settingsTab" routerLink="/settings">Settings</a>
+        <a mat-stroked-button id="overviewTab" routerLink="/dashboard" >Overview</a>
+        <a mat-stroked-button id="settingsTab" routerLink="/settings">Settings</a>
       </nav>
     </div>
   </header>

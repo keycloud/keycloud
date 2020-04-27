@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import * as passwordGenerator from '../util/pwgen.js';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DialogComponent} from '../dialog/dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,8 +11,10 @@ import {DialogComponent} from '../dialog/dialog.component';
 })
 export class DashboardComponent implements OnInit {
 
-  generatedPassword: string;
   newEntryForm: FormGroup;
+  username: string;
+  url: string;
+  password: string;
 
   header = ['i', 'Username', 'Url', 'Password', 'Delete'];
 
@@ -38,6 +40,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
+    private popOver: MatSnackBar,
   ) {
   }
 
@@ -55,22 +58,22 @@ export class DashboardComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      id: 1,
-      title: 'Angular For Beginners'
+      username: this.username,
+      url: this.url,
+      password: this.password,
     };
-
-    this.dialog.open(DialogComponent, dialogConfig);
 
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
-      data => console.log(`Dialog output: ${data}`)
+      data => this.saveNewEntry(data)
     );
   }
 
   removeEntry(id) {
     console.log(`remove pressed with id ${id}`);
     this.exampleEntries.splice(id, 1);
+    this.popOver.open('Removed!', '', {duration: 2000});
   }
 
   copyToClipboard(id) {
@@ -87,19 +90,16 @@ export class DashboardComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    window.alert('Copied!');
+    this.popOver.open('Copied!', '', {duration: 2000});
   }
 
-  saveNewEntry() {
+  saveNewEntry(data) {
     const newEntry = {
       i : this.exampleEntries.length,
-      Username : '',
-      Url : '',
-      Password : '',
+      Username : data.username,
+      Url : data.url,
+      Password : data.password,
     };
-    newEntry.Username = this.f.usernameInput.value;
-    newEntry.Url = this.f.urlInput.value;
-    newEntry.Password = this.f.pwInput.value;
     this.exampleEntries.push(newEntry);
   }
 
