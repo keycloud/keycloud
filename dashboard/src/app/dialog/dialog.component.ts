@@ -1,13 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Component, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 import * as passwordGenerator from '../util/pwgen';
-
-export interface DialogData {
-  username: string;
-  url: string;
-  password: string;
-}
 
 @Component({
   selector: 'app-dialog',
@@ -20,15 +13,8 @@ export class DialogComponent implements OnInit {
   url: string;
   password: string;
 
-  form: FormGroup;
-  description: string;
-  generatedPassword: string;
-
-
   constructor(
-    private fb: FormBuilder,
     private dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data,
   ) {}
 
   ngOnInit() {}
@@ -38,7 +24,8 @@ export class DialogComponent implements OnInit {
   }
 
   generatePassword() {
-    this.generatedPassword = passwordGenerator.genPW();
+    this.password = 'asdf';
+    // this.generatedPassword = passwordGenerator.genPW(); TODO: fix bug in pwgen.js, see console for error message
   }
 
 

@@ -11,11 +11,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class DashboardComponent implements OnInit {
 
-  newEntryForm: FormGroup;
-  username: string;
-  url: string;
-  password: string;
-
   header = ['i', 'Username', 'Url', 'Password', 'Delete'];
 
   exampleEntries = [
@@ -38,30 +33,17 @@ export class DashboardComponent implements OnInit {
   ];
 
   constructor(
-    private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private popOver: MatSnackBar,
   ) {
   }
 
-  ngOnInit() {
-    this.newEntryForm = this.formBuilder.group({
-      usernameInput: [],
-      urlInput: []
-    });
-  }
-
-  get f() { return this.newEntryForm.controls; }
+  ngOnInit() { }
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      username: this.username,
-      url: this.url,
-      password: this.password,
-    };
 
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
 
@@ -73,7 +55,7 @@ export class DashboardComponent implements OnInit {
   removeEntry(id) {
     console.log(`remove pressed with id ${id}`);
     this.exampleEntries.splice(id, 1);
-    this.popOver.open('Removed!', '', {duration: 2000});
+    this.popOver.open('Deleted!', '', {duration: 2000});
   }
 
   copyToClipboard(id) {
