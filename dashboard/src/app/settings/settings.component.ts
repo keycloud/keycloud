@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
+  password: string;
+  hide = true;
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  add2FA() {
+
+  }
 }

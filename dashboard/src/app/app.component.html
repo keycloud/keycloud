@@ -5,11 +5,30 @@
       <h3 class="masthead-brand" style="font-size: xx-large">KeyCloud</h3>
       <nav class="nav nav-masthead justify-content-center"
            style="right: 3%;position: absolute;font-size: x-large"
-            *ngIf="router.isActive('/dashboard', true) || router.isActive('/settings', true)">
-        <a mat-stroked-button id="overviewTab" routerLink="/dashboard" >Overview</a>
-        <a mat-stroked-button id="settingsTab" routerLink="/settings">Settings</a>
+           *ngIf="router.isActive('/dashboard', true) || router.isActive('/settings', true)">
+        <a mat-stroked-button id="overviewTab" routerLink="/dashboard">Overview
+          <mat-icon>home</mat-icon>
+        </a>
+        <a mat-stroked-button id="settingsTab" routerLink="/settings">Settings
+          <mat-icon>settings</mat-icon>
+        </a>
       </nav>
     </div>
   </header>
   <router-outlet></router-outlet>
+  <footer>
+    <mat-divider></mat-divider>
+    <p>
+      Report a Bug
+      <mat-icon>bug_report</mat-icon>
+    </p>
+    <p>
+      Questions? Write us
+      <mat-icon>contact_support</mat-icon>
+    </p>
+    <p>
+      <mat-icon>copyright</mat-icon>
+      KeyCloud 2020
+    </p>
+  </footer>
 </div>

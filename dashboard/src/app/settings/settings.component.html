@@ -1,10 +1,12 @@
-<!-- SETTINGS TAB-->
-
-<div class="tab" id="settings">
-  <h1 class="cover-heading">User 1</h1>
-  <div class="form-check user-info justify-center-content">
-    <label for="master-pw">Your Password:</label>
-    <input id="master-pw" class="form-control" type="text" value="" readonly>
-    <button type="button" class="btn btn-outline-success" id="add2FABtn" onclick="new WebAuthn().add2FA()">Add 2FA</button>
-  </div>
+<div mat-dialog-content>
+  <p>Password</p>
+  <mat-form-field>
+    <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password">
+    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <button mat-raised-button (click)="add2FA()">Add 2 Factor Authentication</button>
+  <mat-divider></mat-divider>
 </div>

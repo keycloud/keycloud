@@ -18,6 +18,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatIconModule} from '@angular/material/icon';
 
 const appRoutes: Routes = [
   { path : 'login', component : LoginComponent},
@@ -46,6 +48,8 @@ const appRoutes: Routes = [
     MatTooltipModule,
     MatSnackBarModule,
     MatCheckboxModule,
+    MatDividerModule,
+    MatIconModule,
   ],
   providers: [
   ],
