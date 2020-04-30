@@ -20,11 +20,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
-
-const appRoutes: Routes = [
-  { path : 'login', component : LoginComponent},
-  { path : 'dashboard', component : DashboardComponent},
-  ];
+import {HttpClientModule} from '@angular/common/http';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -50,6 +47,8 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     MatDividerModule,
     MatIconModule,
+    HttpClientModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
   ],
