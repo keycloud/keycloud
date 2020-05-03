@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {UsernameEmail} from '../models/username-email';
+import {UsernamePassword} from '../models/username-password';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +12,10 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
 
-  username: string;
+  loginUsername: string;
+  registerUsername: string;
   password: string;
+  email: string;
   use2FA: boolean;
   loginLoading = false;
   registerLoading = false;
@@ -34,9 +38,14 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.loginLoading = true;
-    this.userService.login()
+    this.body = new UsernamePassword(this.loginUsername, this.password);
+    this.userService.login(this.body)
       .subscribe( data => {
-        this.router.navigate(['/dashboard']);
+        if (data.status === 200) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          console.log(data);
+        }
       }, error => {
         this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error}`,
           '', {duration: 5000});
@@ -44,14 +53,18 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  register() {
+  async register() {
     this.registerLoading = true;
+    this.body = new UsernameEmail(this.registerUsername, this.email);
     this.userService.register(this.body)
-      .subscribe( data => {
-        this.router.navigate(['/settings'], { queryParams: { firstVisit: true}}); // Upon first visit navigate to register
+      .subscribe( resp => {
+        if (resp.status === 200) {
+          this.router.navigate(['/settings'], { queryParams: { firstVisit: true}});
+        }
+         // Upon first visit navigate to register
         // and show the generated pw TODO add handler for generated pw
       }, error => {
-        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error}`,
+        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
           '', {duration: 5000});
         this.registerLoading = false;
       });

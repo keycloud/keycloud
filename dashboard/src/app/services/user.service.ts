@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
+import {UsernameEmail} from '../models/username-email';
+import {UsernamePassword} from '../models/username-password';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -10,13 +11,13 @@ export class UserService {
     private httpClient: HttpClient
   ) { }
 
-  // tslint:disable-next-line:ban-types
-  register(body: any): Observable<Object> {
-    return this.httpClient.post(`${environment.apiUrl}`, body);
+  register(body: UsernameEmail): Observable<any> {
+    return this.httpClient.post<UsernameEmail>(`http://127.0.0.1:8080/standard/register`, JSON.stringify(body),
+      { observe: 'response', responseType: 'text' as 'json'});
   }
 
-  // tslint:disable-next-line:ban-types
-  login(): Observable<Object> {
-    return this.httpClient.get(`${environment.apiUrl}`);
+  login(body: UsernamePassword): Observable<any> {
+    return this.httpClient.post<UsernamePassword>(`http://127.0.0.1:8080/standard/login`, JSON.stringify(body),
+      { observe: 'response', responseType: 'text' as 'json'});
   }
 }

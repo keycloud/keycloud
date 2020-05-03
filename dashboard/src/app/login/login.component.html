@@ -5,7 +5,7 @@
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
-          <input matInput [(ngModel)]="username">
+          <input matInput [(ngModel)]="loginUsername">
         </mat-form-field>
       </p>
       <p>
@@ -24,10 +24,18 @@
     </div>
     <div class="col-sm">
       <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+      <p>
       <mat-form-field appearance="outline">
         <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="username">
+        <input matInput [(ngModel)]="registerUsername">
       </mat-form-field>
+      </p>
+      <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="email">
+      </mat-form-field>
+      </p>
       <div mat-dialog-actions>
         <mat-progress-spinner style="margin:0 auto;" mode="indeterminate" [diameter]="30" *ngIf="registerLoading"></mat-progress-spinner>
         <button mat-raised-button (click)="register()" *ngIf="!registerLoading">Register</button>
