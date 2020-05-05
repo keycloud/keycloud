@@ -5,7 +5,7 @@
       <h3 class="masthead-brand" style="font-size: xx-large">KeyCloud</h3>
       <nav class="nav nav-masthead justify-content-center"
            style="right: 3%;position: absolute;font-size: x-large"
-           *ngIf="router.isActive('/dashboard', true) || router.isActive('/settings', true)">
+           *ngIf="router.isActive('/dashboard', true) || router.isActive('/settings', true) || router.isActive('/settings?firstVisit=true', true)">
         <a mat-stroked-button id="overviewTab" routerLink="/dashboard">Overview
           <mat-icon>home</mat-icon>
         </a>

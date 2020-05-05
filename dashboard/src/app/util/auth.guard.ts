@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return true;
-    if (this.cookieService.check('keycloud-main')) {
+    if (this.cookieService.check('keycloud-main')) {  // TODO: cookie is not set in browser but send with the request headers
       return true;
     } else {
       this.router.navigate(['/login'], { queryParams: { returnUrl: state.url}});

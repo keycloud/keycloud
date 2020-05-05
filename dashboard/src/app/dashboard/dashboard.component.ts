@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {DialogComponent} from '../dialog/dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {UsernamePasswordUrl} from '../models/username-password-url';
+import {UserService} from '../services/user.service';
+import {UsernameUrl} from '../models/username-url';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,31 +13,31 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class DashboardComponent implements OnInit {
 
-  header = ['i', 'Username', 'Url', 'Password', 'Delete'];
-
-  exampleEntries = [
-    {
-      i : 0,
-      Username : 'Mark',
-      Url : 'https://www.google.com',
-      Password : 'example',
-    }, {
-      i : 1,
-      Username : 'Jacob',
-      Url : 'https://www.google.com',
-      Password : 'example',
-    }, {
-      i : 2,
-      Username : 'Larry',
-      Url : 'https://www.google.com',
-      Password : 'example',
-    }
-  ];
+  header = ['id', 'username', 'password', 'url', 'Delete'];
+  entries: UsernamePasswordUrl[] = [];
 
   constructor(
     private dialog: MatDialog,
     private popOver: MatSnackBar,
+    private userService: UserService,
   ) {
+    this.userService.getListOfPasswords().subscribe(
+      resp => {
+        if (resp.status === 200) {
+          const body = JSON.parse(resp.body);
+          body.forEach(item => {
+            const newEntry = new UsernamePasswordUrl(item.Id, item.Username, item.Password, item.Url);
+            this.entries.push(newEntry);
+          });
+        } else {
+          this.popOver.open(`${resp.status}`, '', {duration: 2000});
+        }
+      }, error => {
+        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
+          '', {duration: 5000});
+      }
+    );
+    console.log(this.entries);
   }
 
   ngOnInit() { }
@@ -52,21 +54,29 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  removeEntry(id) {
-    console.log(`remove pressed with id ${id}`);
-    this.exampleEntries.splice(id, 1);
-    this.popOver.open('Deleted!', '', {duration: 2000});
+  removeEntry(item) {
+    const index = this.entries.indexOf(item);
+    const body = new UsernameUrl(item.username, item.url);
+    this.userService.deletePassword(body).subscribe(
+      resp => {
+        this.entries.splice(index, 1);
+        this.popOver.open('Deleted!', '', {duration: 2000});
+      }, error => {
+        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
+          '', {duration: 5000});
+      }
+    );
   }
 
-  copyToClipboard(id) {
-    console.log(`copy pressed with id ${id}`);
-    const pw = this.exampleEntries[id].Password;
+  copyToClipboard(item) {
+    const index = this.entries.indexOf(item);
+    const password = this.entries[index].password;
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
     selBox.style.top = '0';
     selBox.style.opacity = '0';
-    selBox.value = pw;
+    selBox.value = password;
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();
@@ -76,13 +86,25 @@ export class DashboardComponent implements OnInit {
   }
 
   saveNewEntry(data) {
-    const newEntry = {
-      i : this.exampleEntries.length,
-      Username : data.username,
-      Url : data.url,
-      Password : data.password,
-    };
-    this.exampleEntries.push(newEntry);
+    const newEntry = new UsernamePasswordUrl(
+      'Reload to view id',
+      data.username,
+      data.password,
+      data.url
+    );
+    this.userService.addPassword(newEntry).subscribe(
+      resp => {
+        if (resp.status === 200) {
+          this.entries.push(newEntry);
+          this.popOver.open('Saved', '', {duration: 2000});
+        } else {
+          this.popOver.open(`${resp.status}`, '', {duration: 2000});
+        }
+      }, error => {
+        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
+          '', {duration: 5000});
+      }
+    );
   }
 
 }

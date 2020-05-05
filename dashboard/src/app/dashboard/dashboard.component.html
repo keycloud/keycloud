@@ -5,19 +5,19 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Username</th>
-      <th scope="col">Link</th>
       <th scope="col">Password</th>
+      <th scope="col">Url</th>
       <th scope="col"></th>
     </tr>
     </thead>
-    <tr *ngFor="let row of exampleEntries">
+    <tr *ngFor="let row of entries">
       <td *ngFor="let column of header">
-        <span *ngIf="column == 'i' || column == 'Username' || column == 'Url'">{{row[column]}}</span>
-        <button type="button" mat-raised-button color="primary" (click)="copyToClipboard(row.i)" *ngIf="column == 'Password'">Copy to Clipboard</button>
+        <span *ngIf="column == 'id' || column == 'username' || column == 'url'">{{row[column]}}</span>
+        <button type="button" mat-raised-button color="primary" (click)="copyToClipboard(row)" *ngIf="column == 'password'">Copy to Clipboard</button>
         <button mat-raised-button
                 matTooltip="Delete entry"
                 color="warn"
-                (click)="removeEntry(row.i)" *ngIf="column == 'Delete'">X</button>
+                (click)="removeEntry(row)" *ngIf="column == 'Delete'">X</button>
       </td>
     </tr>
     <tr>

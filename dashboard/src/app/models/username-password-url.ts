@@ -1,5 +1,8 @@
 export class UsernamePasswordUrl {
-  username: string;
-  password: string;
-  url: string;
+  constructor(
+    public id?,
+    public username?,
+    public password?,
+    public url?
+  ) { }
 }

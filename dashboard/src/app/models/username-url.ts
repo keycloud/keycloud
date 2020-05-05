@@ -1,4 +1,6 @@
 export class UsernameUrl {
-  username: string;
-  url: string;
+  constructor(
+    public username,
+    public url,
+  ) { }
 }
