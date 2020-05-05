@@ -1,5 +1,7 @@
 import {Component, Injector} from '@angular/core';
 import {Router} from '@angular/router';
+import {UserService} from './services/user.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +10,18 @@ import {Router} from '@angular/router';
 })
 export class AppComponent {
   title = 'KeyCloud';
-  router: any;
 
   constructor(
-    router: Router,
+    public router: Router,
+    public userService: UserService,
+    public popOver: MatSnackBar,
   ) {
-    this.router = router;
+  }
+
+  logout() {
+    this.userService.logout().subscribe(
+      _ => this.router.navigate(['/login']),
+      _ => this.popOver.open('Can\'t log out, as you are not logged in!', '', {duration: 5000})
+    );
   }
 }

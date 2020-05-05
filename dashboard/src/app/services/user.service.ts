@@ -33,6 +33,10 @@ export class UserService {
       this.httpOptions);
   }
 
+  logout(): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/logout`, '', this.httpOptions);
+  }
+
   getUser(): Observable<any> {
     return this.httpClient.get<UsernameMasterPassword>(`${this.apiUrl}/user`, this.httpOptions);
   }
@@ -46,7 +50,6 @@ export class UserService {
   }
 
   deletePassword(body: UsernameUrl): Observable<any> {
-    console.log(body);
     return this.httpClient.request<UsernameUrl>('delete', `${this.apiUrl}/password`, {body: JSON.stringify(body)});
   }
 }
