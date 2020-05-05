@@ -21,12 +21,6 @@ export class LoginComponent implements OnInit {
   registerLoading = false;
   body: any;
 
-  webAuthnConfig = {
-    timeout: 30000,
-    username: undefined,
-    pw: undefined
-  };
-
   constructor(
     private userService: UserService,
     private router: Router,

@@ -5,6 +5,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {UsernamePasswordUrl} from '../models/username-password-url';
 import {UserService} from '../services/user.service';
 import {UsernameUrl} from '../models/username-url';
+import {CrudService} from '../services/crud.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,8 +21,9 @@ export class DashboardComponent implements OnInit {
     private dialog: MatDialog,
     private popOver: MatSnackBar,
     private userService: UserService,
+    private crudService: CrudService,
   ) {
-    this.userService.getListOfPasswords().subscribe(
+    this.crudService.getListOfPasswords().subscribe(
       resp => {
         if (resp.status === 200) {
           const body = JSON.parse(resp.body);
@@ -46,9 +48,7 @@ export class DashboardComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
     const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
-
     dialogRef.afterClosed().subscribe(
       data => this.saveNewEntry(data)
     );
@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit {
   removeEntry(item) {
     const index = this.entries.indexOf(item);
     const body = new UsernameUrl(item.username, item.url);
-    this.userService.deletePassword(body).subscribe(
+    this.crudService.deletePassword(body).subscribe(
       resp => {
         this.entries.splice(index, 1);
         this.popOver.open('Deleted!', '', {duration: 2000});
@@ -92,7 +92,7 @@ export class DashboardComponent implements OnInit {
       data.password,
       data.url
     );
-    this.userService.addPassword(newEntry).subscribe(
+    this.crudService.addPassword(newEntry).subscribe(
       resp => {
         if (resp.status === 200) {
           this.entries.push(newEntry);

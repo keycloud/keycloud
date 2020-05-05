@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
+import {CrudService} from '../services/crud.service';
 
 @Component({
   selector: 'app-settings',
@@ -14,7 +15,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private userService: UserService,
+    private crudService: CrudService,
   ) {
     this.getPassword();
   }
@@ -27,7 +28,7 @@ export class SettingsComponent implements OnInit {
   }
 
   private getPassword() {
-    this.userService.getUser().subscribe(
+    this.crudService.getUser().subscribe(
       resp => {
         resp = JSON.parse(resp.body);
         this.password = resp.MasterPassword;
