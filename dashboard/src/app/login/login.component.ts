@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit {
          // Upon first visit navigate to register
         // and show the generated pw TODO add handler for generated pw
       }, error => {
+        console.log(error);
         this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
           '', {duration: 5000});
         this.registerLoading = false;

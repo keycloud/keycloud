@@ -20,9 +20,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatIconModule} from '@angular/material/icon';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {CookieService} from 'ngx-cookie-service';
+import {CustomInterceptor} from './services/custom-interceptor';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,10 @@ import {CookieService} from 'ngx-cookie-service';
     MatProgressSpinnerModule,
   ],
   providers: [
-    CookieService
+    CookieService,
+    {provide: HTTP_INTERCEPTORS,
+    useClass: CustomInterceptor,
+    multi: true}
   ],
   bootstrap: [
     AppComponent

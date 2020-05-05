@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,12 +12,26 @@ export class SettingsComponent implements OnInit {
   password: string;
   hide = true;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private userService: UserService,
+  ) {
+    this.getPassword();
+  }
 
   ngOnInit() {
   }
 
   add2FA() {
 
+  }
+
+  private getPassword() {
+    this.userService.getUser().subscribe(
+      resp => {
+        resp = JSON.parse(resp.body);
+        this.password = resp.MasterPassword;
+      }
+    );
   }
 }
