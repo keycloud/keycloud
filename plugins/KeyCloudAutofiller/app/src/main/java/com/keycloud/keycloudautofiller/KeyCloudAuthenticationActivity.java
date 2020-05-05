@@ -3,12 +3,15 @@ package com.keycloud.keycloudautofiller;
 import android.app.assist.AssistStructure;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import java.security.Key;
 
 import static android.view.autofill.AutofillManager.EXTRA_ASSIST_STRUCTURE;
 
@@ -69,5 +72,19 @@ public class KeyCloudAuthenticationActivity extends AppCompatActivity {
 
     public void setReplyIntent(Intent replyIntent){
         mReplyIntent = replyIntent;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
+        if(requestCode == KeyCloudAPI.SIGN_REQUEST_CODE && data != null){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    KeyCloudAPI.checkError(mAPI, mAPI.SigningResult(data), "Authentication Error");
+                }
+            }).start();
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
