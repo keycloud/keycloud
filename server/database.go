@@ -174,6 +174,45 @@ func QueryPassword(db *sql.DB, user *User, url string, username string) (passwor
 	return
 }
 
+func QueryPasswordByUrl(db *sql.DB, user *User, url string) (passwords []*Password, err error) {
+	// begin new statement
+	tx, err := db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	// prepare statement
+	stmt, err := db.Prepare("SELECT entryid, url, passwd, username FROM passwds WHERE uuid = $1 AND url = $2")
+	if err != nil {
+		return nil, err
+	}
+	// execute statement
+	rows, err := stmt.Query(user.Uuid, url)
+	// close connection and connection once query is executed
+	defer stmt.Close()
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		psw := Password{}
+		err = rows.Scan(&psw.Id, &psw.Url, &psw.Password, &psw.Username)
+		passwords = append(passwords, &psw)
+		if err != nil {
+			return nil, err
+		}
+	}
+	defer rows.Close()
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+	// end query
+	err = tx.Commit()
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
 func QuerySessionForUser(db *sql.DB, user *User) (token []byte, err error) {
 	// begin new statement
 	tx, err := db.Begin()

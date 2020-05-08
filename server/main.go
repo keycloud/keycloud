@@ -135,6 +135,7 @@ func main() {
 	webauthnRouter.Handle("/passwords", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswords))).Methods(http.MethodGet)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.CreatePassword))).Methods(http.MethodPost)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.RemovePassword))).Methods(http.MethodDelete)
+	webauthnRouter.Handle("/password-url", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswordByUrl))).Methods(http.MethodGet)
 
 	panic(http.ListenAndServe(":8080", webauthnRouter))
 }

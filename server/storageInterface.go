@@ -76,6 +76,7 @@ type StorageInterface interface {
 	DeleteSessionKeyForUser(*User) error
 	// Password operations
 	GetPassword(user *User, url string, username string) (*Password, error)
+	GetPasswordByUrl(user *User, url string) ([] *Password, error)
 	GetPasswords(*User) ([] *Password, error)
 	CreatePassword(*User, string, *Password) error
 	UpdatePassword(*User, string, *Password) error
