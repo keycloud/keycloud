@@ -100,3 +100,11 @@ func (s *Storage) GetPasswords(u *User) ([]*Password, error){
 	}
 	return passwords, nil
 }
+
+func (s *Storage) GetPasswordByUrl(user *User, url string) ([]*Password, error){
+	passwords, err := QueryPasswordByUrl(s.database, user, url)
+	if err != nil{
+		return make([]*Password, 0), nil
+	}
+	return passwords, nil
+}
