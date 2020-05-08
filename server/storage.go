@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"webauthn/webauthn"
+	"github.com/keycloud/webauthn/webauthn"
 )
 
 type Storage struct {

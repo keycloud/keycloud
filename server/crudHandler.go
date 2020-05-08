@@ -38,7 +38,7 @@ func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http
 	defer request.Body.Close()
 	var passwordId GetPasswordRequest
 	err = json.Unmarshal(b, &passwordId)
-	password, err := handler.storage.GetPassword(user, passwordId.Url, "")
+	password, err := handler.storage.GetPassword(user, passwordId.Url, passwordId.Username)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return

@@ -7,7 +7,7 @@ import (
 	"gopkg.in/ini.v1"
 	"os"
 	"strconv"
-	"webauthn/webauthn"
+	"github.com/keycloud/webauthn/webauthn"
 )
 
 

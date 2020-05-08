@@ -1,7 +1,7 @@
 package main
 
 import (
-	"webauthn/webauthn"
+	"github.com/keycloud/webauthn/webauthn"
 )
 
 type User struct {

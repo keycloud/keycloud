@@ -8,7 +8,7 @@ create table if not exists users
             check (name <> ''::text),
     mail text not null,
     masterpasswd varchar(32) not null,
-    createdatee timestamp
+    createdate timestamp
 );
 
 alter table users owner to postgres;
