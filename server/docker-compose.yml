@@ -22,5 +22,7 @@ services:
     depends_on:
       - db
     restart: always
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 8080:8080
