@@ -6,7 +6,6 @@ import { appRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { Routes} from '@angular/router';
 import { SettingsComponent } from './settings/settings.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogComponent } from './dialog/dialog.component';
@@ -24,6 +23,9 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {CookieService} from 'ngx-cookie-service';
 import {CustomInterceptor} from './services/custom-interceptor';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {OverlayModule} from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,9 @@ import {CustomInterceptor} from './services/custom-interceptor';
     MatIconModule,
     HttpClientModule,
     MatProgressSpinnerModule,
+    RouterTestingModule,
+    HttpClientTestingModule,
+    OverlayModule
   ],
   providers: [
     CookieService,

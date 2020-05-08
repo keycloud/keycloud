@@ -4,8 +4,6 @@ import {Observable} from 'rxjs';
 import {UsernameEmail} from '../models/username-email';
 import {UsernamePassword} from '../models/username-password';
 import {UsernameMasterPassword} from '../models/username-master-password';
-import {UsernamePasswordUrl} from '../models/username-password-url';
-import {UsernameUrl} from '../models/username-url';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -49,8 +47,8 @@ export class UserService {
     return this.httpClient.post(`${this.apiUrl}/webauthn/registration/finish`, JSON.stringify(body), this.httpOptions);
   }
 
-  webauthnLoginStart(body: any): Observable<any> {
-    return this.httpClient.post(`${this.apiUrl}/webauthn/login/start`, JSON.stringify(body), this.httpOptions);
+  webauthnLoginStart(body: UsernameEmail): Observable<any> {
+    return this.httpClient.post<UsernameEmail>(`${this.apiUrl}/webauthn/login/start`, JSON.stringify(body), this.httpOptions);
   }
 
   webauthnLoginFinish(body: any): Observable<any> {

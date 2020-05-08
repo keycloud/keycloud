@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SettingsComponent } from './settings.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Overlay} from '@angular/cdk/overlay';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -8,6 +12,14 @@ describe('SettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+      ],
+      providers: [
+        MatSnackBar,
+        Overlay,
+      ],
       declarations: [ SettingsComponent ]
     })
     .compileComponents();
