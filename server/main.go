@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
-	"webauthn/webauthn"
+	"github.com/keycloud/webauthn/webauthn"
 	"math/rand"
 	"net/http"
 	"strings"
