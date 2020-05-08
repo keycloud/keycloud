@@ -3,6 +3,7 @@ module github.com/keycloud/keycloud/server
 go 1.13
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.4.1
 	github.com/gorilla/mux v1.7.4
 	github.com/gorilla/sessions v1.2.0
 	github.com/keycloud/webauthn v1.2.0

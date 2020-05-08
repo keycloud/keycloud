@@ -45,9 +45,10 @@ func (handler AuthnHandler) startRegistration(writer http.ResponseWriter, reques
 	}
 	name := usernameMsg.Username
 	u, err := handler.storage.GetUser(name)
-	if u == nil {
+	if u == nil || u.Uuid == nil{
 		u = &User{
 			Name:           name,
+			Mail:			usernameMsg.Mail,
 			Authenticators: make(map[string]*Authenticator),
 			MasterPassword: GeneratePassword(16),
 		}
