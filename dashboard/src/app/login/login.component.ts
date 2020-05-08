@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   registerUsername: string;
   password: string;
   email: string;
-  use2FA: boolean;
+  use2FA = false;
   loginLoading = false;
   registerLoading = false;
   body: any;

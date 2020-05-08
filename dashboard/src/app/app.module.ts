@@ -24,7 +24,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {CookieService} from 'ngx-cookie-service';
 import {CustomInterceptor} from './services/custom-interceptor';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {OverlayModule} from '@angular/cdk/overlay';
 
 @NgModule({
@@ -54,7 +53,6 @@ import {OverlayModule} from '@angular/cdk/overlay';
     HttpClientModule,
     MatProgressSpinnerModule,
     RouterTestingModule,
-    HttpClientTestingModule,
     OverlayModule
   ],
   providers: [
