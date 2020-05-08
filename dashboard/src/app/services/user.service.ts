@@ -48,4 +48,12 @@ export class UserService {
   webauthnRegistrationFinish(body: any): Observable<any> {
     return this.httpClient.post(`${this.apiUrl}/webauthn/registration/finish`, JSON.stringify(body), this.httpOptions);
   }
+
+  webauthnLoginStart(body: any): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/webauthn/login/start`, JSON.stringify(body), this.httpOptions);
+  }
+
+  webauthnLoginFinish(body: any): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/webauthn/login/finish`, JSON.stringify(body), this.httpOptions);
+  }
 }

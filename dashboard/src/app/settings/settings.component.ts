@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
-import {CrudService} from '../services/crud.service';
 import {UsernameMasterPassword} from '../models/username-master-password';
 import {UsernameEmail} from '../models/username-email';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Decoder} from '../util/decoder';
 
 @Component({
   selector: 'app-settings',
@@ -21,6 +21,7 @@ export class SettingsComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private popOver: MatSnackBar,
+    private decoder: Decoder,
   ) {
     this.getUser();
   }
@@ -33,12 +34,11 @@ export class SettingsComponent implements OnInit {
     this.userService.webauthnRegistrationStart(body).subscribe(
       resp => {
         const respBody = JSON.parse(resp.body);
-        console.log(respBody);
-        respBody.publicKey.challenge = this._decodeBuffer(respBody.publicKey.challenge);
+        respBody.publicKey.challenge = this.decoder._decodeBuffer(respBody.publicKey.challenge);
         if (respBody.publicKey.allowCredentials) {
           // tslint:disable-next-line:prefer-for-of
           for (let i = 0; i < respBody.publicKey.allowCredentials.length; i++) {
-            respBody.publicKey.allowCredentials[i].id = this._decodeBuffer(respBody.publicKey.allowCredentials[i].id);
+            respBody.publicKey.allowCredentials[i].id = this.decoder._decodeBuffer(respBody.publicKey.allowCredentials[i].id);
           }
         }
         navigator.credentials.get(respBody)
@@ -49,13 +49,13 @@ export class SettingsComponent implements OnInit {
               rawId: this._encodeBuffer(credential.rawId),
               response: {
                 // @ts-ignore
-                clientDataJSON: this._encodeBuffer(credential.response.clientDataJSON),
+                clientDataJSON: this.decoder._encodeBuffer(credential.response.clientDataJSON),
                 // @ts-ignore
-                authenticatorData: this._encodeBuffer(credential.response.authenticatorData),
+                authenticatorData: this.decoder._encodeBuffer(credential.response.authenticatorData),
                 // @ts-ignore
-                signature: this._encodeBuffer(credential.response.signature),
+                signature: this.decoder._encodeBuffer(credential.response.signature),
                 // @ts-ignore
-                userHandle: this._encodeBuffer(credential.response.userHandle),
+                userHandle: this.decoder._encodeBuffer(credential.response.userHandle),
               },
               type: credential.type,
               username: this.user.Name,
@@ -70,7 +70,6 @@ export class SettingsComponent implements OnInit {
             );
         })
           .catch(error => {
-            console.log(error);
             this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
               '', {duration: 5000});
         });
@@ -87,14 +86,5 @@ export class SettingsComponent implements OnInit {
         this.password = this.user.MasterPassword;
       }
     );
-  }
-
-  private _decodeBuffer(value: string) {
-    return Uint8Array.from(atob(value), c => c.charCodeAt(0));
-  }
-
-  // Encode an ArrayBuffer into a base64 string.
-  private _encodeBuffer(value: Iterable<number>) {
-    return btoa(new Uint8Array(value).reduce((s, byte) => s + String.fromCharCode(byte), ''));
   }
 }
