@@ -6,7 +6,6 @@ RUN apt install git && git clone https://github.com/keycloud/keycloud.git && cd 
 
 FROM alpine:latest
 
-COPY --from=GO_SERVER /keycloud/server/config.ini .
 COPY --from=GO_SERVER /keycloud/server/server .
 
 ENTRYPOINT './server'
