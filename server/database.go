@@ -3,32 +3,29 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/keycloud/webauthn/webauthn"
 	_ "github.com/lib/pq"
-	"gopkg.in/ini.v1"
 	"os"
 	"strconv"
-	"github.com/keycloud/webauthn/webauthn"
 )
 
 
 func connectDatabase() (*sql.DB, error) {
-	// read config.ini
-	cfg, err := ini.Load("config.ini")
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
 	}
 
 	// due to integer parsing
-	port, _ := strconv.Atoi(cfg.Section("database").Key("port").Value())
+	p, err := strconv.Atoi(os.Getenv("POSTGRES_PORT"))
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s " + "password=%s dbname=%s sslmode=disable",
+		os.Getenv("POSTGRES_HOST"),
+		p,
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		os.Getenv("POSTGRES_DB"),
+	)
 
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		cfg.Section("database").Key("host").String(),
-		port,
-		cfg.Section("database").Key("user").String(),
-		cfg.Section("database").Key("password").String(),
-		cfg.Section("database").Key("dbname").String())
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return nil, err
