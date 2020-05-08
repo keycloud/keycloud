@@ -10,6 +10,8 @@ services:
       - POSTGRES_DB=$POSTGRES_DB
     ports:
       - 5432:5432
+    networks:
+      - app-network
 
   app:
     image: zkdev/keycloud-app:v0.0.1
@@ -26,3 +28,5 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 8080:8080
+    networks:
+      - app-network
