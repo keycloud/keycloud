@@ -23,6 +23,10 @@ export class UserService {
     private httpClient: HttpClient
   ) { }
 
+  getUser(): Observable<any> {
+    return this.httpClient.get<UsernameMasterPassword>(`${this.apiUrl}/user`, this.httpOptions);
+  }
+
   register(body: UsernameEmail): Observable<any> {
     return this.httpClient.post<UsernameEmail>(`${this.apiUrl}/standard/register`, JSON.stringify(body),
       this.httpOptions);
@@ -35,5 +39,13 @@ export class UserService {
 
   logout(): Observable<any> {
     return this.httpClient.post(`${this.apiUrl}/logout`, '', this.httpOptions);
+  }
+
+  webauthnRegistrationStart(body: UsernameEmail): Observable<any> {
+    return this.httpClient.post<UsernameEmail>(`${this.apiUrl}/webauthn/registration/start`, JSON.stringify(body), this.httpOptions);
+  }
+
+  webauthnRegistrationFinish(body: any): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/webauthn/registration/finish`, JSON.stringify(body), this.httpOptions);
   }
 }

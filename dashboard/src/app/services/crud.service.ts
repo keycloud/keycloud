@@ -23,10 +23,6 @@ export class CrudService {
     private httpClient: HttpClient
   ) { }
 
-  getUser(): Observable<any> {
-    return this.httpClient.get<UsernameMasterPassword>(`${this.apiUrl}/user`, this.httpOptions);
-  }
-
   getListOfPasswords(): Observable<any> {
     return this.httpClient.get(`${this.apiUrl}/passwords`, this.httpOptions);
   }
