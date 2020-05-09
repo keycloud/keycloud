@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files
+ TODO: Pick a better theme https://material.angular.io/guide/theming#using-a-pre-built-theme
+  to fit the overall 'style' of the page
+  https://material.io/resources/color/#!/?view.left=0&view.right=0*/
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+body {
+  background-color: #63a4ff;
+  color: white;
+}

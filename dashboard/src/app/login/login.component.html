@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm" style="border-right: solid;border-right-color: white">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="loginUsername">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput [(ngModel)]="password" type="password">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-checkbox [(ngModel)]="use2FA">Use 2FA</mat-checkbox>
+      </p>
+      <div mat-dialog-actions>
+        <mat-progress-spinner style="margin:0 auto;" mode="indeterminate" [diameter]="30" *ngIf="loginLoading"></mat-progress-spinner>
+        <button mat-raised-button (click)="login()" *ngIf="!loginLoading">Sign in</button>
+      </div>
+    </div>
+    <div class="col-sm">
+      <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+      <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="registerUsername">
+      </mat-form-field>
+      </p>
+      <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email">
+      </mat-form-field>
+      </p>
+      <div mat-dialog-actions>
+        <mat-progress-spinner style="margin:0 auto;" mode="indeterminate" [diameter]="30" *ngIf="registerLoading"></mat-progress-spinner>
+        <button mat-raised-button (click)="register()" *ngIf="!registerLoading">Register</button>
+      </div>
+
+      <a routerLink="/dashboard" class="btn btn-link">To Dashboard</a>
+    </div>
+  </div>
+</div>

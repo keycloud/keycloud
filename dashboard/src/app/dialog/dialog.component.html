@@ -1,0 +1,20 @@
+<div mat-dialog-content>
+  <p>New entry</p>
+  <mat-form-field>
+  <mat-label>Username</mat-label>
+  <input matInput [(ngModel)]="username">
+</mat-form-field>
+  <mat-form-field>
+    <mat-label>Url</mat-label>
+    <input matInput [(ngModel)]="url">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]="password" type="password">
+  </mat-form-field>
+  <button mat-raised-button (click)="generatePassword()">Click here to have a password generated</button>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="close()">Close</button>
+  <button mat-raised-button [mat-dialog-close]="{username: username, url: url, password: password}">Save new entry</button>
+</div>
