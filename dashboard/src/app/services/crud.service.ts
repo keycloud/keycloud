@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {UsernameMasterPassword} from '../models/username-master-password';
 import {UsernamePasswordUrl} from '../models/username-password-url';
 import {UsernameUrl} from '../models/username-url';
+import {environment} from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class CrudService {
     responseType: 'text' as 'json'
   };
 
-  apiUrl = 'http://127.0.0.1:8080'; // TODO: should be provided in environment variables
+  apiUrl = environment.apiUrl;
 
   constructor(
     private httpClient: HttpClient

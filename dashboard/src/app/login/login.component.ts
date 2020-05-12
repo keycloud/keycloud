@@ -53,13 +53,13 @@ export class LoginComponent implements OnInit {
                 rawId: this._encodeBuffer(credential.rawId),
                 response: {
                   // @ts-ignore
-                  clientDataJSON: this._encodeBuffer(credential.response.clientDataJSON),
+                  clientDataJSON: this.decoder._encodeBuffer(credential.response.clientDataJSON),
                   // @ts-ignore
-                  authenticatorData: this._encodeBuffer(credential.response.authenticatorData),
+                  authenticatorData: this.decoder._encodeBuffer(credential.response.authenticatorData),
                   // @ts-ignore
-                  signature: this._encodeBuffer(credential.response.signature),
+                  signature: this.decoder._encodeBuffer(credential.response.signature),
                   // @ts-ignore
-                  userHandle: this._encodeBuffer(credential.response.userHandle),
+                  userHandle: this.decoder._encodeBuffer(credential.response.userHandle),
                 },
                 type: credential.type,
                 username: this.loginUsername,

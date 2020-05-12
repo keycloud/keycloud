@@ -35,35 +35,31 @@ export class SettingsComponent implements OnInit {
       resp => {
         const respBody = JSON.parse(resp.body);
         respBody.publicKey.challenge = this.decoder._decodeBuffer(respBody.publicKey.challenge);
+        respBody.publicKey.user.id = this.decoder._decodeBuffer(respBody.publicKey.user.id);
         if (respBody.publicKey.allowCredentials) {
           // tslint:disable-next-line:prefer-for-of
-          for (let i = 0; i < respBody.publicKey.allowCredentials.length; i++) {
-            respBody.publicKey.allowCredentials[i].id = this.decoder._decodeBuffer(respBody.publicKey.allowCredentials[i].id);
+          for (let i = 0; i < respBody.publicKey.excludeCredentials.length; i++) {
+            respBody.publicKey.excludeCredentials[i].id = this.decoder._decodeBuffer(respBody.publicKey.excludeCredentials[i].id);
           }
         }
-        navigator.credentials.get(respBody)
+        navigator.credentials.create(respBody)
           .then(credential => {
             const requestBody = {
               id: credential.id,
               // @ts-ignore
-              rawId: this._encodeBuffer(credential.rawId),
+              rawId: this.decoder._encodeBuffer(credential.rawId),
               response: {
                 // @ts-ignore
+                attestationObject: this.decoder._encodeBuffer(credential.response.attestationObject),
+                // @ts-ignore
                 clientDataJSON: this.decoder._encodeBuffer(credential.response.clientDataJSON),
-                // @ts-ignore
-                authenticatorData: this.decoder._encodeBuffer(credential.response.authenticatorData),
-                // @ts-ignore
-                signature: this.decoder._encodeBuffer(credential.response.signature),
-                // @ts-ignore
-                userHandle: this.decoder._encodeBuffer(credential.response.userHandle),
               },
               type: credential.type,
-              username: this.user.Name,
             };
             this.userService.webauthnRegistrationFinish(requestBody).subscribe(
               // tslint:disable-next-line:no-shadowed-variable
               resp => {
-                if (resp.status === 200) {
+                if (resp.status === 201) {
                   this.popOver.open('Success! Your account is now secured via a second factor.', '', {duration: 5000});
               }
               }
