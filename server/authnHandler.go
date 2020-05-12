@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/sessions"
+	_ "github.com/keycloud/webauthn/attestation"
 	"github.com/keycloud/webauthn/webauthn"
 	"io/ioutil"
 	"net/http"
