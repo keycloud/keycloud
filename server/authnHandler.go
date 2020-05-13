@@ -26,7 +26,7 @@ type UsernameRequest struct {
 
 type UsernamePasswordRequest struct {
 	Username string `json:"username"`
-	Password string `json:"password"`
+	Password string `json:"masterpassword"`
 }
 
 func (handler AuthnHandler) startRegistration(writer http.ResponseWriter, request *http.Request) {

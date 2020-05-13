@@ -22,10 +22,10 @@ type Authenticator struct {
 }
 
 type Password struct {
-	Password string
-	Id       string
-	Url	     string
-	Username string
+	Password string `json:"password"`
+	Id       string `json:"id"`
+	Url	     string `json:"url"`
+	Username string `json:"username"`
 }
 
 func (u *User) WebAuthID() []byte {
