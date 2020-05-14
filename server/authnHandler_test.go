@@ -11,7 +11,7 @@ import (
 
 func TestAuthnHandler_standardLogin(t *testing.T) {
 	req, err := http.NewRequest("POST", "/standard/login",
-		bytes.NewBuffer([]byte(`{"username": "johndoe", "password": "my-master-passwd"}`)))
+		bytes.NewBuffer([]byte(`{"username": "johndoe", "masterpassword": "my-master-passwd"}`)))
 	if err != nil{
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
