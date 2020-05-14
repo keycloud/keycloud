@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/keycloud/webauthn/webauthn"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -96,6 +97,8 @@ func main() {
 
 	webauthnRouter := mux.NewRouter()
 
+	webauthnRouter.HandleFunc("/.well-known/assetlinks.json", assetLinksHandler)
+
 	//sign in routes
 	webauthnRouter.HandleFunc("/dashboard/login.html", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
 	webauthnRouter.HandleFunc("/dashboard/login.css", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
@@ -138,6 +141,13 @@ func main() {
 	webauthnRouter.Handle("/password-by-url", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswordByUrl))).Methods(http.MethodGet)
 
 	panic(http.ListenAndServe(":8080", webauthnRouter))
+}
+
+func assetLinksHandler(writer http.ResponseWriter, request *http.Request) {
+	println("Assetlinks file requested")
+	data, _ := ioutil.ReadFile("assetlinks.json")
+	writer.Header().Add("Content-Type", "application/json")
+	_, _ = writer.Write(data)
 }
 
 func checkCookiePermissionsMiddleware(next http.Handler) http.Handler {
