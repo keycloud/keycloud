@@ -19,7 +19,7 @@ type GetPasswordRequest struct {
 }
 
 type UserRequest struct {
-	Name string `json:"name"`
+	Name string `json:"username"`
 }
 
 type PasswordRequest struct {
@@ -172,8 +172,8 @@ func (handler CRUDHandler) GetUser(writer http.ResponseWriter, request *http.Req
 	}
 	// Wrap struct around internal User struct to enforce string encoding of master password
 	userObject := struct {
-		Name           string
-		MasterPassword string
+		Name           string `json:"username"`
+		MasterPassword string `json:"masterpassword"`
 	}{
 		user.Name,
 		string(user.MasterPassword),
