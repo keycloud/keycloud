@@ -1,31 +1,56 @@
-<div class="d-flex h-100 w-100 p-3 flex-column">
-  <h1 class="cover-heading">Password list</h1>
-  <table class="table table-striped table-dark" style="width: 80vw">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Username</th>
-      <th scope="col">Password</th>
-      <th scope="col">Url</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tr *ngFor="let row of entries">
-      <td *ngFor="let column of header">
-        <span *ngIf="column == 'id' || column == 'username' || column == 'url'">{{row[column]}}</span>
-        <button type="button" mat-raised-button color="primary" (click)="copyToClipboard(row)" *ngIf="column == 'password'">Copy to Clipboard</button>
-        <button mat-raised-button
-                matTooltip="Delete entry"
-                color="warn"
-                (click)="removeEntry(row)" *ngIf="column == 'Delete'">X</button>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="5" style="text-align: center;">
-        <button mat-raised-button
-                matTooltip="Add new entry"
-                (click)="openDialog()">+</button>
-      </td>
-    </tr>
-  </table>
-</div>
+<mat-card style="border-radius: 0; height: 100ch">
+  <mat-card-header style="justify-content: center">Password list</mat-card-header>
+  <mat-card-content style="justify-content: center">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> No.</th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef> Username</th>
+        <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="password">
+        <th mat-header-cell *matHeaderCellDef> Password</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button
+                  matTooltip="Copy to clipboard"
+                  color="primary"
+                  (click)="copyToClipboard(element)">
+            <mat-icon>file_copy</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="url">
+        <th mat-header-cell *matHeaderCellDef> Url</th>
+        <td mat-cell *matCellDef="let element"> {{element.url}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="del">
+        <th mat-header-cell *matHeaderCellDef> Delete</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button
+                  matTooltip="Delete entry"
+                  color="warn"
+                  (click)="removeEntry(element)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+  <mat-card-footer>
+    <button mat-raised-button
+            matTooltip="New entry"
+            color="accent"
+            (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-footer>
+</mat-card>
