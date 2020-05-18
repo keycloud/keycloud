@@ -14,7 +14,7 @@ import {CrudService} from '../services/crud.service';
 })
 export class DashboardComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'username', 'password', 'url', 'del'];
+  displayedColumns: string[] = ['No.', 'Username', 'Password', 'Url', 'Delete'];
   dataSource: UsernamePasswordUrl[] = [];
 
   constructor(
