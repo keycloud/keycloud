@@ -12,9 +12,9 @@
     <mat-label>Password</mat-label>
     <input matInput [(ngModel)]="password" type="password">
   </mat-form-field>
-  <button mat-raised-button (click)="generatePassword()">Click here to have a password generated</button>
+  <button mat-raised-button matTooltip="Generate a password" (click)="generatePassword()"><mat-icon>fingerprint</mat-icon></button>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button (click)="close()">Close</button>
-  <button mat-raised-button [mat-dialog-close]="{username: username, url: url, password: password}">Save new entry</button>
+  <button mat-raised-button (click)="close()"><mat-icon>close</mat-icon>Close</button>
+  <button mat-raised-button [mat-dialog-close]="{username: username, url: url, password: password}"><mat-icon>save</mat-icon>Save</button>
 </div>

@@ -1,7 +1,8 @@
-<div class="container">
+<mat-card style="border-radius: 0; height: 100ch">
+  <mat-card-content style="justify-content: center">
   <div class="row">
     <div class="col-sm" style="border-right: solid;border-right-color: white">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <h1 class="h3 mb-3 font-weight-normal mono">Sign in</h1>
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Username</mat-label>
@@ -19,11 +20,12 @@
       </p>
       <div mat-dialog-actions>
         <mat-progress-spinner style="margin:0 auto;" mode="indeterminate" [diameter]="30" *ngIf="loginLoading"></mat-progress-spinner>
-        <button mat-raised-button (click)="login()" *ngIf="!loginLoading">Sign in</button>
+        <button mat-raised-button (click)="login()" *ngIf="!loginLoading" color="accent">Sign in</button>
       </div>
     </div>
+    <mat-divider [vertical]="true"></mat-divider>
     <div class="col-sm">
-      <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+      <h1 class="h3 mb-3 font-weight-normal mono">Register</h1>
       <p>
       <mat-form-field appearance="outline">
         <mat-label>Username</mat-label>
@@ -38,10 +40,9 @@
       </p>
       <div mat-dialog-actions>
         <mat-progress-spinner style="margin:0 auto;" mode="indeterminate" [diameter]="30" *ngIf="registerLoading"></mat-progress-spinner>
-        <button mat-raised-button (click)="register()" *ngIf="!registerLoading">Register</button>
+        <button mat-raised-button (click)="register()" *ngIf="!registerLoading" color="accent">Register</button>
       </div>
-
-      <a routerLink="/dashboard" class="btn btn-link">To Dashboard</a>
     </div>
   </div>
-</div>
+  </mat-card-content>
+</mat-card>

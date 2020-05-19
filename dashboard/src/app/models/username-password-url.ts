@@ -3,6 +3,7 @@ export class UsernamePasswordUrl {
     public id?,
     public username?,
     public password?,
-    public url?
+    public url?,
+    public del?,
   ) { }
 }

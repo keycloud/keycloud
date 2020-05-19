@@ -1,31 +1,36 @@
-<div class="d-flex h-100 w-100 p-3 flex-column">
-  <h1 class="cover-heading">Password list</h1>
-  <table class="table table-striped table-dark" style="width: 80vw">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Username</th>
-      <th scope="col">Password</th>
-      <th scope="col">Url</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tr *ngFor="let row of entries">
-      <td *ngFor="let column of header">
-        <span *ngIf="column == 'id' || column == 'username' || column == 'url'">{{row[column]}}</span>
-        <button type="button" mat-raised-button color="primary" (click)="copyToClipboard(row)" *ngIf="column == 'password'">Copy to Clipboard</button>
-        <button mat-raised-button
-                matTooltip="Delete entry"
-                color="warn"
-                (click)="removeEntry(row)" *ngIf="column == 'Delete'">X</button>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="5" style="text-align: center;">
-        <button mat-raised-button
-                matTooltip="Add new entry"
-                (click)="openDialog()">+</button>
-      </td>
-    </tr>
-  </table>
-</div>
+<mat-card style="border-radius: 0; height: 100ch">
+  <mat-card-content style="justify-content: center">
+    <table>
+      <th *ngFor="let column of displayedColumns">{{column}}</th>
+      <tr *ngFor="let entry of dataSource">
+        <td>{{entry.id}}</td>
+        <td>{{entry.username}}</td>
+        <td>
+          <button mat-raised-button
+                    matTooltip="Copy to clipboard"
+                    color="primary"
+                    (click)="copyToClipboard(entry)">
+          <mat-icon>file_copy</mat-icon>
+          </button>
+        </td>
+        <td>{{entry.url}}</td>
+        <td>
+          <button mat-raised-button
+                    matTooltip="Delete entry"
+                    color="warn"
+                    (click)="removeEntry(entry)">
+          <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+  <mat-card-footer>
+    <button mat-raised-button
+            matTooltip="New entry"
+            color="accent"
+            (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-footer>
+</mat-card>

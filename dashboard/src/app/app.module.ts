@@ -5,7 +5,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { appRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import {ConfirmationDialogComponent, DashboardComponent} from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogComponent } from './dialog/dialog.component';
@@ -25,6 +25,9 @@ import {CookieService} from 'ngx-cookie-service';
 import {CustomInterceptor} from './services/custom-interceptor';
 import {RouterTestingModule} from '@angular/router/testing';
 import {OverlayModule} from '@angular/cdk/overlay';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTableModule} from '@angular/material/table';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,7 @@ import {OverlayModule} from '@angular/cdk/overlay';
     DashboardComponent,
     SettingsComponent,
     DialogComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,10 @@ import {OverlayModule} from '@angular/cdk/overlay';
     HttpClientModule,
     MatProgressSpinnerModule,
     RouterTestingModule,
-    OverlayModule
+    OverlayModule,
+    MatToolbarModule,
+    MatTableModule,
+    MatCardModule
   ],
   providers: [
     CookieService,

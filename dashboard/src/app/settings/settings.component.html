@@ -1,4 +1,5 @@
-<div mat-dialog-content>
+<mat-card style="border-radius: 0; height: 100ch">
+  <mat-card-content style="justify-content: center">
   <p>Password</p>
   <mat-form-field>
     <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password">
@@ -7,6 +8,8 @@
     </button>
   </mat-form-field>
   <mat-divider></mat-divider>
-  <button mat-raised-button (click)="add2FA()">Add 2 Factor Authentication</button>
+    <br>
+  <button mat-raised-button (click)="add2FA()" color="accent">Add 2 Factor Authentication</button>
   <mat-divider></mat-divider>
-</div>
+  </mat-card-content>
+</mat-card>
