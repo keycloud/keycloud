@@ -23,6 +23,8 @@ describe('DashboardComponent', () => {
         HttpClientTestingModule,
         HttpClient,
         HttpHandler,
+      ],
+      imports: [
         BrowserAnimationsModule,
       ],
       declarations: [ DashboardComponent ]

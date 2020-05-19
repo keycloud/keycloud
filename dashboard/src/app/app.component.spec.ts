@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Overlay} from '@angular/cdk/overlay';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -11,6 +12,7 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
+        BrowserAnimationsModule,
       ],
       providers: [
         MatSnackBar,

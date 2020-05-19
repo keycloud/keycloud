@@ -6,6 +6,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Overlay} from '@angular/cdk/overlay';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -15,7 +16,8 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        BrowserAnimationsModule,
       ],
       providers: [
         MatDialog,
