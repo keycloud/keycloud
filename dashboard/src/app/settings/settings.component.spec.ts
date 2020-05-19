@@ -5,6 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Overlay} from '@angular/cdk/overlay';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -15,6 +16,7 @@ describe('SettingsComponent', () => {
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
+        BrowserAnimationsModule,
       ],
       providers: [
         MatSnackBar,

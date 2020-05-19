@@ -9,7 +9,7 @@ import {ConfirmationDialogComponent, DashboardComponent} from './dashboard/dashb
 import { SettingsComponent } from './settings/settings.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogComponent } from './dialog/dialog.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
@@ -45,6 +45,7 @@ import {MatCardModule} from '@angular/material/card';
     ReactiveFormsModule,
     MatDialogModule,
     BrowserAnimationsModule,
+    NoopAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,

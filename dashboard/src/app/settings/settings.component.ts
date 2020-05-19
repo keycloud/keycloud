@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
-import {UsernameMasterPassword} from '../models/username-master-password';
-import {UsernameEmail} from '../models/username-email';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Decoder} from '../util/decoder';
+import {UserRegister} from '../models/user-register';
+import {User} from '../models/user';
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +15,7 @@ export class SettingsComponent implements OnInit {
 
   password: string;
   hide = true;
-  user: UsernameMasterPassword;
+  user: User;
 
   constructor(
     private router: Router,
@@ -30,7 +30,7 @@ export class SettingsComponent implements OnInit {
   }
 
   add2FA() {
-    const body = new UsernameEmail(this.user.Name, '');
+    const body = new UserRegister(this.user.username, '');
     this.userService.webauthnRegistrationStart(body).subscribe(
       resp => {
         const respBody = JSON.parse(resp.body);
@@ -77,9 +77,8 @@ export class SettingsComponent implements OnInit {
     this.userService.getUser().subscribe(
       resp => {
         resp = JSON.parse(resp.body);
-        console.log(resp);
-        this.user = new UsernameMasterPassword(resp.Name, resp.MasterPassword);
-        this.password = this.user.MasterPassword;
+        this.user = new User(resp.Name, resp.MasterPassword);
+        this.password = this.user.masterpassword;
       }
     );
   }
