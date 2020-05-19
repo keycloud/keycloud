@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {DialogComponent} from '../dialog/dialog.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {UsernamePasswordUrl} from '../models/username-password-url';
 import {UserService} from '../services/user.service';
-import {UsernameUrl} from '../models/username-url';
 import {CrudService} from '../services/crud.service';
+import {PasswordEntry} from '../models/password-entry';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +14,7 @@ import {CrudService} from '../services/crud.service';
 export class DashboardComponent implements OnInit {
 
   displayedColumns: string[] = ['No.', 'Username', 'Password', 'Url', 'Delete'];
-  dataSource: UsernamePasswordUrl[] = [];
+  dataSource: PasswordEntry[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -28,7 +27,7 @@ export class DashboardComponent implements OnInit {
         if (resp.status === 200) {
           const body = JSON.parse(resp.body);
           body.forEach(item => {
-            const newEntry = new UsernamePasswordUrl(item.Id, item.Username, item.Password, item.Url, '');
+            const newEntry = new PasswordEntry(item.Id, item.Username, item.Password, item.Url, '');
             this.dataSource.push(newEntry);
           });
         } else {
@@ -63,7 +62,7 @@ export class DashboardComponent implements OnInit {
       bool => {
         if (bool) {
           const index = this.dataSource.indexOf(item);
-          const body = new UsernameUrl(item.username, item.url);
+          const body = new PasswordEntry('', item.username, '', item.url, '');
           this.crudService.deletePassword(body).subscribe(
             resp => {
               this.dataSource.splice(index, 1);
@@ -96,11 +95,12 @@ export class DashboardComponent implements OnInit {
   }
 
   saveNewEntry(data) {
-    const newEntry = new UsernamePasswordUrl(
+    const newEntry = new PasswordEntry(
       'Reload to view id',
       data.username,
       data.password,
-      data.url
+      data.url,
+      '',
     );
     this.crudService.addPassword(newEntry).subscribe(
       resp => {
@@ -116,7 +116,6 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
-
 }
 
 @Component({

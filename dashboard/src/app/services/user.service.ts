@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {UsernameEmail} from '../models/username-email';
-import {UsernamePassword} from '../models/username-password';
-import {UsernameMasterPassword} from '../models/username-master-password';
 import {environment} from '../../environments/environment.prod';
+import {User} from '../models/user';
+import {UserRegister} from '../models/user-register';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -23,16 +22,16 @@ export class UserService {
   ) { }
 
   getUser(): Observable<any> {
-    return this.httpClient.get<UsernameMasterPassword>(`${this.apiUrl}/user`, this.httpOptions);
+    return this.httpClient.get<User>(`${this.apiUrl}/user`, this.httpOptions);
   }
 
-  register(body: UsernameEmail): Observable<any> {
-    return this.httpClient.post<UsernameEmail>(`${this.apiUrl}/standard/register`, JSON.stringify(body),
+  register(body: UserRegister): Observable<any> {
+    return this.httpClient.post<UserRegister>(`${this.apiUrl}/standard/register`, JSON.stringify(body),
       this.httpOptions);
   }
 
-  login(body: UsernamePassword): Observable<any> {
-    return this.httpClient.post<UsernamePassword>(`${this.apiUrl}/standard/login`, JSON.stringify(body),
+  login(body: User): Observable<any> {
+    return this.httpClient.post<User>(`${this.apiUrl}/standard/login`, JSON.stringify(body),
       this.httpOptions);
   }
 
@@ -40,16 +39,16 @@ export class UserService {
     return this.httpClient.post(`${this.apiUrl}/logout`, '', this.httpOptions);
   }
 
-  webauthnRegistrationStart(body: UsernameEmail): Observable<any> {
-    return this.httpClient.post<UsernameEmail>(`${this.apiUrl}/webauthn/registration/start`, JSON.stringify(body), this.httpOptions);
+  webauthnRegistrationStart(body: UserRegister): Observable<any> {
+    return this.httpClient.post<UserRegister>(`${this.apiUrl}/webauthn/registration/start`, JSON.stringify(body), this.httpOptions);
   }
 
   webauthnRegistrationFinish(body: any): Observable<any> {
     return this.httpClient.post(`${this.apiUrl}/webauthn/registration/finish`, JSON.stringify(body), this.httpOptions);
   }
 
-  webauthnLoginStart(body: UsernameEmail): Observable<any> {
-    return this.httpClient.post<UsernameEmail>(`${this.apiUrl}/webauthn/login/start`, JSON.stringify(body), this.httpOptions);
+  webauthnLoginStart(body: UserRegister): Observable<any> {
+    return this.httpClient.post<UserRegister>(`${this.apiUrl}/webauthn/login/start`, JSON.stringify(body), this.httpOptions);
   }
 
   webauthnLoginFinish(body: any): Observable<any> {

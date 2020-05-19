@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {UsernameEmail} from '../models/username-email';
-import {UsernamePassword} from '../models/username-password';
 import {Decoder} from '../util/decoder';
+import {User} from '../models/user';
+import {UserRegister} from '../models/user-register';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.use2FA) {
-      this.body = new UsernameEmail(this.loginUsername, '');
+      this.body = new UserRegister(this.loginUsername, '');
       this.userService.webauthnLoginStart(this.body).subscribe(
         resp => {
           const respBody = JSON.parse(resp.body);
@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
       );
     } else {
       this.loginLoading = true;
-      this.body = new UsernamePassword(this.loginUsername, this.password);
+      this.body = new User(this.loginUsername, this.password);
       this.userService.login(this.body)
         .subscribe( data => {
           if (data.status === 200) {
@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
 
   register() {
     this.registerLoading = true;
-    this.body = new UsernameEmail(this.registerUsername, this.email);
+    this.body = new UserRegister(this.registerUsername, this.email);
     this.userService.register(this.body)
       .subscribe( resp => {
         if (resp.status === 200) {
