@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/sessions"
-	"webauthn/webauthn"
+	_ "github.com/keycloud/webauthn/attestation"
+	"github.com/keycloud/webauthn/webauthn"
 	"io/ioutil"
 	"net/http"
 )
@@ -26,7 +27,7 @@ type UsernameRequest struct {
 
 type UsernamePasswordRequest struct {
 	Username string `json:"username"`
-	Password string `json:"password"`
+	Password string `json:"masterpassword"`
 }
 
 func (handler AuthnHandler) startRegistration(writer http.ResponseWriter, request *http.Request) {
@@ -45,9 +46,10 @@ func (handler AuthnHandler) startRegistration(writer http.ResponseWriter, reques
 	}
 	name := usernameMsg.Username
 	u, err := handler.storage.GetUser(name)
-	if u == nil {
+	if u == nil || u.Uuid == nil{
 		u = &User{
 			Name:           name,
+			Mail:			usernameMsg.Mail,
 			Authenticators: make(map[string]*Authenticator),
 			MasterPassword: GeneratePassword(16),
 		}

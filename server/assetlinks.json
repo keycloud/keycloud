@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.keycloud.keycloudautofiller",
+      "sha256_cert_fingerprints": [
+        "1D:4C:5B:70:FA:17:EB:98:86:86:2A:CD:2E:7C:79:E1:73:3B:43:93:AE:20:46:C5:D5:53:FE:4E:83:90:5F:64"
+      ]
+    }
+  }
+]

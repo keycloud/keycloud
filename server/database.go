@@ -3,32 +3,29 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/keycloud/webauthn/webauthn"
 	_ "github.com/lib/pq"
-	"gopkg.in/ini.v1"
 	"os"
 	"strconv"
-	"webauthn/webauthn"
 )
 
 
 func connectDatabase() (*sql.DB, error) {
-	// read config.ini
-	cfg, err := ini.Load("config.ini")
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
 	}
 
 	// due to integer parsing
-	port, _ := strconv.Atoi(cfg.Section("database").Key("port").Value())
+	p, err := strconv.Atoi(os.Getenv("POSTGRES_PORT"))
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s " + "password=%s dbname=%s sslmode=disable",
+		os.Getenv("POSTGRES_HOST"),
+		p,
+		os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		os.Getenv("POSTGRES_DB"),
+	)
 
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		cfg.Section("database").Key("host").String(),
-		port,
-		cfg.Section("database").Key("user").String(),
-		cfg.Section("database").Key("password").String(),
-		cfg.Section("database").Key("dbname").String())
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return nil, err
@@ -168,6 +165,45 @@ func QueryPassword(db *sql.DB, user *User, url string, username string) (passwor
 	defer stmt.Close()
 	password = &Password{}
 	err = row.Scan(&password.Id, &password.Url, &password.Password, &password.Username)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func QueryPasswordByUrl(db *sql.DB, user *User, url string) (passwords []*Password, err error) {
+	// begin new statement
+	tx, err := db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	// prepare statement
+	stmt, err := db.Prepare("SELECT entryid, url, passwd, username FROM passwds WHERE uuid = $1 AND url = $2")
+	if err != nil {
+		return nil, err
+	}
+	// execute statement
+	rows, err := stmt.Query(user.Uuid, url)
+	// close connection and connection once query is executed
+	defer stmt.Close()
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		psw := Password{}
+		err = rows.Scan(&psw.Id, &psw.Url, &psw.Password, &psw.Username)
+		passwords = append(passwords, &psw)
+		if err != nil {
+			return nil, err
+		}
+	}
+	defer rows.Close()
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+	// end query
+	err = tx.Commit()
 	if err != nil {
 		return nil, err
 	}

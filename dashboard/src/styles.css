@@ -1,0 +1,4 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+@include angular-material-theme($candy-app-theme);

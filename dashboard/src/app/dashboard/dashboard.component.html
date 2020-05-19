@@ -1,0 +1,36 @@
+<mat-card style="border-radius: 0; height: 100ch">
+  <mat-card-content style="justify-content: center">
+    <table>
+      <th *ngFor="let column of displayedColumns">{{column}}</th>
+      <tr *ngFor="let entry of dataSource">
+        <td>{{entry.id}}</td>
+        <td>{{entry.username}}</td>
+        <td>
+          <button mat-raised-button
+                    matTooltip="Copy to clipboard"
+                    color="primary"
+                    (click)="copyToClipboard(entry)">
+          <mat-icon>file_copy</mat-icon>
+          </button>
+        </td>
+        <td>{{entry.url}}</td>
+        <td>
+          <button mat-raised-button
+                    matTooltip="Delete entry"
+                    color="warn"
+                    (click)="removeEntry(entry)">
+          <mat-icon>delete_forever</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+  <mat-card-footer>
+    <button mat-raised-button
+            matTooltip="New entry"
+            color="accent"
+            (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-footer>
+</mat-card>

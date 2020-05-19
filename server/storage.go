@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"webauthn/webauthn"
+	"github.com/keycloud/webauthn/webauthn"
 )
 
 type Storage struct {
@@ -95,6 +95,14 @@ func (s *Storage) DeletePassword(user *User, url string, username string) error 
 
 func (s *Storage) GetPasswords(u *User) ([]*Password, error){
 	passwords, err := QueryAllPasswords(s.database, u)
+	if err != nil{
+		return make([]*Password, 0), nil
+	}
+	return passwords, nil
+}
+
+func (s *Storage) GetPasswordByUrl(user *User, url string) ([]*Password, error){
+	passwords, err := QueryPasswordByUrl(s.database, user, url)
 	if err != nil{
 		return make([]*Password, 0), nil
 	}

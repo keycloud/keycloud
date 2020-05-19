@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
-	"webauthn/webauthn"
+	"github.com/keycloud/webauthn/webauthn"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -31,31 +32,16 @@ var (
 	storage				StorageInterface
 )
 
-func main() {
-	/*
-		Setup secure cookies
-		 - initialize new random keys on every startup -> new login required every server restart
-	*/
+func initFromDatabaseAndRouter(db *sql.DB){
+	database = db
 	rand.Seed(time.Now().UnixNano())
 	//authKeyOne := securecookie.GenerateRandomKey(64)
 	//encryptionKeyOne := securecookie.GenerateRandomKey(32)
 	// TODO: change for productive server again
 	store = sessions.NewCookieStore([]byte("aaaaaaaaaaaaaaaa"), []byte("aaaaaaaaaaaaaaaa"))
 
-	// Connect to database
-	database, err = connectDatabase()
-	defer database.Close()
-	if err != nil{
-		panic(err)
-	}
-	// Delete all previous stored Sessions
-	err = ClearAllSessionKeys(database)
-	if err != nil{
-		fmt.Println(err)
-	}
-
 	storage = &Storage{
-		database: database,
+		database: db,
 	}
 
 	authn, err = webauthn.New(&webauthn.Config{
@@ -66,11 +52,8 @@ func main() {
 		panic("Unable to create 2FA server")
 	}
 
-	webauthnRouter := mux.NewRouter()
-
 	fileServer = &FileServer{
 		baseDir:       "./../",
-		Router:        webauthnRouter,
 		cookieStore:   store,
 		sessionName:   sessionName,
 		cookieName:    secureTokenName,
@@ -92,6 +75,30 @@ func main() {
 		cookieStore: store,
 		storage:     storage,
 	}
+}
+
+
+func main() {
+
+
+	// Connect to database
+	database, err = connectDatabase()
+	defer database.Close()
+	if err != nil{
+		panic(err)
+	}
+	// Delete all previous stored Sessions
+	err = ClearAllSessionKeys(database)
+	if err != nil{
+		fmt.Println(err)
+	}
+
+	initFromDatabaseAndRouter(database)
+
+	webauthnRouter := mux.NewRouter()
+
+	webauthnRouter.HandleFunc("/.well-known/assetlinks.json", assetLinksHandler)
+
 	//sign in routes
 	webauthnRouter.HandleFunc("/dashboard/login.html", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
 	webauthnRouter.HandleFunc("/dashboard/login.css", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
@@ -131,8 +138,16 @@ func main() {
 	webauthnRouter.Handle("/passwords", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswords))).Methods(http.MethodGet)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.CreatePassword))).Methods(http.MethodPost)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.RemovePassword))).Methods(http.MethodDelete)
+	webauthnRouter.Handle("/password-by-url", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswordByUrl))).Methods(http.MethodGet)
 
 	panic(http.ListenAndServe(":8080", webauthnRouter))
+}
+
+func assetLinksHandler(writer http.ResponseWriter, request *http.Request) {
+	println("Assetlinks file requested")
+	data, _ := ioutil.ReadFile("assetlinks.json")
+	writer.Header().Add("Content-Type", "application/json")
+	_, _ = writer.Write(data)
 }
 
 func checkCookiePermissionsMiddleware(next http.Handler) http.Handler {

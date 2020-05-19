@@ -1,0 +1,31 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="mono">
+    <span><mat-icon>cloud_queue</mat-icon>KeyCloud</span>
+    <span style="flex: 1 1 auto;"></span>
+    <nav class="nav nav-masthead justify-content-center"
+         style="right: 3%;position: absolute;font-size: x-large"
+         *ngIf="router.isActive('/dashboard', true) || router.isActive('/settings', true) || router.isActive('/settings?firstVisit=true', true)">
+
+      <button mat-stroked-button color="accent" routerLink="/dashboard">
+        Overview
+      </button>
+      <button mat-stroked-button color="accent" routerLink="/settings">
+          Settings
+        </button>
+      <button mat-stroked-button color="accent" (click)="logout()">
+          Logout
+      </button>
+    </nav>
+  </mat-toolbar-row>
+</mat-toolbar>
+<router-outlet></router-outlet>
+
+<mat-toolbar color="primary" class="footer">
+  <mat-toolbar-row class="mat-footer-cell mono">
+    <mat-icon>copyright</mat-icon>
+    KeyCloud 2020
+    <span style="flex: 1 1 auto;"></span>
+    <mat-icon>help_outline</mat-icon>
+    Questions? Write us
+  </mat-toolbar-row>
+</mat-toolbar>

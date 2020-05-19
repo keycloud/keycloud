@@ -19,7 +19,7 @@ type GetPasswordRequest struct {
 }
 
 type UserRequest struct {
-	Name string `json:"name"`
+	Name string `json:"username"`
 }
 
 type PasswordRequest struct {
@@ -47,6 +47,32 @@ func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http
 		Send the password "plain" as received from the database, Encryption and Decryption in frontend
 	*/
 	passwordJson, err := json.Marshal(password)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	_, _ = fmt.Fprint(writer, string(passwordJson))
+}
+
+func (handler CRUDHandler) GetPasswordByUrl(writer http.ResponseWriter, request *http.Request) {
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
+	b, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer request.Body.Close()
+	var passwordId GetPasswordRequest
+	err = json.Unmarshal(b, &passwordId)
+	passwords, err := handler.storage.GetPasswordByUrl(user, passwordId.Url)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
+	/*
+		Send the password "plain" as received from the database, Encryption and Decryption in frontend
+	*/
+	passwordJson, err := json.Marshal(passwords)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusInternalServerError)
 		return
@@ -146,8 +172,8 @@ func (handler CRUDHandler) GetUser(writer http.ResponseWriter, request *http.Req
 	}
 	// Wrap struct around internal User struct to enforce string encoding of master password
 	userObject := struct {
-		Name           string
-		MasterPassword string
+		Name           string `json:"username"`
+		MasterPassword string `json:"masterpassword"`
 	}{
 		user.Name,
 		string(user.MasterPassword),

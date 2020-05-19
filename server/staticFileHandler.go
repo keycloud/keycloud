@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"io/ioutil"
 	"net/http"
@@ -10,7 +9,6 @@ import (
 
 type FileServer struct {
 	baseDir       string // "./../"
-	Router        *mux.Router
 	cookieStore   *sessions.CookieStore
 	sessionName   string
 	cookieName    string
