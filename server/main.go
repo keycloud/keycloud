@@ -97,7 +97,7 @@ func main() {
 	webauthnRouter := mux.NewRouter()
 
 	webauthnRouter.HandleFunc("/.well-known/assetlinks.json", assetLinksHandler)
-	webauthnRouter.PathPrefix("/dashboard/").Handler(http.StripPrefix("/dashboard/", http.FileServer(http.Dir("./../dashboard/dist/dashboard/"))))
+	webauthnRouter.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./dashboard/"))))
 
 	/*
 		Web Authn API implementation for 2FA and standard login calls
