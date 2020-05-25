@@ -5,7 +5,7 @@ COPY ./dashboard/package.json ./
 RUN npm install
 COPY ./dashboard/ .
 RUN npm update
-RUN npm run-script build
+RUN npm run-script build -- --base-href /dashboard/
 
 # build go server
 FROM golang:1.13.7-buster AS GO_SERVER
