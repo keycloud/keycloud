@@ -140,6 +140,10 @@ func (handler AuthnHandler) standardLogin(writer http.ResponseWriter, request *h
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
+	if userPasswordMsg.Password == "" {
+		http.Error(writer, "401 - Unauthorized - ", http.StatusUnauthorized)
+		return
+	}
 	name := userPasswordMsg.Username
 	u, err := handler.storage.GetUserByName(name)
 	if err != nil {
