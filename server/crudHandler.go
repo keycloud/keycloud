@@ -132,7 +132,6 @@ func (handler CRUDHandler) RemovePassword(writer http.ResponseWriter, request *h
 
 func (handler CRUDHandler) RemoveUser(writer http.ResponseWriter, request *http.Request) {
 	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
-	//TODO: remove all passwords before removing the User either as go implementation or as db constraint etc.
 	err = handler.storage.RemoveUser(user)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -178,9 +177,11 @@ func (handler CRUDHandler) GetUser(writer http.ResponseWriter, request *http.Req
 	userObject := struct {
 		Name           string `json:"username"`
 		MasterPassword string `json:"masterpassword"`
+		Mail 	       string `json:"mail"`
 	}{
 		user.Name,
 		string(user.MasterPassword),
+		user.Mail,
 	}
 	userJson, err := json.Marshal(userObject)
 	if err != nil {
