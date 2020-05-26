@@ -1,3 +1,4 @@
+[![Build Status](https://teamcity.zeekay.dev/app/rest/builds/buildType(id:Keycloud_Build)/statusIcon)](https://teamcity.zeekay.dev/app/rest/builds/buildType(id:Keycloud_Build)/statusIcon)
 # KeyCloud
 This is the repository of the KeyCloud application, a cloud based biometric encrypted highly secure password storage.
 
