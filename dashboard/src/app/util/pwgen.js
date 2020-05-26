@@ -1,4 +1,4 @@
-const jsSHA = require("jssha");
+import jsSHA from "jssha";
 export function genPW() {
   let key;
   let isValid = false;
