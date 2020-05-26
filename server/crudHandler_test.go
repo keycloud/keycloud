@@ -281,8 +281,6 @@ func TestCRUDHandler_UpdateUser(t *testing.T) {
 	mock.ExpectPrepare("UPDATE users").
 		ExpectExec().WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
-	// TODO: Not working properly -> masterpassword etc. is set to null because it cant be given over,
-	//  fill WithArgs() to make test fail accordingly
 
 	// Set global values to mocked one
 	initFromDatabaseAndRouter(db)

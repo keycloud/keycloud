@@ -142,21 +142,25 @@ func (handler CRUDHandler) RemoveUser(writer http.ResponseWriter, request *http.
 }
 
 func (handler CRUDHandler) UpdateUser(writer http.ResponseWriter, request *http.Request) {
+	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
+	if err != nil{
+		http.Error(writer, err.Error(), http.StatusBadRequest)
+		return
+	}
 	b, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
 	defer request.Body.Close()
-	var user UserRequest
-	err = json.Unmarshal(b, &user)
+	var newUser UserRequest
+	err = json.Unmarshal(b, &newUser)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
-	err = handler.storage.UpdateUser(&User{
-		Name: user.Name,
-	})
+	user.Name = newUser.Name
+	err = handler.storage.UpdateUser(user)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
