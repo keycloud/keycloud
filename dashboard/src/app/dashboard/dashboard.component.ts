@@ -5,6 +5,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {UserService} from '../services/user.service';
 import {CrudService} from '../services/crud.service';
 import {PasswordEntry} from '../models/password-entry';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +22,15 @@ export class DashboardComponent implements OnInit {
     private popOver: MatSnackBar,
     private userService: UserService,
     private crudService: CrudService,
+    private router: Router
   ) {
+    this.initDashboard();
+  }
+
+  ngOnInit() {
+  }
+
+  initDashboard() {
     this.crudService.getListOfPasswords().subscribe(
       resp => {
         if (resp.status === 200) {
@@ -34,14 +43,17 @@ export class DashboardComponent implements OnInit {
           this.popOver.open(`${resp.status}`, '', {duration: 2000});
         }
       }, error => {
-        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
-          '', {duration: 5000});
+        if (error.status === 401) {
+          this.popOver.open(`Please sign in to retrieve your user information.`,
+            '', {duration: 5000});
+          this.router.navigate(['/login']);
+        } else {
+          this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
+            '', {duration: 5000});
+        }
       }
     );
-    console.log(this.dataSource);
   }
-
-  ngOnInit() { }
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -125,7 +137,8 @@ export class DashboardComponent implements OnInit {
 export class ConfirmationDialogComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<ConfirmationDialogComponent>) {}
+    public dialogRef: MatDialogRef<ConfirmationDialogComponent>) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();

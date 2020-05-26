@@ -7,6 +7,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {HttpClient, HttpHandler} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -26,6 +27,7 @@ describe('DashboardComponent', () => {
       ],
       imports: [
         BrowserAnimationsModule,
+        RouterTestingModule,
       ],
       declarations: [ DashboardComponent ]
     })

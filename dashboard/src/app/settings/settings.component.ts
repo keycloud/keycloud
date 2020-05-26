@@ -61,7 +61,7 @@ export class SettingsComponent implements OnInit {
               resp => {
                 if (resp.status === 201) {
                   this.popOver.open('Success! Your account is now secured via a second factor.', '', {duration: 5000});
-              }
+                }
               }
             );
         })
@@ -77,8 +77,15 @@ export class SettingsComponent implements OnInit {
     this.userService.getUser().subscribe(
       resp => {
         resp = JSON.parse(resp.body);
-        this.user = new User(resp.Name, resp.MasterPassword);
+        this.user = new User(resp.username, resp.masterpassword);
         this.password = this.user.masterpassword;
+      },
+        error => {
+        if (error.status === 401) {
+          this.popOver.open(`Please sign in to retrieve your user information.`,
+            '', {duration: 5000});
+          this.router.navigate(['/login']);
+        }
       }
     );
   }

@@ -21,7 +21,10 @@ export class AppComponent {
   logout() {
     this.userService.logout().subscribe(
       _ => this.router.navigate(['/login']),
-      _ => this.popOver.open('Can\'t log out, as you are not logged in!', '', {duration: 5000})
+      _ => {
+        this.popOver.open('Can\'t log out, as you are not logged in!', '', {duration: 5000});
+        this.router.navigate(['/login']);
+      }
     );
   }
 }
