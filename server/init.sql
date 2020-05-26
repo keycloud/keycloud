@@ -11,8 +11,6 @@ create table if not exists users
     createdate timestamp
 );
 
-alter table users owner to postgres;
-
 create table if not exists passwds
 (
     entryid serial not null
@@ -26,17 +24,13 @@ create table if not exists passwds
     username varchar(36)
 );
 
-alter table passwds owner to postgres;
-
 create table if not exists sessions
 (
     uuid varchar(36) not null,
     session_token varchar(32) not null,
     constraint sessions_pk
-        primary key (session_token, uuid)
+        primary key (uuid)
 );
-
-alter table sessions owner to postgres;
 
 create table if not exists authenticators
 (
@@ -47,5 +41,3 @@ create table if not exists authenticators
     signcount integer not null,
     userid varchar(36)
 );
-
-alter table authenticators owner to postgres;

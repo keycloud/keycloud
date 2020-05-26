@@ -86,6 +86,11 @@ func main() {
 	if err != nil{
 		panic(err)
 	}
+	
+	// Create Tables if they do not exist yet
+	data, _ := ioutil.ReadFile("init.sql")
+	_, err = database.Exec(string(data))
+
 	// Delete all previous stored Sessions
 	err = ClearAllSessionKeys(database)
 	if err != nil{
