@@ -18,7 +18,7 @@ create table if not exists passwds
             primary key,
     uuid varchar(36) not null
         constraint passwds_users_uuid_fk
-            references users,
+            references users on delete cascade,
     url text,
     passwd varchar(32) not null,
     username varchar(36)
