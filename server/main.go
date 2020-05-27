@@ -10,7 +10,6 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
-	"strings"
 	"time"
 )
 
@@ -98,18 +97,7 @@ func main() {
 	webauthnRouter := mux.NewRouter()
 
 	webauthnRouter.HandleFunc("/.well-known/assetlinks.json", assetLinksHandler)
-
-	//sign in routes
-	webauthnRouter.HandleFunc("/dashboard/login.html", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
-	webauthnRouter.HandleFunc("/dashboard/login.css", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
-	webauthnRouter.HandleFunc("/dashboard/login.js", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
-	webauthnRouter.HandleFunc("/dashboard/icon.png", fileServer.ServeFileWithoutCheck).Methods(http.MethodGet)
-	//other static file routes with permission check middleware
-	webauthnRouter.NewRoute().MatcherFunc(func(request *http.Request, match *mux.RouteMatch) bool {
-		Path := request.URL.Path[1:]
-		return !strings.Contains(Path, "login.css") && !strings.Contains(Path, "login.html") &&
-			!strings.Contains(Path, "login.js") && strings.Contains(Path, "dashboard")
-	}).Handler(checkCookiePermissionsMiddleware(http.HandlerFunc(fileServer.ServeFileWithoutCheck))).Methods(http.MethodGet)
+	webauthnRouter.PathPrefix("/dashboard/").Handler(http.StripPrefix("/dashboard/", http.FileServer(http.Dir("./dashboard/"))))
 
 	/*
 		Web Authn API implementation for 2FA and standard login calls

@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
         if (resp.status === 200) {
           const body = JSON.parse(resp.body);
           body.forEach(item => {
-            const newEntry = new PasswordEntry(item.Id, item.Username, item.Password, item.Url, '');
+            const newEntry = new PasswordEntry(item.id, item.username, item.password, item.url, '');
             this.dataSource.push(newEntry);
           });
         } else {
