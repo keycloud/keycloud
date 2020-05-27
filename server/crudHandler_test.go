@@ -278,6 +278,12 @@ func TestCRUDHandler_UpdateUser(t *testing.T) {
 	defer db.Close()
 
 	mock.ExpectBegin()
+	mock.ExpectPrepare("SELECT (.+) FROM users").
+		ExpectQuery().WithArgs("USERID").
+		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
+			AddRow("USERID","john","@","password"))
+	mock.ExpectCommit()
+	mock.ExpectBegin()
 	mock.ExpectPrepare("UPDATE users").
 		ExpectExec().WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
@@ -339,7 +345,7 @@ func TestCRUDHandler_GetUser(t *testing.T) {
 	}
 
 	// Check the response body is what we expect.
-	expected := `{"username":"john","masterpassword":"password"}`
+	expected := `{"username":"john","masterpassword":"password","mail":"@"}`
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
 	}
