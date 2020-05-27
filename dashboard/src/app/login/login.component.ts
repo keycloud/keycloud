@@ -48,6 +48,8 @@ export class LoginComponent implements OnInit {
           navigator.credentials.get(respBody)
             .then(credential => {
               const requestBody = {
+                username: this.loginUsername,
+                mail: '',
                 id: credential.id,
                 // @ts-ignore
                 rawId: this._encodeBuffer(credential.rawId),
@@ -62,7 +64,6 @@ export class LoginComponent implements OnInit {
                   userHandle: this.decoder._encodeBuffer(credential.response.userHandle),
                 },
                 type: credential.type,
-                username: this.loginUsername,
               };
               this.userService.webauthnLoginFinish(requestBody).subscribe(
                 // tslint:disable-next-line:no-shadowed-variable
