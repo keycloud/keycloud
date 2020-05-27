@@ -24,8 +24,7 @@ export class DialogComponent implements OnInit {
   }
 
   generatePassword() {
-    this.password = 'asdf';
-    // this.generatedPassword = passwordGenerator.genPW(); TODO: fix bug in pwgen.js, see console for error message
+    this.password = passwordGenerator.genPW();
   }
 
 
