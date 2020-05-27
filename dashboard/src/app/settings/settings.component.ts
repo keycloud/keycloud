@@ -13,7 +13,6 @@ import {User} from '../models/user';
 })
 export class SettingsComponent implements OnInit {
 
-  password: string;
   hide = true;
   user: User;
 
@@ -45,6 +44,8 @@ export class SettingsComponent implements OnInit {
         navigator.credentials.create(respBody)
           .then(credential => {
             const requestBody = {
+              username: this.user.username,
+              mail: '',
               id: credential.id,
               // @ts-ignore
               rawId: this.decoder._encodeBuffer(credential.rawId),
@@ -78,7 +79,6 @@ export class SettingsComponent implements OnInit {
       resp => {
         resp = JSON.parse(resp.body);
         this.user = new User(resp.username, resp.masterpassword);
-        this.password = this.user.masterpassword;
       },
         error => {
         if (error.status === 401) {
