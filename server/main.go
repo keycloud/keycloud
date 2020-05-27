@@ -86,6 +86,11 @@ func main() {
 	if err != nil{
 		panic(err)
 	}
+	
+	// Create Tables if they do not exist yet
+	data, _ := ioutil.ReadFile("init.sql")
+	_, err = database.Exec(string(data))
+
 	// Delete all previous stored Sessions
 	err = ClearAllSessionKeys(database)
 	if err != nil{
@@ -126,7 +131,7 @@ func main() {
 	webauthnRouter.Handle("/passwords", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswords))).Methods(http.MethodGet)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.CreatePassword))).Methods(http.MethodPost)
 	webauthnRouter.Handle("/password", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.RemovePassword))).Methods(http.MethodDelete)
-	webauthnRouter.Handle("/password-by-url", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswordByUrl))).Methods(http.MethodGet)
+	webauthnRouter.Handle("/password-by-url", checkCookiePermissionsMiddleware(http.HandlerFunc(crudHandler.GetPasswordByUrl))).Methods(http.MethodGet, http.MethodPost)
 
 	panic(http.ListenAndServe(":8080", webauthnRouter))
 }

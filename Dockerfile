@@ -17,5 +17,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o server .
 FROM alpine:latest
 COPY --from=GO_SERVER /server .
 COPY --from=GO_SERVER /assetlinks.json .
+COPY --from=GO_SERVER /init.sql .
 COPY --from=APP_BUILD /usr/src/app/dist/dashboard ./dashboard
 ENTRYPOINT './server'

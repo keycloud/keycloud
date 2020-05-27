@@ -13,6 +13,8 @@ services:
       - $POSTGRES_PORT:$POSTGRES_PORT
     networks:
       - app-network
+    volumes:
+      - ${PWD}/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
 
   keycloud-backend:
     image: zkdev/keycloud-app:latest
