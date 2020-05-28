@@ -2,7 +2,7 @@
 | Method | Route | Description | Body | Requires Cookie | Return | Additional Information
 |---|---|---|---|---|---|---|
 | GET | `/user` | retrieves username and password | - | ✔️ | `{"username": "johndoe", "masterpassword": "my-master-passwd", "mail": "john@doe.com"}` | - |
-| DELETE | `/user` | deletes user | - | - | ✔️ | `{"Status": "REMOVED", "Error": ""}`| - |
+| DELETE | `/user` | deletes user | - | ✔️ | `{"Status": "REMOVED", "Error": ""}`| - |
 | PUT | `/user` |  updates username | `{"username": "newjohndoe"}` | ✔️ | - | - |
 | GET | `/password` | retrieves specific password | `{"username": "johndoe", "url": "john.doe"}` | ✔️ | - | - |
 | GET | `/password-by-url` | retrieves all passwords and usernames according to provided url | `{"url": "john.doe"}` | ✔️ | `[{password": "doejohn", "id": "3", "url": "john.doe", "username": "johndoe"}, ...]` | - |
