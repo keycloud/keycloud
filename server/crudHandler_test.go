@@ -9,7 +9,7 @@ import (
 )
 
 func TestCRUDHandler_GetPassword(t *testing.T) {
-	req, err := http.NewRequest("GET", "/password", bytes.NewBuffer([]byte(`{"username": "johndoe", "url": "john.doe"}`)))
+	req, err := http.NewRequest("GET", "/password?url=john.doe&username=johndoe", nil)
 	if err != nil{
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
