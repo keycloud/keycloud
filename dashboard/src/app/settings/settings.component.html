@@ -2,7 +2,7 @@
   <mat-card-content style="justify-content: center">
   <p>Password</p>
   <mat-form-field>
-    <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="user.masterpassword">
+    <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="masterpassword">
     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
