@@ -56,15 +56,13 @@ func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http
 
 func (handler CRUDHandler) GetPasswordByUrl(writer http.ResponseWriter, request *http.Request) {
 	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
-	b, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
 	defer request.Body.Close()
-	var passwordId GetPasswordRequest
-	err = json.Unmarshal(b, &passwordId)
-	passwords, err := handler.storage.GetPasswordByUrl(user, passwordId.Url)
+	var urls = request.URL.Query()["url"]
+	passwords, err := handler.storage.GetPasswordByUrl(user, urls[0])
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
