@@ -8,14 +8,14 @@ import (
 	"net/http"
 )
 
-type CRUDHandler struct {
-	cookieStore *sessions.CookieStore
-	storage     StorageInterface
-}
-
 type GetPasswordRequest struct {
 	Url      string `json:"url"`
 	Username string `json:"username"`
+}
+
+type CRUDHandler struct {
+	cookieStore *sessions.CookieStore
+	storage     StorageInterface
 }
 
 type UserRequest struct {
@@ -30,15 +30,13 @@ type PasswordRequest struct {
 
 func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http.Request) {
 	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
-	b, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
-	defer request.Body.Close()
-	var passwordId GetPasswordRequest
-	err = json.Unmarshal(b, &passwordId)
-	password, err := handler.storage.GetPassword(user, passwordId.Url, passwordId.Username)
+	var urls = request.URL.Query()["url"]
+	var usernames = request.URL.Query()["username"]
+	password, err := handler.storage.GetPassword(user, urls[0], usernames[0])
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
@@ -56,15 +54,12 @@ func (handler CRUDHandler) GetPassword(writer http.ResponseWriter, request *http
 
 func (handler CRUDHandler) GetPasswordByUrl(writer http.ResponseWriter, request *http.Request) {
 	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
-	b, err := ioutil.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
-	defer request.Body.Close()
-	var passwordId GetPasswordRequest
-	err = json.Unmarshal(b, &passwordId)
-	passwords, err := handler.storage.GetPasswordByUrl(user, passwordId.Url)
+	var urls = request.URL.Query()["url"]
+	passwords, err := handler.storage.GetPasswordByUrl(user, urls[0])
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
