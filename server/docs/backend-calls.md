@@ -10,10 +10,10 @@
 | DELETE | `/password` | deletes specific password | `{"username": "johndoe", "url": "john.doe"}` | ✔️ | `{"Status": "REMOVED", "Error": ""}` | - |
 | GET | `/passwords` | retrieves list of passwords | - | ✔️ | `[{password": "doejohn", "id": "3", "url": "john.doe", "username": "johndoe"}, ...]` | - |
 | POST | `/logout` | clears session cookie | - | ✔️ | - | - |
-| POST | `/webauthn/login/start` | - | - | ❌ | - | - |
-| POST | `/webauthn/login/finish` | - | - | ❌ | - | - |
+| POST | `/webauthn/login/start` | - | `{"username":"", "mail":""}` | ❌ | - | - |
+| POST | `/webauthn/login/finish` | - | `{"username":"", "mail":"", "id":"", "rawId":"", "type":"", "response": {"signature":"", "userHandle":"", "authenticatorData":"", "clientDataJSON":""}}` | ❌ | - | - |
 | POST | `/standard/login` | authenticates user, sets session | `{"username": "johndoe", "masterpassword": "my-master-passwd"}` | ❌ | cookie: `keycloud-main` | - |
 | POST | `/standard/register` | creates new user | `{"username": "johndoe", "mail": "john@doe.com"}` | ❌ | generated masterpassword | - |
-| POST | `/webauthn/registration/start` | - | - | ✔️ | - | - |
-| POST | `/webauthn/registration/finish` | - | - | ✔️ | - | - |
+| POST | `/webauthn/registration/start` | - | `{"username":"", "mail":""}` | ✔️ | - | - |
+| POST | `/webauthn/registration/finish` | - | `{"username":"", "mail":"", "id":"", "rawId":"", "type":"", "response": {"attestationObject":"", "clientDataJSON":""}}` | ✔️ | - | - |
 
