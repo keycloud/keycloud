@@ -6,7 +6,6 @@ import android.content.IntentSender;
 import android.service.autofill.Dataset;
 import android.service.autofill.FillResponse;
 import android.util.Base64;
-import android.util.Log;
 import android.view.autofill.AutofillId;
 import android.view.autofill.AutofillValue;
 import android.widget.RemoteViews;
@@ -36,20 +35,12 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.StreamSupport;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import static android.view.autofill.AutofillManager.EXTRA_AUTHENTICATION_RESULT;
 
@@ -57,7 +48,7 @@ class KeyCloudAPI {
     static final int SIGN_REQUEST_CODE = 2356;
     private KeyCloudAuthenticationActivity mActivity;
 
-    private static final String WEB_API_URL = "https://10.0.2.2/";
+    private static final String WEB_API_URL = "https://keycloud-dev.zeekay.dev/";
     private static final String WEB_API_STANDARD_LOGIN_URL = WEB_API_URL + "standard/login";
     private static final String WEB_API_WEBAUTHN_LOGIN_URL = WEB_API_URL + "webauthn/";
 
@@ -66,6 +57,7 @@ class KeyCloudAPI {
     private List<AutofillId> mAutofillIds;
     private AssistStructure mFillStructure;
     private String mQuery;
+    private String username;
 
     private List<FillInfoSet> mKeyCloudFillInfo;
 
@@ -74,7 +66,7 @@ class KeyCloudAPI {
         this.mFillStructure = structure;
         this.mAutofillIds  = new LinkedList<>();
         if (structure != null){
-            this.mQuery = mFillStructure.getActivityComponent().toString();
+            this.mQuery = mFillStructure.getActivityComponent().flattenToShortString();
             for(int i = 0; i < structure.getWindowNodeCount(); i++)
                 AutofillerService.traverseView(structure.getWindowNodeAt(i).getRootViewNode(),
                         mAutofillIds);
@@ -86,6 +78,7 @@ class KeyCloudAPI {
     }
 
     void fillOutFromKeyCloud(final String username){
+        this.username = username;
         final KeyCloudAPI self = this;
         new Thread(new Runnable() {
             @Override
@@ -96,6 +89,7 @@ class KeyCloudAPI {
     }
 
     void fillOutFromKeyCloud(final String username, final String password){
+        this.username = username;
         final KeyCloudAPI self = this;
         new Thread(new Runnable() {
             @Override
@@ -111,7 +105,6 @@ class KeyCloudAPI {
         try {
             URL url = new URL(WEB_API_WEBAUTHN_LOGIN_URL + "login/start");
 
-            trustAllCertificates();
             mConnection = (HttpsURLConnection) url.openConnection();
             mConnection.setRequestMethod("POST");
             mConnection.setDoOutput(true);
@@ -143,28 +136,25 @@ class KeyCloudAPI {
             List<PublicKeyCredentialDescriptor> publicKeyCredentialDescriptors = new LinkedList<>();
             for(int i = 0; i < publicKeyDescriptors.length(); i++){
                 //public Key Descriptor
-                JSONArray descriptorArray = publicKeyDescriptors.getJSONObject(i).getJSONArray("id");
-                byte[] descriptor = new byte[descriptorArray.length()];
-                for (int j = 0; j < descriptorArray.length(); j++){
-                    descriptor[j] = (byte) descriptorArray.getInt(j);
-                }
-                //Authenticator transports
-                JSONArray authTransport = publicKeyDescriptors.getJSONObject(i).getJSONArray("transports");
+                byte[] descriptorArray = publicKeyDescriptors.getJSONObject(i).getString("id").getBytes();
                 List<Transport> transports = new LinkedList<>();
-                for(int j = 0; j < authTransport.length(); j++){
-                    transports.add(Transport.fromString(authTransport.getString(j)));
+                transports.add(Transport.INTERNAL);
+                if (publicKeyDescriptors.getJSONObject(i).has("transports")){
+                    //Authenticator transports
+                    JSONArray authTransport = publicKeyDescriptors.getJSONObject(i).getJSONArray("transports");
+                    transports = Transport.parseTransports(authTransport);
                 }
 
                 publicKeyCredentialDescriptors.add(
                         new PublicKeyCredentialDescriptor(
                                 PublicKeyCredentialType.PUBLIC_KEY.toString(),
-                                descriptor,
+                                descriptorArray,
                                 transports));
             }
 
             PublicKeyCredentialRequestOptions options =
                     new PublicKeyCredentialRequestOptions.Builder()
-                            .setRpId("10.0.2.2")
+                            .setRpId("keycloud-dev.zeekay.dev")
                             .setAllowList(publicKeyCredentialDescriptors)
                             .setChallenge(Base64.decode(publicKey.getString("challenge"), Base64.NO_WRAP))
                             .build();
@@ -185,11 +175,9 @@ class KeyCloudAPI {
                             }
                         }
                     });
-
-            Log.i("WEBAUTHN", "");
             return 200;
 
-        } catch (IOException | JSONException | Transport.UnsupportedTransportException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
 
@@ -211,7 +199,6 @@ class KeyCloudAPI {
         try {
 
             URL loginUrl = new URL(WEB_API_STANDARD_LOGIN_URL);
-            trustAllCertificates();
             mConnection = (HttpsURLConnection) loginUrl.openConnection();
 
             mConnection.setRequestMethod("POST");
@@ -219,8 +206,8 @@ class KeyCloudAPI {
 
             OutputStream out = mConnection.getOutputStream();
 
-            out.write(("{\"username\": \"" + username.trim() + "\", " +
-                        "\"password\": \"" + password.trim() + "\"}").getBytes());
+            out.write(("{\"username\":       \"" + username.trim() + "\", " +
+                        "\"masterpassword\": \"" + password.trim() + "\"}").getBytes());
             out.flush();
             out.close();
             return mConnection.getResponseCode();
@@ -271,10 +258,8 @@ class KeyCloudAPI {
     private int gatherFillingInfo() {
         mKeyCloudFillInfo = new LinkedList<>();
         try {
-            URL url = new URL(WEB_API_URL + "passwords");
-            trustAllCertificates();
+            URL url = new URL(WEB_API_URL + "password-by-url?url=" + this.mQuery);
             mConnection = (HttpsURLConnection) url.openConnection();
-            mConnection.setRequestMethod("GET");
 
             int responseCode = mConnection.getResponseCode();
             if(responseCode != 200){
@@ -293,8 +278,8 @@ class KeyCloudAPI {
             JSONArray fillSets = new JSONArray(jsonObj.toString());
             for(int i = 0; i < fillSets.length(); i++){
                 JSONObject obj = fillSets.getJSONObject(i);
-                String username = obj.getString("Username");
-                String password = obj.getString("Password");
+                String username = obj.getString("username");
+                String password = obj.getString("password");
 
                 Map<AutofillId, String> info = new HashMap<>();
 
@@ -325,7 +310,6 @@ class KeyCloudAPI {
 
         try {
             URL loginUrl = new URL(WEB_API_WEBAUTHN_LOGIN_URL + "login/finish");
-            trustAllCertificates();
             mConnection = (HttpsURLConnection) loginUrl.openConnection();
 
             mConnection.setRequestMethod("POST");
@@ -333,7 +317,9 @@ class KeyCloudAPI {
 
             OutputStream out = mConnection.getOutputStream();
 
-            out.write(("{\"id\": \"" + keyHandleBase64 + "\", " +
+            out.write(("{\"username\":" + this.username + "\"" +
+                        "\"mail\":\"\"" +
+                        "\"id\": \"" + keyHandleBase64 + "\", " +
                         "\"rawId\": \"" + keyHandleBase64 + "\", " +
                         "\"response\": {"  +
                                         "\"signature\": \"" + signatureBase64 + "\", " +
@@ -366,38 +352,6 @@ class KeyCloudAPI {
         FillInfoSet(Map<AutofillId, String> mInfoSet, String mDisplayName) {
             this.mInfoSet = mInfoSet;
             this.mDisplayName = mDisplayName;
-        }
-    }
-
-    private void trustAllCertificates() {
-        try {
-            TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        public X509Certificate[] getAcceptedIssuers() {
-                            X509Certificate[] myTrustedAnchors = new X509Certificate[0];
-                            return myTrustedAnchors;
-                        }
-
-                        @Override
-                        public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                        }
-
-                        @Override
-                        public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                        }
-                    }
-            };
-
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-                @Override
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
-                }
-            });
-        } catch (Exception ignored) {
         }
     }
 }
