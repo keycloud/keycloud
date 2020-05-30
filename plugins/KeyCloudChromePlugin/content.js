@@ -46,7 +46,22 @@ $( "#fLogin" ).on("submit", function(e) {
                 },
                 success: function(data)
                 {
-                    alert(data);
+                    data = JSON.parse(data);
+                    var inputs = null;
+                    $('form[id*="login"]').each(function(){
+                        inputs = $(this).find(':input');
+                        console.log(inputs);
+                    });
+                    inputs.each(function() {
+                       if ($(this)[0].type === "password") {
+                           $(this)[0].value = data[0]["password"];
+                       } else if ($(this)[0].type === "email") {
+                           $(this)[0].value = data[0]["username"];
+                       } else if ($(this)[0].name.match(/username/i)) {
+                           $(this)[0].value = data[0]["username"];
+                       }
+                    });
+                    $("#addPwPopup").modal("hide");
                 },
                 onFailure: {}
             });
