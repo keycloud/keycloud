@@ -38,13 +38,12 @@ $( "#fLogin" ).on("submit", function(e) {
         data: JSON.stringify({ "username": e.target[0].value, "masterpassword": e.target[1].value }),
         success: function(data)
         {
-            console.log(window.location.href)
             $.ajax({
                 type: "GET",
                 url: "https://keycloud-dev.zeekay.dev/password-by-url",
-                contentType: "application/json",
-                processData: false,
-                data: JSON.stringify({"url": "zeekay.dev"}),
+                data: {
+                    "url": window.location.href
+                },
                 success: function(data)
                 {
                     alert(data);
