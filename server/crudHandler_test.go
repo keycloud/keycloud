@@ -10,7 +10,7 @@ import (
 
 func TestCRUDHandler_GetPassword(t *testing.T) {
 	req, err := http.NewRequest("GET", "/password?url=john.doe&username=johndoe", nil)
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -25,17 +25,7 @@ func TestCRUDHandler_GetPassword(t *testing.T) {
 
 	defer db.Close()
 
-	mock.ExpectBegin()
-	mock.ExpectPrepare("SELECT (.+) FROM users").
-		ExpectQuery().WithArgs("USERID").
-		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","john","@","password"))
-	mock.ExpectCommit()
-	mock.ExpectBegin()
-	mock.ExpectPrepare("SELECT (.+) FROM passwds").
-		ExpectQuery().WillReturnRows(sqlmock.NewRows([]string{"entryid", "url", "passwd", "username"}).
-			AddRow(1,"john.doe","password","johndoe"))
-	mock.ExpectCommit()
+	prepareDBForPasswordRequest(mock)
 
 	// Set global values to mocked one
 	initFromDatabaseAndRouter(db)
@@ -61,7 +51,7 @@ func TestCRUDHandler_GetPassword(t *testing.T) {
 
 func TestCRUDHandler_GetPasswords(t *testing.T) {
 	req, err := http.NewRequest("GET", "/passwords", nil)
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -76,17 +66,7 @@ func TestCRUDHandler_GetPasswords(t *testing.T) {
 
 	defer db.Close()
 
-	mock.ExpectBegin()
-	mock.ExpectPrepare("SELECT (.+) FROM users").
-		ExpectQuery().WithArgs("USERID").
-		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","john","@","password"))
-	mock.ExpectCommit()
-	mock.ExpectBegin()
-	mock.ExpectPrepare("SELECT (.+) FROM passwds").
-		ExpectQuery().WillReturnRows(sqlmock.NewRows([]string{"entryid", "url", "passwd", "username"}).
-		AddRow(1,"john.doe","password","johndoe"))
-	mock.ExpectCommit()
+	prepareDBForPasswordRequest(mock)
 
 	// Set global values to mocked one
 	initFromDatabaseAndRouter(db)
@@ -110,9 +90,23 @@ func TestCRUDHandler_GetPasswords(t *testing.T) {
 	}
 }
 
+func prepareDBForPasswordRequest(mock sqlmock.Sqlmock) {
+	mock.ExpectBegin()
+	mock.ExpectPrepare("SELECT (.+) FROM users").
+		ExpectQuery().WithArgs("USERID").
+		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
+			AddRow("USERID", "john", "@", "password"))
+	mock.ExpectCommit()
+	mock.ExpectBegin()
+	mock.ExpectPrepare("SELECT (.+) FROM passwds").
+		ExpectQuery().WillReturnRows(sqlmock.NewRows([]string{"entryid", "url", "passwd", "username"}).
+		AddRow(1, "john.doe", "password", "johndoe"))
+	mock.ExpectCommit()
+}
+
 func TestCRUDHandler_CreatePassword(t *testing.T) {
 	req, err := http.NewRequest("POST", "/password", bytes.NewBuffer([]byte(`{"username": "johndoe", "password": "doejohn", "url": "john.doe"}`)))
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -131,7 +125,7 @@ func TestCRUDHandler_CreatePassword(t *testing.T) {
 	mock.ExpectPrepare("SELECT (.+) FROM users").
 		ExpectQuery().WithArgs("USERID").
 		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","john","@","password"))
+			AddRow("USERID", "john", "@", "password"))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("INSERT INTO passwds").
@@ -162,7 +156,7 @@ func TestCRUDHandler_CreatePassword(t *testing.T) {
 
 func TestCRUDHandler_RemovePassword(t *testing.T) {
 	req, err := http.NewRequest("DELETE", "/password", bytes.NewBuffer([]byte(`{"username": "johndoe", "url": "john.doe"}`)))
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -181,7 +175,7 @@ func TestCRUDHandler_RemovePassword(t *testing.T) {
 	mock.ExpectPrepare("SELECT (.+) FROM users").
 		ExpectQuery().WithArgs("USERID").
 		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","john","@","password"))
+			AddRow("USERID", "john", "@", "password"))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("DELETE FROM passwds").
@@ -212,7 +206,7 @@ func TestCRUDHandler_RemovePassword(t *testing.T) {
 
 func TestCRUDHandler_RemoveUser(t *testing.T) {
 	req, err := http.NewRequest("DELETE", "/user", nil)
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -231,7 +225,7 @@ func TestCRUDHandler_RemoveUser(t *testing.T) {
 	mock.ExpectPrepare("SELECT (.+) FROM users").
 		ExpectQuery().WithArgs("USERID").
 		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","john","@","password"))
+			AddRow("USERID", "john", "@", "password"))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("DELETE FROM users").
@@ -262,7 +256,7 @@ func TestCRUDHandler_RemoveUser(t *testing.T) {
 
 func TestCRUDHandler_UpdateUser(t *testing.T) {
 	req, err := http.NewRequest("PUT", "/user", bytes.NewBuffer([]byte(`{"name": "johndoe"}`)))
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -281,7 +275,7 @@ func TestCRUDHandler_UpdateUser(t *testing.T) {
 	mock.ExpectPrepare("SELECT (.+) FROM users").
 		ExpectQuery().WithArgs("USERID").
 		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","john","@","password"))
+			AddRow("USERID", "john", "@", "password"))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("UPDATE users").
@@ -312,7 +306,7 @@ func TestCRUDHandler_UpdateUser(t *testing.T) {
 
 func TestCRUDHandler_GetUser(t *testing.T) {
 	req, err := http.NewRequest("GET", "/user", nil)
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -331,7 +325,7 @@ func TestCRUDHandler_GetUser(t *testing.T) {
 	mock.ExpectPrepare("SELECT (.+) FROM users").
 		ExpectQuery().WithArgs("USERID").
 		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","john","@","password"))
+			AddRow("USERID", "john", "@", "password"))
 	mock.ExpectCommit()
 
 	// Set global values to mocked one

@@ -38,7 +38,7 @@ func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticato
 */
 func (s *Storage) GetSessionKeyForUser(user *User) ([]byte, error) {
 	token, err := QuerySessionForUser(s.database, user)
-	if err != nil{
+	if err != nil {
 		return []byte(""), nil
 	}
 	return token, err
@@ -93,17 +93,17 @@ func (s *Storage) DeletePassword(user *User, url string, username string) error 
 	return DeletePassword(s.database, url, username, string(user.Uuid))
 }
 
-func (s *Storage) GetPasswords(u *User) ([]*Password, error){
+func (s *Storage) GetPasswords(u *User) ([]*Password, error) {
 	passwords, err := QueryAllPasswords(s.database, u)
-	if err != nil{
+	if err != nil {
 		return make([]*Password, 0), nil
 	}
 	return passwords, nil
 }
 
-func (s *Storage) GetPasswordByUrl(user *User, url string) ([]*Password, error){
+func (s *Storage) GetPasswordByUrl(user *User, url string) ([]*Password, error) {
 	passwords, err := QueryPasswordByUrl(s.database, user, url)
-	if err != nil{
+	if err != nil {
 		return make([]*Password, 0), nil
 	}
 	return passwords, nil

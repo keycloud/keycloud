@@ -9,7 +9,6 @@ import (
 	"strconv"
 )
 
-
 func connectDatabase() (*sql.DB, error) {
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
@@ -17,8 +16,8 @@ func connectDatabase() (*sql.DB, error) {
 	}
 
 	// due to integer parsing
-	p, err := strconv.Atoi(os.Getenv("POSTGRES_PORT"))
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s " + "password=%s dbname=%s sslmode=disable",
+	p, _ := strconv.Atoi(os.Getenv("POSTGRES_PORT"))
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
 		os.Getenv("POSTGRES_HOST"),
 		p,
 		os.Getenv("POSTGRES_USER"),
@@ -290,43 +289,26 @@ func DeletePassword(db *sql.DB, url string, username string, uuid string) (err e
 }
 
 func QueryUser(db *sql.DB, uuid string) (user *User, err error) {
-	// begin new statement
-	tx, err := db.Begin()
-	if err != nil {
-		return nil, err
-	}
-	// prepare statement
-	stmt, err := db.Prepare("SELECT uuid, name, mail, masterpasswd FROM users WHERE uuid = $1")
-	if err != nil {
-		return nil, err
-	}
-	// execute statement
-	row := stmt.QueryRow(uuid)
-	// close connection and connection once query is executed
-	defer stmt.Close()
-	// end query
-	err = tx.Commit()
-	if err != nil {
-		return nil, err
-	}
-	user = &User{}
-	err = row.Scan(&user.Uuid, &user.Name, &user.Mail, &user.MasterPassword)
-	return user, nil
+	return queryUser(db, uuid, "SELECT uuid, name, mail, masterpasswd FROM users WHERE uuid = $1")
 }
 
 func QueryUserByName(db *sql.DB, name string) (user *User, err error) {
 	// begin new statement
+	return queryUser(db, name, "SELECT uuid, name, mail, masterpasswd FROM users WHERE name = $1")
+}
+
+func queryUser(db *sql.DB, identifier string, query string) (user *User, err error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return nil, err
 	}
 	// prepare statement
-	stmt, err := db.Prepare("SELECT uuid, name, mail, masterpasswd FROM users WHERE name = $1")
+	stmt, err := db.Prepare(query)
 	if err != nil {
 		return nil, err
 	}
 	// execute statement
-	row := stmt.QueryRow(name)
+	row := stmt.QueryRow(identifier)
 	// close connection and connection once query is executed
 	defer stmt.Close()
 	// end query
@@ -336,8 +318,9 @@ func QueryUserByName(db *sql.DB, name string) (user *User, err error) {
 	}
 	user = &User{}
 	err = row.Scan(&user.Uuid, &user.Name, &user.Mail, &user.MasterPassword)
-	return user, nil
+	return user, err
 }
+
 func UpdateOrCreateSessionKeyForUser(db *sql.DB, u *User, token []byte) (err error) {
 	// begin new statement
 	tx, err := db.Begin()

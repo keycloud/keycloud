@@ -8,8 +8,8 @@ type User struct {
 	Name           string                    `json:"name"`
 	Authenticators map[string]*Authenticator `json:"-"`
 	MasterPassword []byte
-	Mail		   string
-	Uuid 		   []byte
+	Mail           string
+	Uuid           []byte
 }
 
 type Authenticator struct {
@@ -24,7 +24,7 @@ type Authenticator struct {
 type Password struct {
 	Password string `json:"password"`
 	Id       string `json:"id"`
-	Url	     string `json:"url"`
+	Url      string `json:"url"`
 	Username string `json:"username"`
 }
 
