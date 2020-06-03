@@ -12,7 +12,7 @@ import (
 func TestAuthnHandler_standardLogin(t *testing.T) {
 	req, err := http.NewRequest("POST", "/standard/login",
 		bytes.NewBuffer([]byte(`{"username": "johndoe", "masterpassword": "my-master-passwd"}`)))
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -30,10 +30,10 @@ func TestAuthnHandler_standardLogin(t *testing.T) {
 	mock.ExpectPrepare("SELECT (.+) FROM users").
 		ExpectQuery().WithArgs("johndoe").
 		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","johndoe","@","my-master-passwd"))
+			AddRow("USERID", "johndoe", "@", "my-master-passwd"))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
-	mock.ExpectPrepare("INSERT INTO sessions").ExpectExec().WillReturnResult(sqlmock.NewResult(1,1))
+	mock.ExpectPrepare("INSERT INTO sessions").ExpectExec().WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 
 	// Set global values to mocked one
@@ -61,7 +61,7 @@ func TestAuthnHandler_standardLogin(t *testing.T) {
 func TestAuthnHandler_standardRegister(t *testing.T) {
 	req, err := http.NewRequest("POST", "/standard/register/start",
 		bytes.NewBuffer([]byte(`{"username": "johndoe", "mail": "john@doe.com"}`)))
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -82,10 +82,10 @@ func TestAuthnHandler_standardRegister(t *testing.T) {
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("INSERT INTO users").
-		ExpectExec().WithArgs(sqlmock.AnyArg(), "johndoe", "john@doe.com", sqlmock.AnyArg()).WillReturnResult(sqlmock.NewResult(1,1))
+		ExpectExec().WithArgs(sqlmock.AnyArg(), "johndoe", "john@doe.com", sqlmock.AnyArg()).WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
-	mock.ExpectPrepare("INSERT INTO sessions").ExpectExec().WillReturnResult(sqlmock.NewResult(1,1))
+	mock.ExpectPrepare("INSERT INTO sessions").ExpectExec().WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 
 	// Set global values to mocked one
@@ -113,7 +113,7 @@ func TestAuthnHandler_standardRegister(t *testing.T) {
 func TestAuthnHandler_startRegistration(t *testing.T) {
 	req, err := http.NewRequest("POST", "/webauthn/register",
 		bytes.NewBuffer([]byte(`{"username": "johndoe", "mail": "john@doe.com"}`)))
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -133,7 +133,7 @@ func TestAuthnHandler_startRegistration(t *testing.T) {
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("INSERT INTO users").
-		ExpectExec().WithArgs(sqlmock.AnyArg(), "johndoe", "john@doe.com", sqlmock.AnyArg()).WillReturnResult(sqlmock.NewResult(1,1))
+		ExpectExec().WithArgs(sqlmock.AnyArg(), "johndoe", "john@doe.com", sqlmock.AnyArg()).WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("SELECT id, credentialid, publickey, aaguid, signcount FROM authenticators").
@@ -153,7 +153,7 @@ func TestAuthnHandler_startRegistration(t *testing.T) {
 	// Check the response body is what we expect.
 	expected := `{"publicKey":{"rp":{"name":"KeyCloud"},"user":{"name":"johndoe","id":"[^"]+","displayName":"johndoe"},"challenge":"[^"]+","pubKeyCredParams":[{"type":"public-key","alg":-7}],"timeout":30000,"authenticatorSelection":{"requireResidentKey":false},"attestation":"direct"}}`
 	_, ok := rr.Header()["Set-Cookie"]
-	if matched, _ := regexp.MatchString(expected, rr.Body.String()); matched && ok{
+	if matched, _ := regexp.MatchString(expected, rr.Body.String()); matched && ok {
 		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
 	}
 
@@ -166,7 +166,7 @@ func TestAuthnHandler_startRegistration(t *testing.T) {
 func TestAuthnHandler_startLogin(t *testing.T) {
 	req, err := http.NewRequest("POST", "/webauthn/login/start",
 		bytes.NewBuffer([]byte(`{"username": "johndoe", "mail": "john@doe.com"}`)))
-	if err != nil{
+	if err != nil {
 		t.Fatalf("an error '%s' was not expected when creating a request", err)
 	}
 	if req.Form == nil {
@@ -184,7 +184,7 @@ func TestAuthnHandler_startLogin(t *testing.T) {
 	mock.ExpectPrepare("SELECT (.+) FROM users").
 		ExpectQuery().WithArgs("johndoe").
 		WillReturnRows(sqlmock.NewRows([]string{"uuid", "name", "mail", "masterpasswd"}).
-			AddRow("USERID","johndoe","@","my-master-passwd"))
+			AddRow("USERID", "johndoe", "@", "my-master-passwd"))
 	mock.ExpectCommit()
 	mock.ExpectBegin()
 	mock.ExpectPrepare("SELECT id, credentialid, publickey, aaguid, signcount FROM authenticators").
@@ -204,7 +204,7 @@ func TestAuthnHandler_startLogin(t *testing.T) {
 	// Check the response body is what we expect.
 	expected := `{"publicKey":{"rp":{"name":"KeyCloud"},"user":{"name":"johndoe","id":"[^"]+","displayName":"johndoe"},"challenge":"[^"]+","pubKeyCredParams":[{"type":"public-key","alg":-7}],"timeout":30000,"authenticatorSelection":{"requireResidentKey":false},"attestation":"direct"}}`
 	_, ok := rr.Header()["Set-Cookie"]
-	if matched, _ := regexp.MatchString(expected, rr.Body.String()); matched && ok{
+	if matched, _ := regexp.MatchString(expected, rr.Body.String()); matched && ok {
 		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
 	}
 

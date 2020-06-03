@@ -22,7 +22,7 @@ type AuthnHandler struct {
 }
 type UsernameRequest struct {
 	Username string `json:"username"`
-	Mail 	 string `json:"mail"`
+	Mail     string `json:"mail"`
 }
 
 type UsernamePasswordRequest struct {
@@ -46,10 +46,10 @@ func (handler AuthnHandler) startRegistration(writer http.ResponseWriter, reques
 	}
 	name := usernameMsg.Username
 	u, err := handler.storage.GetUser(name)
-	if u == nil || u.Uuid == nil{
+	if u == nil || u.Uuid == nil {
 		u = &User{
 			Name:           name,
-			Mail:			usernameMsg.Mail,
+			Mail:           usernameMsg.Mail,
 			Authenticators: make(map[string]*Authenticator),
 			MasterPassword: GeneratePassword(16),
 		}
@@ -167,7 +167,7 @@ func (handler AuthnHandler) standardRegister(writer http.ResponseWriter, request
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 	}
 	user, err := handler.storage.GetUserByName(userMsg.Username)
-	if (user != nil && user.Uuid != nil) || err != nil{
+	if user != nil && user.Uuid != nil {
 		responseMessageJSON, err := json.Marshal(struct {
 			Status string
 			Error  string
@@ -223,7 +223,7 @@ func SaveLoginInSession(handler AuthnHandler, writer http.ResponseWriter, reques
 	checkError(err, writer)
 	cookieSecurityToken := GeneratePassword(16)
 	sessionValues := webauthn.WrapMap(session.Values)
-	err = sessionValues.Set(handler.securityTokenName, cookieSecurityToken)
+	_ = sessionValues.Set(handler.securityTokenName, cookieSecurityToken)
 	err = sessionValues.Set(handler.userFieldName, u.WebAuthID())
 	checkError(err, writer)
 	err = session.Save(request, writer)

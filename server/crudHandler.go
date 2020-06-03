@@ -137,7 +137,7 @@ func (handler CRUDHandler) RemoveUser(writer http.ResponseWriter, request *http.
 
 func (handler CRUDHandler) UpdateUser(writer http.ResponseWriter, request *http.Request) {
 	user, err := handler.storage.GetUser(request.Form.Get("UserId"))
-	if err != nil{
+	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -172,7 +172,7 @@ func (handler CRUDHandler) GetUser(writer http.ResponseWriter, request *http.Req
 	userObject := struct {
 		Name           string `json:"username"`
 		MasterPassword string `json:"masterpassword"`
-		Mail 	       string `json:"mail"`
+		Mail           string `json:"mail"`
 	}{
 		user.Name,
 		string(user.MasterPassword),

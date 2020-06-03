@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-const(
+const (
 	secureTokenName     string = "keycloud-secure-key"
 	sessionName         string = "keycloud-main"
 	userFieldName       string = "keycloud-user-id"
@@ -21,17 +21,17 @@ const(
 )
 
 var (
-	authn               *webauthn.WebAuthn
-	err                 error
-	store               *sessions.CookieStore
-	fileServer          *FileServer
-	webauthnHandler     *AuthnHandler
-	crudHandler         *CRUDHandler
-	database 			*sql.DB
-	storage				StorageInterface
+	authn           *webauthn.WebAuthn
+	err             error
+	store           *sessions.CookieStore
+	fileServer      *FileServer
+	webauthnHandler *AuthnHandler
+	crudHandler     *CRUDHandler
+	database        *sql.DB
+	storage         StorageInterface
 )
 
-func initFromDatabaseAndRouter(db *sql.DB){
+func initFromDatabaseAndRouter(db *sql.DB) {
 	database = db
 	rand.Seed(time.Now().UnixNano())
 	//authKeyOne := securecookie.GenerateRandomKey(64)
@@ -44,7 +44,7 @@ func initFromDatabaseAndRouter(db *sql.DB){
 	}
 
 	authn, err = webauthn.New(&webauthn.Config{
-		RelyingPartyName: "KeyCloud",
+		RelyingPartyName:   "KeyCloud",
 		AuthenticatorStore: storage,
 	})
 	if err != nil {
@@ -76,24 +76,22 @@ func initFromDatabaseAndRouter(db *sql.DB){
 	}
 }
 
-
 func main() {
-
 
 	// Connect to database
 	database, err = connectDatabase()
 	defer database.Close()
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
-	
+
 	// Create Tables if they do not exist yet
 	data, _ := ioutil.ReadFile("init.sql")
 	_, err = database.Exec(string(data))
 
 	// Delete all previous stored Sessions
 	err = ClearAllSessionKeys(database)
-	if err != nil{
+	if err != nil {
 		fmt.Println(err)
 	}
 
