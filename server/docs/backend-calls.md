@@ -16,4 +16,3 @@
 | POST | `/standard/register` | creates new user | - | `{"username": "johndoe", "mail": "john@doe.com"}` | ❌ | generated masterpassword |
 | POST | `/webauthn/registration/start` | - | - | - | ✔️ | - |
 | POST | `/webauthn/registration/finish` | - | - | - | ✔️ | - |
-
