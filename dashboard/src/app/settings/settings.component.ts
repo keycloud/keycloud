@@ -15,6 +15,7 @@ export class SettingsComponent implements OnInit {
 
   hide = true;
   user: User;
+  masterpassword: string;
 
   constructor(
     private router: Router,
@@ -79,6 +80,7 @@ export class SettingsComponent implements OnInit {
       resp => {
         resp = JSON.parse(resp.body);
         this.user = new User(resp.username, resp.masterpassword);
+        this.masterpassword = resp.masterpassword;
       },
       error => {
         if (error.status === 401) {
