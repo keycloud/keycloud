@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment.prod';
@@ -10,7 +10,7 @@ import {PasswordEntry} from '../models/password-entry';
 export class CrudService {
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+    headers: new HttpHeaders({'Content-Type': 'application/json'}),
     withCredentials: true,
     observe: 'response' as 'response',
     responseType: 'text' as 'json'
@@ -20,7 +20,8 @@ export class CrudService {
 
   constructor(
     private httpClient: HttpClient
-  ) { }
+  ) {
+  }
 
   getListOfPasswords(): Observable<any> {
     return this.httpClient.get(`${this.apiUrl}/passwords`, this.httpOptions);

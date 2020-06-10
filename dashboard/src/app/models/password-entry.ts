@@ -5,5 +5,6 @@ export class PasswordEntry {
     public password,
     public url,
     public del,
-  ) {}
+  ) {
+  }
 }

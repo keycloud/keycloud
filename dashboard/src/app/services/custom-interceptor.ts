@@ -5,16 +5,13 @@ import {Observable} from 'rxjs';
 @Injectable({providedIn: 'root'})
 export class CustomInterceptor implements HttpInterceptor {
 
-  constructor() { }
+  constructor() {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('outgoing request', req);
     req = req.clone({
       withCredentials: true
     });
-    console.log('new outgoing request', req);
-
-    return next
-      .handle(req);
+    return next.handle(req);
   }
 }

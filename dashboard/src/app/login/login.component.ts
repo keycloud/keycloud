@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private popOver: MatSnackBar,
     private decoder: Decoder,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -75,8 +76,7 @@ export class LoginComponent implements OnInit {
               );
             })
             .catch(error => {
-              this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
-                '', {duration: 5000});
+              this.openErrorPopOver(error);
             });
         }
       );
@@ -84,15 +84,14 @@ export class LoginComponent implements OnInit {
       this.loginLoading = true;
       this.body = new User(this.loginUsername, this.password);
       this.userService.login(this.body)
-        .subscribe( data => {
+        .subscribe(data => {
           if (data.status === 200) {
             this.router.navigate(['/dashboard']);
           } else {
             console.log(data);
           }
         }, error => {
-          this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error}`,
-            '', {duration: 5000});
+          this.openErrorPopOver(error);
           this.loginLoading = false;
         });
     }
@@ -102,15 +101,18 @@ export class LoginComponent implements OnInit {
     this.registerLoading = true;
     this.body = new UserRegister(this.registerUsername, this.email);
     this.userService.register(this.body)
-      .subscribe( resp => {
+      .subscribe(resp => {
         if (resp.status === 200) {
-          this.router.navigate(['/settings'], { queryParams: { firstVisit: true}});
+          this.router.navigate(['/settings'], {queryParams: {firstVisit: true}});
         }
       }, error => {
-        console.log(error);
-        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
-          '', {duration: 5000});
+        this.openErrorPopOver(error);
         this.registerLoading = false;
       });
+  }
+
+  openErrorPopOver(error) {
+    this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error}`,
+      '', {duration: 5000});
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../services/user.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -65,11 +65,11 @@ export class SettingsComponent implements OnInit {
                 }
               }
             );
-        })
+          })
           .catch(error => {
             this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
               '', {duration: 5000});
-        });
+          });
       }
     );
   }
@@ -80,7 +80,7 @@ export class SettingsComponent implements OnInit {
         resp = JSON.parse(resp.body);
         this.user = new User(resp.username, resp.masterpassword);
       },
-        error => {
+      error => {
         if (error.status === 401) {
           this.popOver.open(`Please sign in to retrieve your user information.`,
             '', {duration: 5000});
