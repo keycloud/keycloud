@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment.prod';
 import {User} from '../models/user';
 import {UserRegister} from '../models/user-register';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UserService {
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+    headers: new HttpHeaders({'Content-Type': 'application/json'}),
     withCredentials: true,
     observe: 'response' as 'response',
     responseType: 'text' as 'json'
@@ -19,7 +19,8 @@ export class UserService {
 
   constructor(
     private httpClient: HttpClient
-  ) { }
+  ) {
+  }
 
   getUser(): Observable<any> {
     return this.httpClient.get<User>(`${this.apiUrl}/user`, this.httpOptions);

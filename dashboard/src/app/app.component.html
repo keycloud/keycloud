@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row class="mono">
-    <span><mat-icon>cloud_queue</mat-icon>KeyCloud</span>
+    <a routerLink="/" style="color: white; text-decoration: none;"><span><mat-icon>cloud_queue</mat-icon>KeyCloud</span></a>
     <span style="flex: 1 1 auto;"></span>
     <nav class="nav nav-masthead justify-content-center"
          style="right: 3%;position: absolute;font-size: x-large"
@@ -10,10 +10,10 @@
         Overview
       </button>
       <button mat-stroked-button color="accent" routerLink="/settings">
-          Settings
-        </button>
+        Settings
+      </button>
       <button mat-stroked-button color="accent" (click)="logout()">
-          Logout
+        Logout
       </button>
     </nav>
   </mat-toolbar-row>
@@ -23,9 +23,13 @@
 <mat-toolbar color="primary" class="footer">
   <mat-toolbar-row class="mat-footer-cell mono">
     <mat-icon>copyright</mat-icon>
-    KeyCloud 2020
+    <a href="https://github.com/keycloud" style="color: white; text-decoration: none;">
+      KeyCloud 2020
+    </a>
     <span style="flex: 1 1 auto;"></span>
-    <mat-icon>help_outline</mat-icon>
-    Questions? Write us
+    <a href="https://github.com/keycloud/keycloud/issues/new" style="color: white; text-decoration: none;">
+      <img src="../assets/GitHub-Mark-Light-32px.png">
+      Found an error? Let us know by opening an issue on GitHub!
+    </a>
   </mat-toolbar-row>
 </mat-toolbar>

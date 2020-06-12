@@ -1,14 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 import {MatDialogModule} from '@angular/material/dialog';
 
-import { appRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import {appRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
 import {ConfirmationDialogComponent, DashboardComponent} from './dashboard/dashboard.component';
-import { SettingsComponent } from './settings/settings.component';
+import {SettingsComponent} from './settings/settings.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { DialogComponent } from './dialog/dialog.component';
+import {DialogComponent} from './dialog/dialog.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -65,14 +65,16 @@ import {MatCardModule} from '@angular/material/card';
   ],
   providers: [
     CookieService,
-    {provide: HTTP_INTERCEPTORS,
-    useClass: CustomInterceptor,
-    multi: true}
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [
     AppComponent
   ],
-  entryComponents: [
-  ]
+  entryComponents: []
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -48,8 +48,7 @@ export class DashboardComponent implements OnInit {
             '', {duration: 5000});
           this.router.navigate(['/login']);
         } else {
-          this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
-            '', {duration: 5000});
+          this.openErrorPopOver(error);
         }
       }
     );
@@ -80,8 +79,7 @@ export class DashboardComponent implements OnInit {
               this.dataSource.splice(index, 1);
               this.popOver.open('Deleted!', '', {duration: 2000});
             }, error => {
-              this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
-                '', {duration: 5000});
+              this.openErrorPopOver(error);
             }
           );
         }
@@ -123,10 +121,14 @@ export class DashboardComponent implements OnInit {
           this.popOver.open(`${resp.status}`, '', {duration: 2000});
         }
       }, error => {
-        this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error.error}`,
-          '', {duration: 5000});
+        this.openErrorPopOver(error);
       }
     );
+  }
+
+  openErrorPopOver(error) {
+    this.popOver.open(`Something went wrong! If this error persists, please contact us with the following error: ${error}`,
+      '', {duration: 5000});
   }
 }
 
@@ -143,5 +145,4 @@ export class ConfirmationDialogComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }

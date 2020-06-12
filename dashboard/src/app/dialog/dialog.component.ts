@@ -15,9 +15,11 @@ export class DialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<DialogComponent>,
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   close() {
     this.dialogRef.close();
@@ -26,6 +28,4 @@ export class DialogComponent implements OnInit {
   generatePassword() {
     this.password = passwordGenerator.genPW();
   }
-
-
 }

@@ -7,19 +7,19 @@
         <td>{{entry.username}}</td>
         <td>
           <button mat-raised-button
-                    matTooltip="Copy to clipboard"
-                    color="primary"
-                    (click)="copyToClipboard(entry)">
-          <mat-icon>file_copy</mat-icon>
+                  matTooltip="Copy to clipboard"
+                  color="primary"
+                  (click)="copyToClipboard(entry)">
+            <mat-icon>file_copy</mat-icon>
           </button>
         </td>
         <td>{{entry.url}}</td>
         <td>
           <button mat-raised-button
-                    matTooltip="Delete entry"
-                    color="warn"
-                    (click)="removeEntry(entry)">
-          <mat-icon>delete_forever</mat-icon>
+                  matTooltip="Delete entry"
+                  color="warn"
+                  (click)="removeEntry(entry)">
+            <mat-icon>delete_forever</mat-icon>
           </button>
         </td>
       </tr>
