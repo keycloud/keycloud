@@ -5,6 +5,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Decoder} from '../util/decoder';
 import {UserRegister} from '../models/user-register';
 import {User} from '../models/user';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import {ConfirmationDialogComponent} from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-settings',
@@ -22,8 +24,13 @@ export class SettingsComponent implements OnInit {
     private userService: UserService,
     private popOver: MatSnackBar,
     private decoder: Decoder,
+    private dialog: MatDialog,
   ) {
     this.getUser();
+    const firstVisitParam = this.router.getCurrentNavigation().extractedUrl.queryParams.firstVisit;
+    if (firstVisitParam) {
+      this.displayHelp();
+    }
   }
 
   ngOnInit() {
@@ -90,5 +97,39 @@ export class SettingsComponent implements OnInit {
         }
       }
     );
+  }
+
+  copyToClipboard() {
+    const password = this.masterpassword;
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = password;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.popOver.open('Copied!', '', {duration: 2000});
+  }
+
+  private displayHelp() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    const dialogRef = this.dialog.open(HelpDialogComponent, dialogConfig);
+  }
+}
+
+@Component({
+  selector: 'app-help-dialog',
+  templateUrl: './help.component.html',
+})
+export class HelpDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<HelpDialogComponent>) {
   }
 }

@@ -1,0 +1,36 @@
+<mat-dialog-content class="mat-typography">
+  <h2>About</h2>
+  <p>
+    This is the KeyCloud application developed for the software engineering class. With this application, you are able to safely store your passwords.
+  </p>
+  <h2>How to use</h2>
+  <h3>Dashboard</h3>
+  <p>
+    At the top right of your screen you can see three buttons, Dashboard, Settings and Logout.
+    <br>
+    Clicking on the Dashboard button takes you to the dashboard, where you are able to save passwords and their corresponding username and url to the website. Additionally, when creating a new entry, it is possible to have a password generated.
+    <br>
+    Deleting entries cannot be undone.
+  </p>
+  <h3>Settings</h3>
+  <p>
+    The page currently in the background is the Settings page of your KeyCloud account.
+    <br>
+    Here, you can retrieve the master-password, which has to be used to log into your account.
+    <br>
+    Additionally it is possible to connect your account to a second factor, i.e. a USB-safety-key, and use this second factor to log into your account.
+  </p>
+  <h3>Logout</h3>
+  <p>
+    Clicking the Logout button logs you out of your account.
+  </p>
+  <h2>Additional Information</h2>
+  <p>
+    To display this help dialog again, press the button on the settings page.
+    <br>
+    For questions or issues with the application, please contact us via the links found at the bottom of your screen.
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-stroked-button [mat-dialog-close]="true">Close</button>
+</mat-dialog-actions>
