@@ -6,6 +6,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Overlay} from '@angular/cdk/overlay';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MAT_DIALOG_SCROLL_STRATEGY, MatDialog, MatDialogModule} from '@angular/material/dialog';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -21,6 +22,9 @@ describe('SettingsComponent', () => {
       providers: [
         MatSnackBar,
         Overlay,
+        {provide: MAT_DIALOG_SCROLL_STRATEGY, useValue: undefined},
+        MatDialogModule,
+        MatDialog,
       ],
       declarations: [ SettingsComponent ]
     })

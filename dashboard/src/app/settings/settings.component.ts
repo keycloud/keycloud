@@ -27,10 +27,12 @@ export class SettingsComponent implements OnInit {
     private dialog: MatDialog,
   ) {
     this.getUser();
-    const firstVisitParam = this.router.getCurrentNavigation().extractedUrl.queryParams.firstVisit;
-    if (firstVisitParam) {
-      this.displayHelp();
-    }
+    try {
+      const firstVisitParam = this.router.getCurrentNavigation().extractedUrl.queryParams.firstVisit;
+      if (firstVisitParam) {
+        this.displayHelp();
+      }
+    } catch (e) { }
   }
 
   ngOnInit() {
