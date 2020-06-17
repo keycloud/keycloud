@@ -1,7 +1,7 @@
 # Backend calls
 | Method | Route | Description | Parameters | Body | Requires Cookie | Return
 |---|---|---|---|---|---|---|
-| GET | `/user` | retrieves username and password | - | - | ✔️ | `{"username": "johndoe", "masterpassword": "my-master-passwd", "mail": "john@doe.com"}` |
+| GET | `/user` | retrieves username, password, mail and 2fa status | - | - | ✔️ | `{"username": "johndoe", "masterpassword": "my-master-passwd", "mail": "john@doe.com", "2fa": "false"}` |
 | DELETE | `/user` | deletes user | - | - | ✔️ | `{"Status": "REMOVED", "Error": ""}`|
 | PUT | `/user` |  updates username | - | `{"username": "newjohndoe"}` | ✔️ | - |
 | GET | `/password` | retrieves specific password | `username=johndoe&url=john.doe` | - | ✔️ | - |
