@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/keycloud/webauthn/webauthn"
 	_ "github.com/lib/pq"
+	"log"
 	"os"
 	"strconv"
 )
@@ -491,6 +492,39 @@ func QueryAuthenticator(db *sql.DB, id []byte) (auth *Authenticator, err error) 
 		return nil, err
 	}
 	return auth, nil
+}
+
+func QueryAuthenticatorStatus(db *sql.DB, userid string) ( res int8, err error) {
+	// begin new statement
+	tx, err := db.Begin()
+	if err != nil {
+		return 0, err
+	}
+	// prepare statement
+	stmt, err := db.Prepare("SELECT COUNT (id) FROM authenticators WHERE userid = $1")
+	if err != nil {
+		return 0, err
+	}
+	// execute statement
+	rows, err := stmt.Query(userid)
+	// close connection and connection once query is executed
+	defer stmt.Close()
+	var count string
+	if err != nil {
+		return 0, err
+	}
+	for rows.Next() {
+		if err := rows.Scan(&count); err != nil {
+			log.Fatal(err)
+		}
+	}
+	defer rows.Close()
+	err = tx.Commit()
+	if err != nil {
+		return 0, err
+	}
+	status, _ := strconv.ParseInt(count, 10, 8)
+	return int8(status), err
 }
 
 func QueryAllAuthenticators(db *sql.DB, uuid []byte) (auths []webauthn.Authenticator, err error) {

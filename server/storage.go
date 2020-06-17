@@ -48,6 +48,15 @@ func (s *Storage) UpdateOrCreateSessionKeyForUser(user *User, b []byte) error {
 	return UpdateOrCreateSessionKeyForUser(s.database, user, b)
 }
 
+func (s *Storage) GetAuthenticatorStatus(userid string) (bool, error) {
+	count, err := QueryAuthenticatorStatus(s.database, userid)
+	var status = false
+	if count > 0 {
+		status = true
+	}
+	return status, err
+}
+
 func (s *Storage) DeleteSessionKeyForUser(user *User) error {
 	return DeleteSessionKeyForUser(s.database, user)
 }
