@@ -33,6 +33,15 @@ func (s *Storage) GetAuthenticators(user webauthn.User) ([]webauthn.Authenticato
 	return authn, err
 }
 
+func (s *Storage) GetAuthenticatorStatus(userid string) (bool, error) {
+	count, err := QueryAuthenticatorStatus(s.database, userid)
+	var status = false
+	if count > 0 {
+		status = true
+	}
+	return status, err
+}
+
 /*
 	Session operations
 */

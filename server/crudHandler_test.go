@@ -339,7 +339,7 @@ func TestCRUDHandler_GetUser(t *testing.T) {
 	}
 
 	// Check the response body is what we expect.
-	expected := `{"username":"john","masterpassword":"password","mail":"@"}`
+	expected := `{"username":"john","masterpassword":"password","mail":"@","2fa":"false"}`
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
 	}
