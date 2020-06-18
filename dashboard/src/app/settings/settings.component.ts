@@ -88,7 +88,6 @@ export class SettingsComponent implements OnInit {
     this.userService.getUser().subscribe(
       resp => {
         resp = JSON.parse(resp.body);
-        console.log(resp);
         this.user = new User(resp.username, resp.masterpassword, !resp['2fa']);
         this.masterpassword = this.user.masterpassword;
         this.secondFactor = this.user.twofa;
