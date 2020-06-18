@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/sessions"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 type GetPasswordRequest struct {
@@ -168,15 +169,18 @@ func (handler CRUDHandler) GetUser(writer http.ResponseWriter, request *http.Req
 		http.Error(writer, err.Error(), http.StatusBadRequest)
 		return
 	}
+	status, err := handler.storage.GetAuthenticatorStatus(request.Form.Get("UserId"))
 	// Wrap struct around internal User struct to enforce string encoding of master password
 	userObject := struct {
 		Name           string `json:"username"`
 		MasterPassword string `json:"masterpassword"`
 		Mail           string `json:"mail"`
+		TwoFA		   string `json:"2fa"`
 	}{
 		user.Name,
 		string(user.MasterPassword),
 		user.Mail,
+		strconv.FormatBool(status),
 	}
 	userJson, err := json.Marshal(userObject)
 	if err != nil {
