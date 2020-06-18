@@ -9,8 +9,13 @@
   </mat-form-field>
     <button mat-stroked-button (click)="copyToClipboard()" color="accent">Copy to Clipboard</button>
     <p>
-      <button mat-stroked-button (click)="add2FA()" color="accent">Add 2 Factor Authentication</button>
+        <button mat-stroked-button (click)="add2FA()" color="accent" *ngIf="!secondFactor">Add 2 Factor Authentication</button>
     </p>
+    <div matTooltip="You already have a second factor" *ngIf="secondFactor"><!--Workaround, as a disabled button doesnt trigger the mouseover-event which triggers  the tooltip-->
+      <p>
+      <button mat-stroked-button disabled (click)="add2FA()" color="accent">Add 2 Factor Authentication</button>
+      </p>
+    </div>
     <p>
       <button mat-stroked-button (click)="displayHelp()" color="accent">Help</button>
     </p>

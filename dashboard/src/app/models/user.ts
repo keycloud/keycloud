@@ -1,7 +1,8 @@
 export class User {
   constructor(
-    public username,
-    public masterpassword
+    public username: string,
+    public masterpassword: string,
+    public twofa: boolean,
   ) {
   }
 }

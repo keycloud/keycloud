@@ -6,7 +6,6 @@ import {Decoder} from '../util/decoder';
 import {UserRegister} from '../models/user-register';
 import {User} from '../models/user';
 import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import {ConfirmationDialogComponent} from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-settings',
@@ -18,6 +17,7 @@ export class SettingsComponent implements OnInit {
   hide = true;
   user: User;
   masterpassword: string;
+  secondFactor: boolean;
 
   constructor(
     private router: Router,
@@ -88,8 +88,10 @@ export class SettingsComponent implements OnInit {
     this.userService.getUser().subscribe(
       resp => {
         resp = JSON.parse(resp.body);
-        this.user = new User(resp.username, resp.masterpassword);
-        this.masterpassword = resp.masterpassword;
+        console.log(resp);
+        this.user = new User(resp.username, resp.masterpassword, !resp['2fa']);
+        this.masterpassword = this.user.masterpassword;
+        this.secondFactor = this.user.twofa;
       },
       error => {
         if (error.status === 401) {
@@ -117,7 +119,7 @@ export class SettingsComponent implements OnInit {
     this.popOver.open('Copied!', '', {duration: 2000});
   }
 
-  private displayHelp() {
+  displayHelp() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

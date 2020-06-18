@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
       );
     } else {
       this.loginLoading = true;
-      this.body = new User(this.loginUsername, this.password);
+      this.body = new User(this.loginUsername, this.password, false);
       this.userService.login(this.body)
         .subscribe(data => {
           if (data.status === 200) {
