@@ -33,8 +33,8 @@ describe('UserService', () => {
   });
 
   it('should call login()', () => {
-    service.login(new User('test', 'asdf'));
-    expect(service.login).toHaveBeenCalledWith(new User('test', 'asdf'));
+    service.login(new User('test', 'asdf', false));
+    expect(service.login).toHaveBeenCalledWith(new User('test', 'asdf', false));
   });
 
 });
