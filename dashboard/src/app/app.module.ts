@@ -6,7 +6,7 @@ import {appRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {ConfirmationDialogComponent, DashboardComponent} from './dashboard/dashboard.component';
-import {SettingsComponent} from './settings/settings.component';
+import {HelpDialogComponent, SettingsComponent} from './settings/settings.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DialogComponent} from './dialog/dialog.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -37,6 +37,7 @@ import {MatCardModule} from '@angular/material/card';
     SettingsComponent,
     DialogComponent,
     ConfirmationDialogComponent,
+    HelpDialogComponent,
   ],
   imports: [
     BrowserModule,

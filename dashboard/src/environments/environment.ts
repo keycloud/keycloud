@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://keycloud-dev.zeekay.dev'
+  apiUrl: location.host
 };
 
 /*

@@ -1,15 +1,23 @@
 <mat-card style="border-radius: 0; height: 100ch">
   <mat-card-content style="justify-content: center">
-  <p>Password</p>
   <mat-form-field>
+    <mat-label>Master Password</mat-label>
     <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="masterpassword">
     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
-  <mat-divider></mat-divider>
-    <br>
-    <button mat-raised-button (click)="add2FA()" color="accent">Add 2 Factor Authentication</button>
-    <mat-divider></mat-divider>
+    <button mat-stroked-button (click)="copyToClipboard()" color="accent">Copy to Clipboard</button>
+    <p>
+        <button mat-stroked-button (click)="add2FA()" color="accent" *ngIf="!secondFactor">Add 2 Factor Authentication</button>
+    </p>
+    <div matTooltip="You already have a second factor" *ngIf="secondFactor"><!--Workaround, as a disabled button doesnt trigger the mouseover-event which triggers  the tooltip-->
+      <p>
+      <button mat-stroked-button disabled (click)="add2FA()" color="accent">Add 2 Factor Authentication</button>
+      </p>
+    </div>
+    <p>
+      <button mat-stroked-button (click)="displayHelp()" color="accent">Help</button>
+    </p>
   </mat-card-content>
 </mat-card>

@@ -5,6 +5,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Decoder} from '../util/decoder';
 import {UserRegister} from '../models/user-register';
 import {User} from '../models/user';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-settings',
@@ -16,14 +17,22 @@ export class SettingsComponent implements OnInit {
   hide = true;
   user: User;
   masterpassword: string;
+  secondFactor: boolean;
 
   constructor(
     private router: Router,
     private userService: UserService,
     private popOver: MatSnackBar,
     private decoder: Decoder,
+    private dialog: MatDialog,
   ) {
     this.getUser();
+    try {
+      const firstVisitParam = this.router.getCurrentNavigation().extractedUrl.queryParams.firstVisit;
+      if (firstVisitParam) {
+        this.displayHelp();
+      }
+    } catch (e) { }
   }
 
   ngOnInit() {
@@ -79,8 +88,9 @@ export class SettingsComponent implements OnInit {
     this.userService.getUser().subscribe(
       resp => {
         resp = JSON.parse(resp.body);
-        this.user = new User(resp.username, resp.masterpassword);
-        this.masterpassword = resp.masterpassword;
+        this.user = new User(resp.username, resp.masterpassword, !resp['2fa']);
+        this.masterpassword = this.user.masterpassword;
+        this.secondFactor = this.user.twofa;
       },
       error => {
         if (error.status === 401) {
@@ -90,5 +100,39 @@ export class SettingsComponent implements OnInit {
         }
       }
     );
+  }
+
+  copyToClipboard() {
+    const password = this.masterpassword;
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = password;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.popOver.open('Copied!', '', {duration: 2000});
+  }
+
+  displayHelp() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    const dialogRef = this.dialog.open(HelpDialogComponent, dialogConfig);
+  }
+}
+
+@Component({
+  selector: 'app-help-dialog',
+  templateUrl: './help.component.html',
+})
+export class HelpDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<HelpDialogComponent>) {
   }
 }
