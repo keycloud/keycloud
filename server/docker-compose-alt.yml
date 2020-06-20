@@ -14,7 +14,7 @@ services:
     expose:
       - $POSTGRES_PORT
     volumes:
-      - ${PWD}/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
 
   keycloud-backend:
     image: zkdev/keycloud-app:latest
