@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment.prod';
 
 @Injectable({providedIn: 'root'})
 export class CustomInterceptor implements HttpInterceptor {
@@ -9,9 +10,13 @@ export class CustomInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    req = req.clone({
+    // console.log's for debugginggit add
+    console.log(req);
+    const apiReq = req.clone({
+      url: `https://${environment.apiUrl}${req.url}`,
       withCredentials: true
     });
-    return next.handle(req);
+    console.log(apiReq);
+    return next.handle(apiReq);
   }
 }
