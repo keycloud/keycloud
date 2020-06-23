@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: location.host
+  apiUrl: `${location.hostname}`,
 };
 
 /*
