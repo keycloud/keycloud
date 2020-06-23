@@ -24,6 +24,9 @@
   ],
   "permissions": [
     "tabs",
-    "activeTabs","http://*/*", "https://*/*"
+    "activeTabs","http://*/*", "https://*/*",
+    "https://keycloud-dev.zeekay.dev/*",
+    "storage",
+    "declarativeContent"
   ]
 }
